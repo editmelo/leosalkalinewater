@@ -30,10 +30,10 @@ export function Header() {
             {count > 0 && <span className="absolute -right-2 -top-1 rounded-full bg-brand-blue px-1.5 text-[10px] font-bold text-white">{count}</span>}
           </Link>
         </nav>
-        <button className="md:hidden text-2xl" aria-label="Menu" onClick={() => setOpen(o => !o)}>☰</button>
+        <button className="md:hidden text-2xl" aria-label="Menu" aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(o => !o)}>☰</button>
       </div>
       {open && (
-        <nav className="flex flex-col gap-1 border-t border-black/5 bg-white px-5 py-3 md:hidden">
+        <nav id="mobile-nav" className="flex flex-col gap-1 border-t border-black/5 bg-white px-5 py-3 md:hidden">
           {NAV.map(n => <Link key={n.href} href={n.href} onClick={() => setOpen(false)} className="py-2 font-[family-name:var(--font-heading)] font-semibold text-brand-blue">{n.label}</Link>)}
           <Link href="/cart" onClick={() => setOpen(false)} className="py-2 font-[family-name:var(--font-heading)] font-semibold text-brand-blue">Cart ({count})</Link>
         </nav>
