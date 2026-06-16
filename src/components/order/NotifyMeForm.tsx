@@ -21,7 +21,7 @@ export function NotifyMeForm({ defaultZip = "" }: { defaultZip?: string }) {
   }
   if (done) return (
     <p role="status" className="flex items-center gap-1.5 text-sm font-semibold text-brand-green">
-      <CheckCircle2 className="h-4 w-4" aria-hidden />
+      <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
       You&apos;re on the list — we&apos;ll be in touch!
     </p>
   );

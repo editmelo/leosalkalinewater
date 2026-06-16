@@ -27,7 +27,7 @@ export function Benefits() {
           {BENEFITS.map(b => (
             <div key={b.title}>
               <div className="law-drop flex justify-center">
-                <b.icon className="h-8 w-8 text-brand-green" aria-hidden />
+                <b.icon className="h-8 w-8 text-brand-green" aria-hidden="true" />
               </div>
               <h3 className="mt-3 text-base font-bold text-brand-navy">{b.title}</h3>
               <p className="mt-1 text-sm text-brand-text/70">{b.body}</p>

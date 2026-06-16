@@ -23,7 +23,7 @@ export function Certifications() {
         <div className="mt-10 grid gap-6 md:grid-cols-2">
           {CERTS.map(c => (
             <Card key={c.title} className="flex gap-4">
-              <c.icon className="h-10 w-10 shrink-0 text-brand-gold" aria-hidden />
+              <c.icon className="h-10 w-10 shrink-0 text-brand-gold" aria-hidden="true" />
               <div><h3 className="font-bold text-brand-blue">{c.title}</h3><p className="mt-1 text-sm text-brand-text/75">{c.body}</p></div>
             </Card>
           ))}

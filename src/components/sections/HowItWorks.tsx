@@ -3,8 +3,8 @@ import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 
 const STEPS = [
-  { n: "1", t: "Pick your jugs", d: "2–10+ jugs at $15 each, delivered." },
-  { n: "2", t: "Choose frequency", d: "Weekly, biweekly, monthly — or one-time." },
+  { n: "1", t: "Pick your plan", d: "Bi-Weekly, Weekly, Pay as You Go, or the Starter Pack." },
+  { n: "2", t: "Add your jugs & ZIP", d: "Tell us how many 5-gallon jugs and confirm we serve your Indianapolis-area ZIP." },
   { n: "3", t: "We deliver", d: "You hydrate. We handle the rest." },
 ];
 export function HowItWorks() {

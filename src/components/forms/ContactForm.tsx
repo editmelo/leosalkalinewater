@@ -23,7 +23,7 @@ export function ContactForm() {
   }
   if (done) return (
     <p role="status" className="flex items-center gap-2 rounded-xl bg-brand-green/10 p-6 font-semibold text-brand-green">
-      <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden />
+      <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden="true" />
       Thanks for reaching out — we&apos;ll be in touch soon!
     </p>
   );

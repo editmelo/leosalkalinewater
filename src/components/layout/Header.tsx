@@ -28,12 +28,12 @@ export function Header() {
           ))}
           <Button href="/store" variant="aqua">Order</Button>
           <Link href="/cart" className="relative" aria-label="Cart">
-            <ShoppingCart className="h-6 w-6 text-brand-blue" aria-hidden />
+            <ShoppingCart className="h-6 w-6 text-brand-blue" aria-hidden="true" />
             {count > 0 && <span className="absolute -right-2 -top-1 rounded-full bg-brand-blue px-1.5 text-[10px] font-bold text-white">{count}</span>}
           </Link>
         </nav>
         <button className="md:hidden" aria-label="Menu" aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(o => !o)}>
-          <Menu className="h-6 w-6 text-brand-blue" aria-hidden />
+          <Menu className="h-6 w-6 text-brand-blue" aria-hidden="true" />
         </button>
       </div>
       {open && (

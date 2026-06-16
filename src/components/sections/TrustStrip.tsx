@@ -21,7 +21,7 @@ export function TrustStrip() {
       <div className="mx-auto grid max-w-5xl grid-cols-2 gap-6 px-5 text-center text-sm sm:grid-cols-3 md:grid-cols-6">
         {ITEMS.map(i => (
           <div key={i.label}>
-            <i.icon className="mx-auto h-6 w-6 text-brand-aqua" aria-hidden />
+            <i.icon className="mx-auto h-6 w-6 text-brand-aqua" aria-hidden="true" />
             <div className="mt-1 opacity-90">{i.label}</div>
           </div>
         ))}
