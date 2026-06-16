@@ -8,8 +8,15 @@ const sourceSans = Source_Sans_3({ subsets: ["latin"], variable: "--font-body", 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-tagline", style: ["italic"], weight: ["400","500"] });
 
 export const metadata: Metadata = {
-  title: "Leo's Alkaline Water — Hydrating You Is What We Do",
+  metadataBase: new URL("https://www.leosalkalinewater.com"),
+  title: { default: "Leo's Alkaline Water — Hydrating You Is What We Do", template: "%s" },
   description: "Premium alkaline water delivered fresh across Indianapolis. Subscribe or order one-time. Join the Water Fam.",
+  openGraph: {
+    title: "Leo's Alkaline Water",
+    description: "Premium alkaline water delivered fresh across Indianapolis. Join the Water Fam.",
+    type: "website",
+    images: ["/hero-poster.jpg"],
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
