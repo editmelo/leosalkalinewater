@@ -44,3 +44,6 @@ next-env.d.ts
 .superpowers/
 # source media (kept out of repo; see public/)
 Leo_s 2026 Rough Edits/
+# Large uncompressed hero video — compress with ffmpeg before committing
+# See public/README-assets.md for instructions
+public/hero.mp4
