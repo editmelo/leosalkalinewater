@@ -1,11 +1,9 @@
-export type Frequency = "weekly" | "biweekly" | "monthly" | "one-time";
-export type CustomerType = "residential" | "business";
+export type PlanId = "biweekly" | "weekly" | "payg" | "starter";
+export type DeliveryFrequency = "weekly" | "biweekly" | "one-time";
 
 export interface OrderSelection {
-  jugCount: number;            // 1-10+ (custom allowed)
-  frequency: Frequency;
-  customerType: CustomerType;
-  starterPackage: boolean;     // optional add-on
+  planId: PlanId;
+  jugCount: number; // 5-gallon jugs per delivery/order
   zip: string;
 }
 
@@ -13,11 +11,9 @@ export interface OrderLine {
   label: string;
   qty: number;
   unitPriceCents: number;
-  refundable?: boolean;
 }
 
 export interface OrderTotals {
   lines: OrderLine[];
-  subtotalCents: number;       // includes refundable deposit
-  refundableCents: number;     // deposit portion (informational)
+  subtotalCents: number;
 }

@@ -1,14 +1,29 @@
-import type { Frequency } from "./types";
+import type { PlanId, DeliveryFrequency } from "./types";
 
-export const JUG_PRICE_CENTS = 1500;          // $15 per 5-gal jug, delivered
-export const JUG_DEPOSIT_CENTS = 1500;        // refundable $15 jug deposit
-// PLACEHOLDER: confirm real dispenser price with Leo before launch.
-export const STARTER_DISPENSER_CENTS = 0;     // dispenser price TBD
-export const QUICK_QUANTITIES = [2, 4, 6, 8, 10] as const;
+export interface Plan {
+  id: PlanId;
+  name: string;
+  priceCents: number;
+  billing: "monthly" | "one-time";
+  billingLabel: string;
+  deliveryFrequency: DeliveryFrequency;
+  perJug: boolean;
+  tagline: string;
+  description: string;
+  features: string[];
+}
 
-export const FREQUENCY_LABELS: Record<Frequency, string> = {
-  weekly: "Weekly",
-  biweekly: "Every 2 weeks",
-  monthly: "Monthly",
-  "one-time": "One-time",
-};
+export const PLANS: Plan[] = [
+  { id: "biweekly", name: "Bi-Weekly Delivery", priceCents: 3000, billing: "monthly", billingLabel: "Every month", deliveryFrequency: "biweekly", perJug: false, tagline: "Perfect for 1 person", description: "Fresh 5-gallon alkaline water delivered every two weeks, billed monthly.", features: ["5 Gallon Alkaline Water", "Bi-Weekly Deliveries", "Billed Monthly", "Cancel Anytime"] },
+  { id: "weekly", name: "Weekly Delivery", priceCents: 5500, billing: "monthly", billingLabel: "Every month", deliveryFrequency: "weekly", perJug: false, tagline: "Great for the whole family", description: "Weekly refills of fresh 5-gallon alkaline water, billed monthly.", features: ["5 Gallon Alkaline Water", "Weekly Refills", "Billed Monthly", "Cancel Anytime"] },
+  { id: "payg", name: "Pay as You Go", priceCents: 2000, billing: "one-time", billingLabel: "Valid for 7 days", deliveryFrequency: "one-time", perJug: true, tagline: "Hydrate as needed", description: "Hydrate as needed with single payment options for a single delivery of a 5-gallon jug of alkaline water.", features: ["5 Gallon Alkaline Water", "Single Delivery", "No Commitment", "Valid for 7 Days"] },
+  { id: "starter", name: "Starter Pack Bundle", priceCents: 4500, billing: "one-time", billingLabel: "Valid for 7 days", deliveryFrequency: "one-time", perJug: false, tagline: "Everything to get started", description: "Includes: Refundable Jug Deposit, First Fill & Delivery, and Rechargeable Pump (yours to keep!). After your first fill & delivery, a subscription will be required to continue deliveries.", features: ["Refundable Jug Deposit", "First Fill & Delivery", "Rechargeable Pump (yours to keep!)", "Valid for 7 Days"] },
+];
+
+export function getPlan(id: PlanId): Plan {
+  const plan = PLANS.find((p) => p.id === id);
+  if (!plan) throw new Error(`Unknown plan: ${id}`);
+  return plan;
+}
+
+export const JUG_QUANTITIES = [1, 2, 3, 4, 6, 8] as const;

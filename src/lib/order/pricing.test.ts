@@ -2,18 +2,27 @@ import { describe, it, expect } from "vitest";
 import { computeTotals } from "./pricing";
 
 describe("computeTotals", () => {
-  it("prices jugs at $15 each", () => {
-    const t = computeTotals({ jugCount: 4, frequency: "weekly", customerType: "residential", starterPackage: false, zip: "46204" });
+  it("payg: prices jugs per-jug at $20 each (qty 3 = $60)", () => {
+    const t = computeTotals({ planId: "payg", jugCount: 3, zip: "46204" });
     expect(t.subtotalCents).toBe(6000);
-    expect(t.refundableCents).toBe(0);
     expect(t.lines).toHaveLength(1);
+    expect(t.lines[0].qty).toBe(3);
   });
 
-  it("adds a refundable deposit + dispenser when the starter package is chosen", () => {
-    const t = computeTotals({ jugCount: 2, frequency: "one-time", customerType: "residential", starterPackage: true, zip: "46204" });
-    // 2 jugs ($30) + refundable deposit ($15) + dispenser (placeholder $0)
+  it("weekly: fixed $55/mo regardless of jugCount", () => {
+    const t = computeTotals({ planId: "weekly", jugCount: 5, zip: "46204" });
+    expect(t.subtotalCents).toBe(5500);
+    expect(t.lines).toHaveLength(1);
+    expect(t.lines[0].qty).toBe(1);
+  });
+
+  it("biweekly: fixed $30/mo", () => {
+    const t = computeTotals({ planId: "biweekly", jugCount: 1, zip: "46204" });
+    expect(t.subtotalCents).toBe(3000);
+  });
+
+  it("starter: fixed $45 one-time", () => {
+    const t = computeTotals({ planId: "starter", jugCount: 1, zip: "46204" });
     expect(t.subtotalCents).toBe(4500);
-    expect(t.refundableCents).toBe(1500);
-    expect(t.lines.some(l => l.refundable)).toBe(true);
   });
 });
