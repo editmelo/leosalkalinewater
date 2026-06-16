@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Montserrat, Source_Sans_3, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/components/cart/CartProvider";
 
 const montserrat = Montserrat({ subsets: ["latin"], variable: "--font-heading", weight: ["500","600","700","800"] });
 const sourceSans = Source_Sans_3({ subsets: ["latin"], variable: "--font-body", weight: ["300","400","600"] });
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${montserrat.variable} ${sourceSans.variable} ${playfair.variable}`}>
-      <body>{children}</body>
+      <body><CartProvider>{children}</CartProvider></body>
     </html>
   );
 }
