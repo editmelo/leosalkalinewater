@@ -16,7 +16,7 @@ export function ShopPreview() {
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {PRODUCTS.map(p => (
             <Card key={p.t}>
-              <div className="mb-4 flex h-40 items-center justify-center rounded-xl bg-gradient-to-br from-brand-aqua/20 to-brand-blue/10 text-5xl">💧</div>
+              <div className="mb-4 flex h-40 items-center justify-center rounded-xl bg-gradient-to-br from-brand-aqua/20 to-brand-blue/10 text-5xl" aria-hidden="true">💧</div>
               <h3 className="font-bold text-brand-blue">{p.t}</h3>
               <p className="text-sm text-brand-text/70">{p.p}</p>
               <Button href="/store" variant="aqua" className="mt-4 w-full">{p.cta}</Button>

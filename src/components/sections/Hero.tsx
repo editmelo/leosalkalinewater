@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 export function Hero() {
   return (
     <section className="relative overflow-hidden">
-      <video className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden" autoPlay muted loop playsInline poster="/hero-poster.jpg">
+      <video className="absolute inset-0 h-full w-full object-cover motion-reduce:hidden" autoPlay muted loop playsInline poster="/hero-poster.jpg" aria-hidden>
         <source src="/hero.mp4" type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-[url('/hero-poster.jpg')] bg-cover bg-center motion-safe:hidden" aria-hidden />
