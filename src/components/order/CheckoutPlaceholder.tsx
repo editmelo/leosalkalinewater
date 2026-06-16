@@ -8,7 +8,7 @@ export function CheckoutPlaceholder() {
   const [msg, setMsg] = useState("");
   async function checkout() {
     try {
-      const res = await fetch("/api/order", { method: "POST", body: JSON.stringify({ items }) });
+      const res = await fetch("/api/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ items }) });
       const data = await res.json();
       if (data.ok) { setMsg("✅ Order captured (demo). Square payment connects here once Leo's account is linked."); clear(); }
       else setMsg("Something went wrong — please try again.");

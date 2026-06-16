@@ -12,7 +12,7 @@ export function NotifyMeForm({ defaultZip = "" }: { defaultZip?: string }) {
     e.preventDefault();
     setErr("");
     try {
-      const res = await fetch("/api/notify", { method: "POST", body: JSON.stringify({ email, zip: defaultZip }) });
+      const res = await fetch("/api/notify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email, zip: defaultZip }) });
       if (res.ok) setDone(true); else setErr("Please enter a valid email.");
     } catch {
       setErr("Something went wrong — please try again.");
