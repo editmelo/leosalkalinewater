@@ -25,8 +25,8 @@ export default function AboutPage() {
         <Section>
           <Container className="max-w-3xl">
             <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start">
-              <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-2xl shadow-lg">
-                <Image src="/leo.avif" alt="Leonardo Colon, founder of Leo's Alkaline Water" fill className="object-cover" sizes="192px" />
+              <div className="relative h-72 w-56 shrink-0 overflow-hidden rounded-2xl shadow-lg">
+                <Image src="/leo.avif" alt="Leonardo Colon, founder of Leo's Alkaline Water" fill className="object-cover object-top" sizes="224px" />
               </div>
               <div className="space-y-5 text-lg text-brand-text/85">
                 <h2 className="text-2xl font-extrabold text-brand-navy">Leonardo — Founder &amp; Water Steward</h2>
