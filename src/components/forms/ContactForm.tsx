@@ -20,7 +20,7 @@ export function ContactForm() {
       setErr("Network error — please try again.");
     }
   }
-  if (done) return <p role="status" className="rounded-xl bg-brand-green/10 p-6 font-semibold text-brand-green">Thanks for reaching out — we&apos;ll be in touch soon! 💧</p>;
+  if (done) return <p role="status" className="rounded-xl bg-brand-green/10 p-6 font-semibold text-brand-green">Thanks for reaching out — we&apos;ll be in touch soon! <span aria-hidden="true">💧</span></p>;
   return (
     <form onSubmit={submit} className="space-y-4">
       <Field label="Name"><input className={inputClass} required value={form.name} onChange={set("name")} /></Field>

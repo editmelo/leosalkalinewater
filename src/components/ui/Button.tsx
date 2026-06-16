@@ -14,7 +14,7 @@ export function Button({
   href?: string; onClick?: () => void; children: React.ReactNode;
   variant?: Variant; className?: string; type?: "button" | "submit"; disabled?: boolean;
 }) {
-  const cls = `inline-flex items-center justify-center rounded-full px-7 py-3 font-[family-name:var(--font-heading)] text-sm font-semibold tracking-wide transition ${styles[variant]} ${className}`;
+  const cls = `inline-flex items-center justify-center rounded-full px-7 py-3 font-[family-name:var(--font-heading)] text-sm font-semibold tracking-wide transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-aqua ${styles[variant]} ${className}`;
   if (href) {
     if (disabled) {
       return <span className={`${cls} opacity-40 pointer-events-none`} aria-disabled="true">{children}</span>;

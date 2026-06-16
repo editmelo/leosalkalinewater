@@ -18,7 +18,7 @@ export function NotifyMeForm({ defaultZip = "" }: { defaultZip?: string }) {
       setErr("Something went wrong — please try again.");
     }
   }
-  if (done) return <p className="text-sm font-semibold text-brand-green">You&apos;re on the list — we&apos;ll be in touch! 💧</p>;
+  if (done) return <p role="status" className="text-sm font-semibold text-brand-green">You&apos;re on the list — we&apos;ll be in touch! <span aria-hidden="true">💧</span></p>;
   return (
     <form onSubmit={submit} className="flex gap-2">
       <input className={inputClass} type="email" required placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} />
