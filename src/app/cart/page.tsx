@@ -1,3 +1,4 @@
+import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { Container } from "@/components/ui/Container";
@@ -9,6 +10,7 @@ export const metadata = { title: "Your Cart — Leo's Alkaline Water" };
 export default function CartPage() {
   return (
     <>
+      <AnnouncementBar />
       <Header />
       <main className="min-h-[60vh] py-12">
         <Container className="max-w-3xl">
