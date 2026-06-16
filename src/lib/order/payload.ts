@@ -1,8 +1,8 @@
-import type { OrderSelection } from "./types";
+import type { Frequency, OrderSelection } from "./types";
 import { computeTotals } from "./pricing";
 
 // Square Subscriptions cadence mapping (used when we connect the real API later).
-const CADENCE: Record<string, string | null> = {
+const CADENCE: Record<Frequency, string | null> = {
   weekly: "WEEKLY",
   biweekly: "EVERY_TWO_WEEKS",
   monthly: "MONTHLY",

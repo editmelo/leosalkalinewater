@@ -15,4 +15,7 @@ describe("service area", () => {
     expect(normalizeZip("  46204 ")).toBe("46204");
     expect(isInServiceArea("abc")).toBe(false);
   });
+  it("accepts a suburb ZIP (Carmel)", () => {
+    expect(isInServiceArea("46032")).toBe(true);
+  });
 });

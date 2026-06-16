@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useRef, useState, useCallback } from "react";
 import type { OrderSelection } from "@/lib/order/types";
 
 type CartState = { items: OrderSelection[] };
@@ -16,6 +16,7 @@ const KEY = "law-cart-v1";
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<CartState>({ items: [] });
+  const hydrated = useRef(false);
 
   useEffect(() => {
     try {
@@ -24,6 +25,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch {}
   }, []);
   useEffect(() => {
+    if (!hydrated.current) {
+      hydrated.current = true;
+      return;
+    }
     try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {}
   }, [state]);
 

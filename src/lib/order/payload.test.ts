@@ -14,4 +14,9 @@ describe("buildOrderPayload", () => {
     expect(p.recurring).toBe(false);
     expect(p.cadence).toBeNull();
   });
+  it("produces biweekly cadence for biweekly frequency", () => {
+    const p = buildOrderPayload({ jugCount: 4, frequency: "biweekly", customerType: "residential", starterPackage: false, zip: "46204" });
+    expect(p.recurring).toBe(true);
+    expect(p.cadence).toBe("EVERY_TWO_WEEKS");
+  });
 });
