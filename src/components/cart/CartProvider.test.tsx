@@ -7,6 +7,7 @@ const SAMPLE: OrderSelection = {
   planId: "payg",
   jugCount: 2,
   zip: "46204",
+  customerType: "residential",
 };
 
 function TestHarness() {

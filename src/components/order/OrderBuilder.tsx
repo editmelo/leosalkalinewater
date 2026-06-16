@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { PlanId, OrderSelection } from "@/lib/order/types";
+import type { PlanId, OrderSelection, CustomerType } from "@/lib/order/types";
 import { PLANS, JUG_QUANTITIES } from "@/lib/order/products";
 import { isInServiceArea } from "@/lib/service-area";
 import { useCart } from "@/components/cart/CartProvider";
@@ -13,11 +13,12 @@ export function OrderBuilder() {
   const router = useRouter();
   const { addItem } = useCart();
   const [jugCount, setJugCount] = useState(1);
+  const [customerType, setCustomerType] = useState<CustomerType>("residential");
   const [zip, setZip] = useState("");
   const ready = isInServiceArea(zip);
 
   function handleSelect(planId: PlanId) {
-    const sel: OrderSelection = { planId, jugCount, zip };
+    const sel: OrderSelection = { planId, jugCount, customerType, zip };
     addItem(sel);
     router.push("/cart");
   }
@@ -54,6 +55,23 @@ export function OrderBuilder() {
               className={`${inputClass} w-24`}
               aria-label="Custom jug quantity"
             />
+          </div>
+        </Field>
+      </div>
+
+      {/* Delivery type selector */}
+      <div>
+        <Field label="Delivery type">
+          <div className="mt-2 flex flex-wrap items-center gap-2">
+            {(["residential", "business"] as CustomerType[]).map((type) => (
+              <button
+                key={type}
+                className={pill(customerType === type)}
+                onClick={() => setCustomerType(type)}
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </button>
+            ))}
           </div>
         </Field>
       </div>

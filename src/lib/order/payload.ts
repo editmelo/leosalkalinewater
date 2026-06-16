@@ -8,11 +8,12 @@ export interface OrderPayload {
   recurring: boolean;
   cadence: string | null;
   deliveryFrequency: string;
+  customerType: OrderSelection["customerType"];
   totals: ReturnType<typeof computeTotals>;
 }
 
 export function buildOrderPayload(sel: OrderSelection): OrderPayload {
   const plan = getPlan(sel.planId);
   const recurring = plan.billing === "monthly";
-  return { selection: sel, planName: plan.name, recurring, cadence: recurring ? "MONTHLY" : null, deliveryFrequency: plan.deliveryFrequency, totals: computeTotals(sel) };
+  return { selection: sel, planName: plan.name, recurring, cadence: recurring ? "MONTHLY" : null, deliveryFrequency: plan.deliveryFrequency, customerType: sel.customerType, totals: computeTotals(sel) };
 }
