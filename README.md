@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Leo's Alkaline Water — Website
 
-## Getting Started
+Custom Next.js site for Leo's Alkaline Water (Indianapolis 5-gal alkaline water delivery).
 
-First, run the development server:
+## Develop
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run test     # unit tests (Vitest)
+npm run build    # production build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Architecture
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `src/lib/order/*` — pricing, products, order payload (Square-ready), types
+- `src/lib/service-area.ts` + `indy-zips.ts` — Indianapolis ZIP gating (edit the ZIP set to expand coverage)
+- `src/components/order/*` — order builder, cart, checkout placeholder
+- `src/components/sections/*` — homepage/about content sections
+- `src/components/motion/*` — wave dividers + bubbles (reduced-motion safe)
+- `src/app/api/*` — contact / notify / order route handlers (stubbed; ready to wire)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Open items before launch
 
-## Learn More
+- Add live Square credentials and replace the checkout stub in `src/app/api/order/route.ts`.
+- Connect an email provider (e.g. Resend) in the contact/notify routes → delivers to leo@leosalkalinewater.com.
+- Confirm Starter Package dispenser price in `src/lib/order/products.ts` (`STARTER_DISPENSER_CENTS`).
+- Replace placeholder product imagery + cert badges; compress hero video if not already.
+- Legal review of `/privacy` and `/terms`.
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Push to GitHub and import into Vercel (zero-config). Set the production domain to leosalkalinewater.com at launch.
