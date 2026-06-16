@@ -5,7 +5,7 @@ import { Field, inputClass } from "@/components/ui/Field";
 import { NotifyMeForm } from "@/components/order/NotifyMeForm";
 
 export function ServiceAreaCheck({ zip, onZip, onStatus }: {
-  zip: string; onZip: (z: string) => void; onStatus: (ok: boolean) => void;
+  zip: string; onZip: (z: string) => void; onStatus?: (ok: boolean) => void;
 }) {
   const [touched, setTouched] = useState(false);
   const ok = isInServiceArea(zip);
@@ -14,7 +14,7 @@ export function ServiceAreaCheck({ zip, onZip, onStatus }: {
       <Field label="Delivery ZIP code">
         <input
           className={inputClass} inputMode="numeric" placeholder="46204" value={zip}
-          onChange={(e) => { onZip(e.target.value); setTouched(true); onStatus(isInServiceArea(e.target.value)); }}
+          onChange={(e) => { onZip(e.target.value); setTouched(true); onStatus?.(isInServiceArea(e.target.value)); }}
         />
       </Field>
       {touched && zip.length >= 5 && !ok && (

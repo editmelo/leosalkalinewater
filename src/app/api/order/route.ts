@@ -9,5 +9,5 @@ export async function POST(req: NextRequest) {
   if (!body?.items?.length) return NextResponse.json({ ok: false, error: "Empty order" }, { status: 400 });
   const payloads = body.items.map(buildOrderPayload);
   console.log("[order:stub]", JSON.stringify(payloads));
-  return NextResponse.json({ ok: true, stub: true, payloads });
+  return NextResponse.json({ ok: true, stub: true });
 }

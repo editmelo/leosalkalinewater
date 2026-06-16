@@ -9,12 +9,17 @@ const styles: Record<Variant, string> = {
 };
 
 export function Button({
-  href, onClick, children, variant = "primary", className = "", type = "button",
+  href, onClick, children, variant = "primary", className = "", type = "button", disabled,
 }: {
   href?: string; onClick?: () => void; children: React.ReactNode;
-  variant?: Variant; className?: string; type?: "button" | "submit";
+  variant?: Variant; className?: string; type?: "button" | "submit"; disabled?: boolean;
 }) {
   const cls = `inline-flex items-center justify-center rounded-full px-7 py-3 font-[family-name:var(--font-heading)] text-sm font-semibold tracking-wide transition ${styles[variant]} ${className}`;
-  if (href) return <Link href={href} className={cls}>{children}</Link>;
-  return <button type={type} onClick={onClick} className={cls}>{children}</button>;
+  if (href) {
+    if (disabled) {
+      return <span className={`${cls} opacity-40 pointer-events-none`} aria-disabled="true">{children}</span>;
+    }
+    return <Link href={href} className={cls}>{children}</Link>;
+  }
+  return <button type={type} onClick={onClick} disabled={disabled} className={`${cls} disabled:opacity-40 disabled:pointer-events-none`}>{children}</button>;
 }

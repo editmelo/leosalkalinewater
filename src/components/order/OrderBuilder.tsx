@@ -20,10 +20,9 @@ export function OrderBuilder({ compact = false }: { compact?: boolean }) {
   const [customerType, setCustomerType] = useState<CustomerType>("residential");
   const [starterPackage, setStarter] = useState(false);
   const [zip, setZip] = useState("");
-  const [zipOk, setZipOk] = useState(false);
 
   const selection: OrderSelection = { jugCount, frequency, customerType, starterPackage, zip };
-  const totals = useMemo(() => computeTotals(selection), [jugCount, frequency, customerType, starterPackage]);
+  const totals = useMemo(() => computeTotals(selection), [jugCount, starterPackage]);
   const ready = isInServiceArea(zip);
 
   function pill(active: boolean) {
@@ -65,10 +64,10 @@ export function OrderBuilder({ compact = false }: { compact?: boolean }) {
           <span className="text-sm"><b>Add Starter Package</b> — hand dispenser + refundable $15 jug deposit.</span>
         </label>
       )}
-      <ServiceAreaCheck zip={zip} onZip={setZip} onStatus={setZipOk} />
+      <ServiceAreaCheck zip={zip} onZip={setZip} />
       <div className="flex items-center justify-between rounded-xl bg-brand-bg p-4">
         <span className="font-[family-name:var(--font-heading)] font-bold text-brand-blue">{formatUsd(totals.subtotalCents)}{frequency !== "one-time" ? " / delivery" : ""}</span>
-        <Button variant="primary" onClick={submit} className={!ready ? "pointer-events-none opacity-40" : ""}>
+        <Button variant="primary" onClick={submit} disabled={!ready}>
           {ready ? "Add to cart →" : "Enter a serviced ZIP"}
         </Button>
       </div>

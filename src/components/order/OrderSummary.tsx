@@ -18,7 +18,7 @@ export function OrderSummary() {
                 <p className="font-[family-name:var(--font-heading)] font-bold text-brand-blue">{it.jugCount} × 5-Gallon Alkaline Water Jug</p>
                 <p className="text-sm text-brand-text/70">{FREQUENCY_LABELS[it.frequency]} · {it.customerType} · ZIP {it.zip}{it.starterPackage ? " · + Starter Package" : ""}</p>
               </div>
-              <button onClick={() => removeItem(i)} className="text-sm text-red-600 hover:underline">Remove</button>
+              <button onClick={() => removeItem(i)} aria-label={`Remove ${it.jugCount} jugs from cart`} className="text-sm text-red-600 hover:underline">Remove</button>
             </div>
             <p className="mt-2 font-bold">{formatUsd(t.subtotalCents)}{it.frequency !== "one-time" ? " / delivery" : ""}{t.refundableCents ? ` (incl. ${formatUsd(t.refundableCents)} refundable deposit)` : ""}</p>
           </Card>
