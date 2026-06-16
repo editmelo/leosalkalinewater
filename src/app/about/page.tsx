@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -22,11 +23,18 @@ export default function AboutPage() {
           </Container>
         </Section>
         <Section>
-          <Container className="max-w-3xl space-y-5 text-lg text-brand-text/85">
-            <h2 className="text-2xl font-extrabold text-brand-navy">Leonardo — Founder &amp; Water Steward</h2>
-            <p>For over a decade, I&apos;ve dedicated myself to researching and understanding water. My journey began when I first experienced the remarkable effects of &ldquo;living water&rdquo; — within just 10 minutes, a persistent headache disappeared.</p>
-            <p>From that moment on, everything changed. Experiencing truly balanced, living water brought me greater energy, mental clarity, and vitality — it even enhanced my running performance. Once you discover true balance, everything else becomes easier.</p>
-            <p>Now, my mission is simple: to make water health clear and accessible, so others can experience the same life-changing impact.</p>
+          <Container className="max-w-3xl">
+            <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start">
+              <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-2xl shadow-lg">
+                <Image src="/leo.avif" alt="Leonardo Colon, founder of Leo's Alkaline Water" fill className="object-cover" sizes="192px" />
+              </div>
+              <div className="space-y-5 text-lg text-brand-text/85">
+                <h2 className="text-2xl font-extrabold text-brand-navy">Leonardo — Founder &amp; Water Steward</h2>
+                <p>For over a decade, I&apos;ve dedicated myself to researching and understanding water. My journey began when I first experienced the remarkable effects of &ldquo;living water&rdquo; — within just 10 minutes, a persistent headache disappeared.</p>
+                <p>From that moment on, everything changed. Experiencing truly balanced, living water brought me greater energy, mental clarity, and vitality — it even enhanced my running performance. Once you discover true balance, everything else becomes easier.</p>
+                <p>Now, my mission is simple: to make water health clear and accessible, so others can experience the same life-changing impact.</p>
+              </div>
+            </div>
           </Container>
         </Section>
         <Certifications />

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { Field, inputClass } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
+import { CheckCircle2 } from "lucide-react";
 
 export function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -20,7 +21,12 @@ export function ContactForm() {
       setErr("Network error — please try again.");
     }
   }
-  if (done) return <p role="status" className="rounded-xl bg-brand-green/10 p-6 font-semibold text-brand-green">Thanks for reaching out — we&apos;ll be in touch soon! <span aria-hidden="true">💧</span></p>;
+  if (done) return (
+    <p role="status" className="flex items-center gap-2 rounded-xl bg-brand-green/10 p-6 font-semibold text-brand-green">
+      <CheckCircle2 className="h-5 w-5 shrink-0" aria-hidden />
+      Thanks for reaching out — we&apos;ll be in touch soon!
+    </p>
+  );
   return (
     <form onSubmit={submit} className="space-y-4">
       <Field label="Name"><input className={inputClass} required value={form.name} onChange={set("name")} /></Field>

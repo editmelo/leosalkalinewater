@@ -3,6 +3,7 @@ import type { Plan } from "@/lib/order/products";
 import { formatUsd } from "@/lib/order/pricing";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
+import { Check } from "lucide-react";
 
 interface PlanCardProps {
   plan: Plan;
@@ -45,7 +46,7 @@ export function PlanCard({ plan, jugCount, onSelect, href, disabled, disabledRea
       <ul className="mb-6 flex-1 space-y-2">
         {plan.features.map((f) => (
           <li key={f} className="flex items-start gap-2 text-sm text-brand-text">
-            <span className="mt-0.5 text-brand-blue" aria-hidden="true">✓</span>
+            <Check className="mt-0.5 h-4 w-4 shrink-0 text-brand-blue" aria-hidden />
             {f}
           </li>
         ))}

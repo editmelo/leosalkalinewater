@@ -1,13 +1,22 @@
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
+import { Droplets, Gauge, ShieldCheck, Leaf, HeartHandshake } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 
-const BENEFITS = [
-  { icon: "💧", title: "Deep Cellular Hydration", body: "Structured water for better absorption and real results." },
-  { icon: "⚖️", title: "Alkaline pH 8.5–9.5", body: "Helps neutralize body acidity and restore balance." },
-  { icon: "🛡️", title: "Immune Health", body: "Antioxidant-rich to support cellular harmony, resilience, and recovery." },
-  { icon: "♻️", title: "Sustainability", body: "Delivered in refillable 5-gallon jugs and system solutions available." },
-  { icon: "🤝", title: "Local & Community Support", body: "Proudly rooted in Indianapolis, promoting healthy water access for all." },
+interface Benefit {
+  icon: LucideIcon;
+  title: string;
+  body: string;
+}
+
+const BENEFITS: Benefit[] = [
+  { icon: Droplets, title: "Deep Cellular Hydration", body: "Structured water for better absorption and real results." },
+  { icon: Gauge, title: "Alkaline pH 8.5–9.5", body: "Helps neutralize body acidity and restore balance." },
+  { icon: ShieldCheck, title: "Immune Health", body: "Antioxidant-rich to support cellular harmony, resilience, and recovery." },
+  { icon: Leaf, title: "Sustainability", body: "Delivered in refillable 5-gallon jugs and system solutions available." },
+  { icon: HeartHandshake, title: "Local & Community Support", body: "Proudly rooted in Indianapolis, promoting healthy water access for all." },
 ];
+
 export function Benefits() {
   return (
     <Section className="bg-[#eef7f1]">
@@ -17,7 +26,9 @@ export function Benefits() {
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           {BENEFITS.map(b => (
             <div key={b.title}>
-              <div className="text-3xl law-drop" aria-hidden="true">{b.icon}</div>
+              <div className="law-drop flex justify-center">
+                <b.icon className="h-8 w-8 text-brand-green" aria-hidden />
+              </div>
               <h3 className="mt-3 text-base font-bold text-brand-navy">{b.title}</h3>
               <p className="mt-1 text-sm text-brand-text/70">{b.body}</p>
             </div>

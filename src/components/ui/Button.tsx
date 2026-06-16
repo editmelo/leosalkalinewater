@@ -1,11 +1,12 @@
 import Link from "next/link";
 
-type Variant = "primary" | "aqua" | "green" | "outline";
+type Variant = "primary" | "aqua" | "green" | "outline" | "white";
 const styles: Record<Variant, string> = {
   primary: "bg-brand-blue text-white hover:bg-[#0c3f6c]",
   aqua: "bg-brand-aqua text-brand-blue hover:brightness-95",
   green: "bg-brand-green text-white hover:brightness-110",
   outline: "bg-transparent text-current border border-current/40 hover:border-current",
+  white: "bg-white text-brand-blue hover:bg-white/90",
 };
 
 export function Button({

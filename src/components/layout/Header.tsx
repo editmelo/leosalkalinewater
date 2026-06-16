@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { Button } from "@/components/ui/Button";
+import { ShoppingCart, Menu } from "lucide-react";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -26,11 +27,14 @@ export function Header() {
             <Link key={n.href} href={n.href} className="font-[family-name:var(--font-heading)] text-sm font-semibold text-brand-blue/90 hover:text-brand-blue">{n.label}</Link>
           ))}
           <Button href="/store" variant="aqua">Order</Button>
-          <Link href="/cart" className="relative text-xl" aria-label="Cart"><span aria-hidden="true">🛒</span>
+          <Link href="/cart" className="relative" aria-label="Cart">
+            <ShoppingCart className="h-6 w-6 text-brand-blue" aria-hidden />
             {count > 0 && <span className="absolute -right-2 -top-1 rounded-full bg-brand-blue px-1.5 text-[10px] font-bold text-white">{count}</span>}
           </Link>
         </nav>
-        <button className="md:hidden text-2xl" aria-label="Menu" aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(o => !o)}><span aria-hidden="true">☰</span></button>
+        <button className="md:hidden" aria-label="Menu" aria-expanded={open} aria-controls="mobile-nav" onClick={() => setOpen(o => !o)}>
+          <Menu className="h-6 w-6 text-brand-blue" aria-hidden />
+        </button>
       </div>
       {open && (
         <nav id="mobile-nav" className="flex flex-col gap-1 border-t border-black/5 bg-white px-5 py-3 md:hidden">
