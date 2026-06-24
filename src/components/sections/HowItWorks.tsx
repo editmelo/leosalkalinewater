@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
@@ -12,6 +13,9 @@ export function HowItWorks() {
     <Section>
       <Container>
         <h2 className="text-center text-3xl font-extrabold text-brand-navy">How delivery works</h2>
+        <div className="relative mx-auto mt-8 aspect-[16/7] w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg">
+          <Image src="/media/delivery.jpg" alt="Leo delivering a 5-gallon jug to a customer's doorstep" fill className="object-cover" sizes="(max-width: 896px) 100vw, 896px" />
+        </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {STEPS.map(s => (
             <Card key={s.n} className="text-center">

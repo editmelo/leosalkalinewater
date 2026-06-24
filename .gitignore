@@ -42,8 +42,9 @@ next-env.d.ts
 
 # brainstorm scratch
 .superpowers/
-# source media (kept out of repo; see public/)
+# source media (kept out of repo; optimized derivatives live in public/)
 Leo_s 2026 Rough Edits/
+Leo_s Site Media/
 # Large uncompressed hero video — compress with ffmpeg before committing
 # See public/README-assets.md for instructions
 public/hero.mp4

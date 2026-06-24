@@ -32,3 +32,12 @@ h1,h2,h3,h4 { font-family: var(--font-heading); line-height: 1.1; }
 @keyframes law-rise { 0% { transform: translateY(0) scale(1); opacity: 0; } 15% { opacity: .55; } 100% { transform: translateY(-120px) scale(1.3); opacity: 0; } }
 @keyframes law-drift { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 .law-drop { animation: law-drift 5s ease-in-out infinite; }
+
+/* Loading Jug (5-gallon) loader */
+@keyframes law-jug-fill { 0%,100% { transform: translateY(34px); } 50% { transform: translateY(6px); } }
+@keyframes law-jug-wave { from { transform: translateX(0); } to { transform: translateX(-60px); } }
+@keyframes law-jug-bubble { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: .85; } 100% { transform: translateY(-92px); opacity: 0; } }
+.law-jug-fill { animation: law-jug-fill 3.4s ease-in-out infinite; }
+.law-jug-wave { animation: law-jug-wave 2.6s linear infinite; }
+.law-jug-wave.slow { animation-duration: 4.2s; }
+.law-jug-bubble { animation: law-jug-bubble 2.8s ease-in infinite; }

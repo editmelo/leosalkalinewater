@@ -1,4 +1,5 @@
 "use client";
+import Image from "next/image";
 import type { Plan } from "@/lib/order/products";
 import { formatUsd } from "@/lib/order/pricing";
 import { Card } from "@/components/ui/Card";
@@ -21,6 +22,15 @@ export function PlanCard({ plan, jugCount, onSelect, href, disabled, disabledRea
 
   return (
     <Card className="flex flex-col">
+      <div className="relative -mx-6 -mt-6 mb-5 aspect-[4/3] overflow-hidden rounded-t-2xl bg-brand-blue/5">
+        <Image
+          src={plan.image}
+          alt={`${plan.name} — Leo's 5-gallon alkaline water`}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 25vw"
+        />
+      </div>
       <div className="mb-1">
         <p className="font-[family-name:var(--font-heading)] text-xs font-bold uppercase tracking-wide text-brand-blue">
           {plan.tagline}
