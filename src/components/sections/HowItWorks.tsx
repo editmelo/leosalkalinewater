@@ -13,7 +13,7 @@ export function HowItWorks() {
   return (
     <Section>
       <Container>
-        <h2 className="text-center text-3xl font-extrabold text-brand-navy">How delivery works</h2>
+        <h2 className="text-center text-3xl font-extrabold text-brand-navy">How Delivery Works</h2>
         <div className="relative mx-auto mt-8 aspect-[16/7] w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg">
           <Image src="/media/delivery.jpg" alt="Leo delivering a 5-gallon jug to a customer's doorstep" fill className="object-cover" sizes="(max-width: 896px) 100vw, 896px" />
         </div>

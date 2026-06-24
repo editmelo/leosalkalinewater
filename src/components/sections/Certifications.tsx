@@ -35,7 +35,7 @@ export function Certifications() {
   return (
     <Section className="bg-[#f2f7fa]">
       <Container>
-        <h2 className="text-center text-3xl font-extrabold text-brand-navy">Certified &amp; trusted</h2>
+        <h2 className="text-center text-3xl font-extrabold text-brand-navy">Certified &amp; Trusted</h2>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {CERTS.map((c) => (
             <Card key={c.title} className="flex flex-col items-center text-center">

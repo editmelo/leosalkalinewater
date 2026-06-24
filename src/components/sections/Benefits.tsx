@@ -21,7 +21,7 @@ export function Benefits() {
   return (
     <Section className="bg-[#eef7f1]">
       <Container className="text-center">
-        <h2 className="tagline text-3xl text-brand-green">Choose us for your…</h2>
+        <h2 className="tagline text-3xl text-brand-green">Choose Us for Your…</h2>
         <p className="mx-auto mt-2 max-w-md text-brand-text/70">Five reasons the Water Fam keeps coming back.</p>
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-5">
           {BENEFITS.map(b => (

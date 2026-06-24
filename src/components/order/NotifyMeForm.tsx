@@ -26,10 +26,12 @@ export function NotifyMeForm({ defaultZip = "" }: { defaultZip?: string }) {
     </p>
   );
   return (
-    <form onSubmit={submit} className="flex gap-2">
-      <input className={inputClass} type="email" required placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} />
-      <Button type="submit" variant="green">Notify me</Button>
-      {err && <span role="alert" className="text-xs text-red-600">{err}</span>}
+    <form onSubmit={submit}>
+      <div className="flex items-center gap-2">
+        <input className={`${inputClass} flex-1`} type="email" required placeholder="you@email.com" value={email} onChange={e => setEmail(e.target.value)} />
+        <Button type="submit" variant="green" className="shrink-0 whitespace-nowrap">Notify me</Button>
+      </div>
+      {err && <span role="alert" className="mt-1 block text-xs text-red-600">{err}</span>}
     </form>
   );
 }

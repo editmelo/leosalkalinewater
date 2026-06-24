@@ -7,7 +7,7 @@ export function ShopPreview() {
   return (
     <Section className="bg-[#f2f7fa]">
       <Container>
-        <h2 className="text-center text-3xl font-extrabold text-brand-navy">Choose your plan</h2>
+        <h2 className="text-center text-3xl font-extrabold text-brand-navy">Choose Your Plan</h2>
         <p className="mt-3 text-center text-brand-text/70">
           Fresh pH 8.5–9.5 alkaline water delivered to your door across Indianapolis.
         </p>

@@ -31,8 +31,8 @@ export default function Home() {
         <WaterFam />
         <WaveDivider fill={BRAND.bg} flip />
         <PartnerBlock />
-        <ServiceAreaBanner />
         <FounderTeaser />
+        <ServiceAreaBanner />
         <FinalCTA />
       </main>
       <Footer />

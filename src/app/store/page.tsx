@@ -20,7 +20,7 @@ export default function StorePage() {
         {/* Hero */}
         <Section className="bg-gradient-to-br from-brand-blue to-brand-green text-white">
           <Container className="text-center">
-            <h1 className="text-4xl font-extrabold sm:text-5xl">Choose your water plan</h1>
+            <h1 className="text-4xl font-extrabold sm:text-5xl">Choose Your Water Plan</h1>
             <p className="mt-3 text-xl text-[#cdeefb]">
               Fresh alkaline water · pH 8.5–9.5 · Kangen Water™ · Refillable 5-gal jugs
             </p>
@@ -34,7 +34,7 @@ export default function StorePage() {
         <Section id="order">
           <Container>
             <div className="mb-8">
-              <h2 className="text-2xl font-extrabold text-brand-navy">Build your order</h2>
+              <h2 className="text-2xl font-extrabold text-brand-navy">Build Your Order</h2>
               <p className="mt-2 text-brand-text/70">
                 Enter your Indianapolis-area ZIP, choose how many 5-gallon jugs you need per
                 delivery, then select a plan. Subscriptions bill monthly and can be cancelled
