@@ -20,7 +20,7 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-black/5 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.png" alt="Leo's Alkaline Water" width={150} height={44} priority className="h-10 w-auto" />
+          <Image src="/logo.png" alt="Leo's Alkaline Water" width={240} height={70} priority className="h-14 w-auto sm:h-16" />
         </Link>
         <nav className="hidden items-center gap-7 md:flex">
           {NAV.map(n => (
