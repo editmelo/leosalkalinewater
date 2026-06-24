@@ -11,7 +11,7 @@ const STEPS = [
 ];
 export function HowItWorks() {
   return (
-    <Section>
+    <Section className="bg-[#e9f3fc]">
       <Container>
         <h2 className="text-center text-3xl font-extrabold text-brand-navy">How Delivery Works</h2>
         <div className="relative mx-auto mt-8 aspect-[16/7] w-full max-w-4xl overflow-hidden rounded-2xl shadow-lg">

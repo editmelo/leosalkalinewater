@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/Button";
 
 export function FounderTeaser() {
   return (
-    <Section>
+    <Section className="bg-[#e9f3fc]">
       <Container className="flex flex-col items-center gap-8 text-center">
         <div className="relative h-48 w-48 shrink-0 overflow-hidden rounded-full shadow-lg">
           <Image src="/leo.avif" alt="Leonardo Colon, founder of Leo's Alkaline Water" fill className="object-cover object-top" sizes="192px" />

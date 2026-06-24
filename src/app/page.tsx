@@ -29,7 +29,7 @@ export default function Home() {
         <ShopPreview />
         <WaveDivider fill={BRAND.navy} />
         <WaterFam />
-        <WaveDivider fill={BRAND.bg} flip />
+        <WaveDivider fill="#e9f3fc" flip />
         <PartnerBlock />
         <FounderTeaser />
         <ServiceAreaBanner />
