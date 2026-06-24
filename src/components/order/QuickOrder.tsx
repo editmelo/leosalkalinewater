@@ -14,7 +14,7 @@ export function QuickOrder() {
       <p className="font-[family-name:var(--font-heading)] text-xs font-bold uppercase tracking-wide text-brand-blue">
         Choose your plan
       </p>
-      <h3 className="mb-4 mt-1 font-extrabold text-brand-navy">Fresh alkaline water, delivered</h3>
+      <h3 className="mb-4 mt-1 font-extrabold text-brand-navy">Fresh Alkaline Water, Delivered</h3>
       <ul className="mb-5 space-y-2">
         {PLAN_SUMMARY.map(({ label, price }) => (
           <li key={label} className="flex items-center justify-between text-sm">

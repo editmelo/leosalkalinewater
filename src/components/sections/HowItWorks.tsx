@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 
 const STEPS = [
   { n: "1", t: "Pick your plan", d: "Bi-Weekly, Weekly, Pay as You Go, or the Starter Pack." },
@@ -24,6 +25,9 @@ export function HowItWorks() {
               <p className="mt-1 text-sm text-brand-text/70">{s.d}</p>
             </Card>
           ))}
+        </div>
+        <div className="mt-8 text-center">
+          <Button href="/store" variant="primary">Order Now</Button>
         </div>
       </Container>
     </Section>
