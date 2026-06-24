@@ -4,7 +4,7 @@ import { Container } from "@/components/ui/Container";
 
 export function PartnerBlock() {
   return (
-    <Section className="bg-[#e9f3fc]">
+    <Section>
       <Container className="flex flex-col items-center justify-center gap-6 text-center sm:flex-row sm:text-left">
         <a href="https://www.indplsul.org" target="_blank" rel="noopener noreferrer" aria-label="Visit the Indianapolis Urban League website" className="shrink-0 transition hover:opacity-80">
           <Image src="/urban-league-logo.png" alt="Indianapolis Urban League" width={220} height={70} className="h-16 w-auto" />

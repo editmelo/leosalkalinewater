@@ -19,7 +19,7 @@ const BENEFITS: Benefit[] = [
 
 export function Benefits() {
   return (
-    <Section className="bg-[#eef7f1]">
+    <Section className="bg-[#eef7f1] pt-8 sm:pt-12">
       <Container className="text-center">
         <h2 className="tagline text-3xl text-brand-green">Choose Us for Your…</h2>
         <p className="mx-auto mt-2 max-w-md text-brand-text/70">Five reasons the Water Fam keeps coming back.</p>
