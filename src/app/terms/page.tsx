@@ -10,9 +10,9 @@ export default function TermsPage() {
       <h2>Service Area</h2>
       <p>We currently deliver only within the Indianapolis service area. Orders outside this area cannot be fulfilled.</p>
       <h2>Orders &amp; Subscriptions</h2>
-      <p>Leo&apos;s Alkaline Water offers Pay as You Go single deliveries ($20 per 5-gallon jug, valid 7 days), recurring subscriptions — Bi-Weekly Delivery ($30/month) and Weekly Delivery ($55/month), billed monthly — and a Starter Pack Bundle ($45). Subscriptions recur monthly until paused or cancelled. One-time orders are charged once.</p>
+      <p>Leo&apos;s Alkaline Water offers <b>Top Off</b> single deliveries ($20 for the first 5-gallon jug, +$10 per additional jug, valid 7 days), recurring subscriptions — <b>Stay Balanced</b> (bi-weekly, $30/month) and <b>Fully Hydrated</b> (weekly, $55/month), billed monthly — and the <b>First Pour</b> starter kit ($45). Each plan includes one jug; additional jugs are $10 each. Subscriptions recur until paused or cancelled. One-time orders are charged once.</p>
       <h2>Jug Deposit</h2>
-      <p>The Starter Pack Bundle includes a refundable jug deposit, returned when jugs are returned in good condition.</p>
+      <p>A one-time $15 refundable jug deposit applies to new customers — it covers jug damage or non-return and is returned when jugs are returned in good condition.</p>
       <h2>Payments</h2>
       <p>Payments are processed securely through Square. Recurring charges occur automatically per your subscription schedule.</p>
       <h2>Cancellations</h2>

@@ -2,10 +2,10 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 
 const PLAN_SUMMARY = [
-  { label: "Bi-Weekly", price: "$30/mo" },
-  { label: "Weekly", price: "$55/mo" },
-  { label: "Pay as You Go", price: "$20/jug" },
-  { label: "Starter Pack", price: "$45" },
+  { label: "Stay Balanced", price: "$30/mo" },
+  { label: "Fully Hydrated", price: "$55/mo" },
+  { label: "Top Off", price: "from $20" },
+  { label: "First Pour", price: "$45" },
 ];
 
 export function QuickOrder() {

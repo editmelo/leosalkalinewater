@@ -25,7 +25,7 @@ export default function StorePage() {
               Fresh alkaline water · pH 8.5–9.5 · Kangen Water™ · Refillable 5-gal jugs
             </p>
             <p className="mt-2 text-[#cdeefb]/80">
-              Bi-Weekly $30/mo · Weekly $55/mo · Pay as You Go $20/jug · Starter Pack $45
+              Stay Balanced $30/mo · Fully Hydrated $55/mo · Top Off from $20 · First Pour $45
             </p>
           </Container>
         </Section>
