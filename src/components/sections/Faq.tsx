@@ -1,19 +1,84 @@
+import type { ReactNode } from "react";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Plus } from "lucide-react";
 
-const FAQS = [
+const FAQS: { q: string; a: ReactNode }[] = [
   {
     q: "What are the benefits of Leo's Alkaline Water?",
-    a: "Leo's Alkaline Water facilitates deep cellular hydration while offering elevated hydrogen levels for antioxidant support and alkaline properties for toxin elimination. Reported benefits include supporting natural detoxification and digestive health, strengthening immunity, boosting energy and mental clarity, promoting restful sleep, and enhancing skin health and vitality.",
+    a: (
+      <>
+        <p>
+          Leo&apos;s Alkaline Water helps your body achieve deep, cellular hydration — supporting
+          wellness from the inside out. The elevated hydrogen levels provide powerful antioxidants
+          that neutralize free radicals, while the alkaline properties help flush toxins and acidic
+          waste.
+        </p>
+        <p className="mt-3">Regular hydration with Leo&apos;s Alkaline Water may:</p>
+        <ul className="mt-2 list-disc space-y-1 pl-5">
+          <li>Support natural detoxification and digestive health</li>
+          <li>Strengthen immunity and disease-fighting capabilities</li>
+          <li>Boost energy, focus, and mental clarity</li>
+          <li>Promote restful sleep and balanced recovery</li>
+          <li>Enhance skin health and overall vitality</li>
+        </ul>
+        <p className="mt-3">
+          It&apos;s more than hydration — it&apos;s intentional Water designed to help your body thrive.
+        </p>
+      </>
+    ),
   },
   {
-    q: "How is it different from regular tap water?",
-    a: "It features a higher pH with enriched hydrogen content to help neutralize body acidity and flush toxins, plus active antioxidants that combat free radicals. Ours is alive, fresh, and full of energy — crafted to promote balance, clarity, and vitality — compared to tap water, which is treated and stagnant.",
+    q: "How is Leo's Alkaline Water different from regular tap water?",
+    a: (
+      <>
+        <p>
+          Unlike regular tap water, Leo&apos;s Alkaline Water is structured with a higher pH and
+          enriched hydrogen content, helping the body naturally neutralize acidity and flush out
+          toxins. It&apos;s also rich in active antioxidants that combat free radicals, supporting
+          optimal hydration and overall well-being.
+        </p>
+        <p className="mt-3">
+          While tap water is often treated and stagnant, Leo&apos;s Alkaline Water is alive, fresh,
+          and full of energy — crafted to promote balance, clarity, and vitality with every sip.
+        </p>
+      </>
+    ),
   },
   {
-    q: "How much should I drink each day?",
-    a: "A good rule of thumb: multiply your body weight in pounds by ⅔ to find your daily ounces. For example, 175 pounds × ⅔ ≈ 117 ounces per day. Then add about 12 ounces for every 30 minutes of exercise.",
+    q: "What is the recommended daily intake of Leo's Alkaline Water?",
+    a: (
+      <>
+        <p>
+          Just as the Earth is about two-thirds Water, so are we — a reminder of how vital proper
+          hydration is to our health and balance.
+        </p>
+        <p className="mt-3">
+          To find your ideal daily intake of Leo&apos;s Alkaline Water, follow this simple guide:
+        </p>
+        <ol className="mt-2 space-y-2">
+          <li>
+            <b>Know Your Weight:</b> Your Water needs depend on your body weight. Generally, the more
+            you weigh, the more Water your body requires to stay hydrated and function optimally.
+          </li>
+          <li>
+            <b>Multiply by ⅔ (or 67%):</b> Multiply your weight (in pounds) by ⅔ to estimate how many
+            ounces of Water you should drink daily. Example: If you weigh 175 pounds × ⅔ = about 117
+            ounces per day.
+          </li>
+          <li>
+            <b>Adjust for Activity:</b> Add 12 ounces of Water for every 30 minutes of exercise or
+            physical activity, since you lose fluids through sweat. Example: A 45-minute workout =
+            about 18 extra ounces.
+          </li>
+        </ol>
+        <p className="mt-3">
+          Staying consistent with your Water intake helps your body maintain energy and focus
+          throughout the day. It also supports natural detoxification, keeping you aligned with
+          intentional hydration and overall balance.
+        </p>
+      </>
+    ),
   },
 ];
 
@@ -35,7 +100,7 @@ export function Faq() {
                   aria-hidden="true"
                 />
               </summary>
-              <p className="mt-3 text-brand-text/75">{f.a}</p>
+              <div className="mt-3 text-brand-text/75">{f.a}</div>
             </details>
           ))}
         </div>
