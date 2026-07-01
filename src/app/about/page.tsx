@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Certifications } from "@/components/sections/Certifications";
+import { Faq } from "@/components/sections/Faq";
 import { PartnerBlock } from "@/components/sections/PartnerBlock";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 
@@ -29,15 +30,16 @@ export default function AboutPage() {
                 <Image src="/leo.avif" alt="Leonardo Colon, founder of Leo's Alkaline Water" fill className="object-cover object-top" sizes="224px" />
               </div>
               <div className="space-y-5 text-lg text-brand-text/85">
-                <h2 className="text-2xl font-extrabold text-brand-navy">Leonardo — Founder &amp; Water Steward</h2>
-                <p>For over a decade, I&apos;ve dedicated myself to researching and understanding water. My journey began when I first experienced the remarkable effects of &ldquo;living water&rdquo; — within just 10 minutes, a persistent headache disappeared.</p>
-                <p>From that moment on, everything changed. Experiencing truly balanced, living water brought me greater energy, mental clarity, and vitality — it even enhanced my running performance. Once you discover true balance, everything else becomes easier.</p>
-                <p>Now, my mission is simple: to make water health clear and accessible, so others can experience the same life-changing impact.</p>
+                <h2 className="text-2xl font-extrabold text-brand-navy">Meet Leonardo, Your Water Man</h2>
+                <p>I&apos;m Leonardo Colon—your friendly neighborhood Water Man. My mission is to make Water health as transparent as possible. My journey began when I experienced firsthand the incredible effects of this living Water — within minutes, it relieved a headache I had while on the go. That moment changed everything. I knew this Water needed to be shared.</p>
+                <p>What began as simple deliveries to my G-Ma soon grew into a passion for serving the Indianapolis community and beyond.</p>
+                <p>You won&apos;t find this Water on store shelves because it&apos;s alive, crafted fresh, and held to the highest gold-standard quality. It&apos;s made for those seeking true balance, wellness, and next-level hydration. Experience the difference — pure energy and revitalization, straight from living Water.</p>
               </div>
             </div>
           </Container>
         </Section>
         <Certifications />
+        <Faq />
         <PartnerBlock />
         <FinalCTA />
       </main>
