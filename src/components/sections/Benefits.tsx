@@ -1,6 +1,6 @@
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
-import { Droplets, Gauge, ShieldCheck, Leaf, HeartHandshake } from "lucide-react";
+import { Atom, ShieldCheck, Truck, HeartPulse, HeartHandshake } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 interface Benefit {
@@ -10,11 +10,11 @@ interface Benefit {
 }
 
 const BENEFITS: Benefit[] = [
-  { icon: Droplets, title: "Deep Cellular Hydration", body: "Structured water for better absorption and real results." },
-  { icon: Gauge, title: "Alkaline pH 8.5–9.5", body: "Helps neutralize body acidity and restore balance." },
-  { icon: ShieldCheck, title: "Immune Health", body: "Antioxidant-rich to support cellular harmony, resilience, and recovery." },
-  { icon: Leaf, title: "Sustainability", body: "Delivered in refillable 5-gallon jugs and system solutions available." },
-  { icon: HeartHandshake, title: "Local & Community Support", body: "Proudly rooted in Indianapolis, promoting healthy water access for all." },
+  { icon: Atom, title: "Restructured Hydration", body: "Ionized with leading international technology." },
+  { icon: ShieldCheck, title: "Free of All Contaminants", body: "Tested with zero tolerance for heavy metals, plastics, and carcinogens." },
+  { icon: Truck, title: "Convenience", body: "Fresh water delivered to your home or business, right on your schedule." },
+  { icon: HeartPulse, title: "Daily Wellness", body: "Antioxidant-rich hydration to complement your daily wellness routine and lifestyle." },
+  { icon: HeartHandshake, title: "Local & Made with Love", body: "We steward this water, you steward your wellbeing." },
 ];
 
 export function Benefits() {

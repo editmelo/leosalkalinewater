@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import type { Plan } from "@/lib/order/products";
+import { ADDON_JUG_CENTS, type Plan } from "@/lib/order/products";
 import { formatUsd } from "@/lib/order/pricing";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -17,7 +17,7 @@ interface PlanCardProps {
 
 export function PlanCard({ plan, jugCount, onSelect, href, disabled, disabledReason }: PlanCardProps) {
   const qty = Math.max(1, jugCount);
-  const displayPrice = plan.perJug ? formatUsd(plan.priceCents * qty) : formatUsd(plan.priceCents);
+  const displayPrice = formatUsd(plan.priceCents + (qty - 1) * ADDON_JUG_CENTS);
   const isMonthly = plan.billing === "monthly";
 
   return (
@@ -40,14 +40,12 @@ export function PlanCard({ plan, jugCount, onSelect, href, disabled, disabledRea
 
       <div className="my-4 flex items-end gap-1">
         <span className="text-4xl font-extrabold text-brand-blue">{displayPrice}</span>
-        <span className="mb-1 text-sm text-brand-text/60">
-          {isMonthly ? "/mo" : plan.perJug ? ` / ${qty > 1 ? `${qty} jugs` : "jug"}` : ""}
-        </span>
+        <span className="mb-1 text-sm text-brand-text/60">{isMonthly ? "/mo" : ""}</span>
       </div>
 
-      {plan.perJug && (
-        <p className="mb-1 text-xs text-brand-text/50">{formatUsd(plan.priceCents)} / jug</p>
-      )}
+      <p className="mb-1 text-xs text-brand-text/50">
+        1 jug included · +{formatUsd(ADDON_JUG_CENTS)} per additional jug
+      </p>
 
       <p className="mb-1 text-xs font-semibold text-brand-text/60">{plan.billingLabel}</p>
 

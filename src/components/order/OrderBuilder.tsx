@@ -98,6 +98,12 @@ export function OrderBuilder() {
           );
         })}
       </div>
+
+      <p className="text-center text-xs text-brand-text/60">
+        New customers: a one-time <b>$15 refundable jug deposit</b> applies — it covers jug damage or
+        non-return, and is billed separately upon subscription. Each plan includes 1 jug;
+        additional jugs are +$10 each.
+      </p>
     </div>
   );
 }
