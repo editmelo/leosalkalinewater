@@ -1,35 +1,26 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { computeTotals, formatUsd } from "@/lib/order/pricing";
 import { NEW_CUSTOMER_DEPOSIT_CENTS } from "@/lib/order/products";
 import { isSquareClientConfigured } from "@/lib/square/config";
 import { SquarePaymentForm } from "./SquarePaymentForm";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 
-export function CheckoutPlaceholder() {
+export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationId: string) => void }) {
   const { items, clear } = useCart();
-  const [paidId, setPaidId] = useState<string | null>(null);
 
   const totalCents = useMemo(
     () => items.reduce((sum, it) => sum + computeTotals(it).subtotalCents, 0),
     [items],
   );
 
-  if (paidId) {
-    return (
-      <Card className="text-center">
-        <p className="font-[family-name:var(--font-heading)] font-bold text-brand-green">
-          Payment received — welcome to the Water Fam! 💧
-        </p>
-        <p className="mt-1 text-sm text-brand-text/70">
-          Confirmation: <span className="font-mono">{paidId ?? "—"}</span>. We&apos;ll be in touch about your delivery.
-        </p>
-      </Card>
-    );
+  function placeDemoOrder() {
+    const id = "DEMO-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+    clear();
+    onComplete(id);
   }
-
-  if (!items.length) return null;
 
   return (
     <Card>
@@ -43,15 +34,22 @@ export function CheckoutPlaceholder() {
       </p>
 
       {isSquareClientConfigured() ? (
-        <SquarePaymentForm amountCents={totalCents} onPaid={(id) => { clear(); setPaidId(id); }} />
+        <SquarePaymentForm
+          amountCents={totalCents}
+          onPaid={(id) => {
+            clear();
+            onComplete(id ?? "PAID");
+          }}
+        />
       ) : (
         <div className="rounded-xl border-2 border-dashed border-brand-aqua/60 bg-brand-aqua/5 p-5 text-center">
-          <p className="font-[family-name:var(--font-heading)] font-bold text-brand-blue">
-            Card payment — connecting to Square
+          <p className="font-[family-name:var(--font-heading)] font-bold text-brand-blue">Demo checkout</p>
+          <p className="mt-1 mb-4 text-sm text-brand-text/70">
+            Square isn&apos;t connected yet — use this to walk the full order flow. No card is charged.
           </p>
-          <p className="mt-1 text-sm text-brand-text/70">
-            The checkout is fully built and ready; it goes live the moment Leo&apos;s Square credentials are added.
-          </p>
+          <Button variant="primary" className="w-full" onClick={placeDemoOrder}>
+            Place order (demo)
+          </Button>
         </div>
       )}
     </Card>
