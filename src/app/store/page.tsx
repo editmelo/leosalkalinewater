@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { OrderBuilder } from "@/components/order/OrderBuilder";
+import { DeliveryInfo } from "@/components/sections/DeliveryInfo";
 
 export const metadata = {
   title: "Store — Leo's Alkaline Water",
@@ -45,6 +46,7 @@ export default function StorePage() {
             <OrderBuilder />
           </Container>
         </Section>
+        <DeliveryInfo className="bg-[#eef7f1]" />
       </main>
       <Footer />
     </>

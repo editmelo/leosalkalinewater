@@ -24,8 +24,8 @@ export default function Home() {
         <Hero />
         <TrustStrip />
         <WaveDivider fill="#eef7f1" />
+        <Mission className="bg-[#eef7f1]" />
         <Benefits />
-        <Mission className="bg-white" />
         <HowItWorks />
         <WaveDivider fill="#f2f7fa" />
         <ShopPreview />
