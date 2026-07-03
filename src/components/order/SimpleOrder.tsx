@@ -8,8 +8,8 @@ import { ServiceAreaCheck } from "./ServiceAreaCheck";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
-import { formatUsd } from "@/lib/order/pricing";
-import { NEW_CUSTOMER_DEPOSIT_CENTS, SIMPLE_JUG_CENTS } from "@/lib/order/products";
+import { computeTotals, formatUsd } from "@/lib/order/pricing";
+import { NEW_CUSTOMER_DEPOSIT_CENTS } from "@/lib/order/products";
 import type { SimpleFrequency } from "@/lib/order/types";
 
 // Simple "build your delivery" model (no fixed packages): flat per-jug price.
@@ -32,7 +32,8 @@ export function SimpleOrder() {
   const [frequency, setFrequency] = useState<SimpleFrequency>("Weekly");
   const [zip, setZip] = useState("");
   const ready = isInServiceArea(zip);
-  const totalCents = jugs * SIMPLE_JUG_CENTS;
+  const recurring = frequency !== "One-Time";
+  const totalCents = computeTotals({ kind: "simple", jugCount: jugs, frequency, zip }).subtotalCents;
 
   function addToCart() {
     addItem({ kind: "simple", jugCount: jugs, frequency, zip });
@@ -59,10 +60,7 @@ export function SimpleOrder() {
           Alkaline Water Delivery
         </p>
         <h1 className="mt-1 text-3xl font-extrabold text-brand-navy">Build Your Delivery</h1>
-        <p className="mt-2">
-          <span className="text-2xl font-extrabold text-brand-blue">{formatUsd(SIMPLE_JUG_CENTS)}</span>
-          <span className="text-sm text-brand-text/60"> / 5-gallon jug</span>
-        </p>
+        <p className="mt-2 text-brand-text/70">Pick your jugs and how often — your price updates below.</p>
 
         <div>
             <div className="mt-6">
@@ -96,9 +94,12 @@ export function SimpleOrder() {
             <Card className="mt-6">
               <div className="flex items-center justify-between">
                 <span className="font-[family-name:var(--font-heading)] font-bold text-brand-navy">
-                  {frequency === "One-Time" ? "Total" : "Per delivery"}
+                  {recurring ? "Per month" : "Total"}
                 </span>
-                <span className="text-xl font-extrabold text-brand-blue">{formatUsd(totalCents)}</span>
+                <span className="text-xl font-extrabold text-brand-blue">
+                  {formatUsd(totalCents)}
+                  {recurring ? "/mo" : ""}
+                </span>
               </div>
               <p className="mt-2 text-xs text-brand-text/60">
                 New customers: a one-time {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} refundable jug deposit is billed

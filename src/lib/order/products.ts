@@ -1,4 +1,4 @@
-import type { PlanId, DeliveryFrequency } from "./types";
+import type { PlanId, DeliveryFrequency, SimpleFrequency } from "./types";
 
 export interface Plan {
   id: PlanId;
@@ -32,5 +32,12 @@ export const JUG_QUANTITIES = [1, 2, 3, 4, 6, 8] as const;
 export const ADDON_JUG_CENTS = 1000;
 // One-time refundable jug deposit for new customers (covers damage / non-return).
 export const NEW_CUSTOMER_DEPOSIT_CENTS = 1500;
-// Flat per-jug price for the build-your-own (Store 2) model.
-export const SIMPLE_JUG_CENTS = 2000;
+// Store 2 (build-your-own) base price per delivery by frequency; each includes 1 jug,
+// then +$10 per additional jug (ADDON_JUG_CENTS). One-Time / Biweekly / Weekly mirror
+// Leo's named plans (Top Off / Stay Balanced / Fully Hydrated). Monthly TBD — confirm with Leo.
+export const SIMPLE_FREQUENCY_BASE_CENTS: Record<SimpleFrequency, number> = {
+  "One-Time": 2000,
+  Biweekly: 3000,
+  Weekly: 5500,
+  Monthly: 1500,
+};

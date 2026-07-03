@@ -26,7 +26,7 @@ describe("buildOrderPayload — build-your-own (Store 2)", () => {
     expect(p.planName).toBe("Alkaline Water Delivery");
     expect(p.deliveryFrequency).toBe("One-Time");
     expect(p.customerType).toBeNull();
-    expect(p.totals.subtotalCents).toBe(4000);
+    expect(p.totals.subtotalCents).toBe(3000); // One-Time base $20 + 1 extra jug × $10
   });
 
   it("Weekly: recurring subscription", () => {

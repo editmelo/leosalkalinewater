@@ -28,9 +28,14 @@ describe("computeTotals — named plans (Store 1)", () => {
 });
 
 describe("computeTotals — build-your-own (Store 2)", () => {
-  it("prices at a flat $20 per jug", () => {
-    const t = computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly" });
-    expect(t.subtotalCents).toBe(6000);
-    expect(t.lines[0].qty).toBe(3);
+  it("base price varies by frequency, +$10 per additional jug", () => {
+    // Weekly base $55 + 2 extra jugs × $10 = $75
+    expect(computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly" }).subtotalCents).toBe(7500);
+    // Biweekly base $30, 1 jug
+    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly" }).subtotalCents).toBe(3000);
+    // One-Time base $20 + 1 extra jug × $10 = $30
+    expect(computeTotals({ kind: "simple", jugCount: 2, zip: "46204", frequency: "One-Time" }).subtotalCents).toBe(3000);
+    // Monthly base $15
+    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Monthly" }).subtotalCents).toBe(1500);
   });
 });
