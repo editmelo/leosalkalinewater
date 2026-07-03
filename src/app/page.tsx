@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { TrustStrip } from "@/components/sections/TrustStrip";
 import { Benefits } from "@/components/sections/Benefits";
+import { Mission } from "@/components/sections/Mission";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { ShopPreview } from "@/components/sections/ShopPreview";
 import { WaterFam } from "@/components/sections/WaterFam";
@@ -24,6 +25,7 @@ export default function Home() {
         <TrustStrip />
         <WaveDivider fill="#eef7f1" />
         <Benefits />
+        <Mission className="bg-white" />
         <HowItWorks />
         <WaveDivider fill="#f2f7fa" />
         <ShopPreview />

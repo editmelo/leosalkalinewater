@@ -5,6 +5,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { Certifications } from "@/components/sections/Certifications";
+import { Mission } from "@/components/sections/Mission";
 import { Faq } from "@/components/sections/Faq";
 import { PartnerBlock } from "@/components/sections/PartnerBlock";
 import { FinalCTA } from "@/components/sections/FinalCTA";
@@ -23,6 +24,7 @@ export default function AboutPage() {
             <p className="tagline mt-3 text-2xl text-[#cdeefb]">We heal the Water, you heal yourself.</p>
           </Container>
         </Section>
+        <Mission />
         <Section>
           <Container className="max-w-3xl">
             <div className="flex flex-col items-center gap-8 sm:flex-row sm:items-start">
