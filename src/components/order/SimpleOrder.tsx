@@ -62,6 +62,11 @@ export function SimpleOrder() {
         <h1 className="mt-1 text-3xl font-extrabold text-brand-navy">Build Your Delivery</h1>
         <p className="mt-2 text-brand-text/70">Pick your jugs and how often — your price updates below.</p>
 
+        <p className="mt-4 text-4xl font-extrabold text-brand-blue">
+          {formatUsd(totalCents)}
+          {recurring ? <span className="text-lg font-semibold text-brand-text/60"> /mo</span> : null}
+        </p>
+
         <div>
             <div className="mt-6">
               <Field label="Number of jugs">
