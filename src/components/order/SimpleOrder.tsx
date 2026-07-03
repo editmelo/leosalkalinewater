@@ -5,6 +5,7 @@ import Image from "next/image";
 import { isInServiceArea } from "@/lib/service-area";
 import { useCart } from "@/components/cart/CartProvider";
 import { ServiceAreaCheck } from "./ServiceAreaCheck";
+import { WaterFamConfirm } from "./WaterFamConfirm";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
@@ -31,11 +32,12 @@ export function SimpleOrder() {
   const [jugs, setJugs] = useState(2);
   const [frequency, setFrequency] = useState<SimpleFrequency>("Weekly");
   const [zip, setZip] = useState("");
+  const [confirming, setConfirming] = useState(false);
   const ready = isInServiceArea(zip);
   const recurring = frequency !== "One-Time";
   const totalCents = computeTotals({ kind: "simple", jugCount: jugs, frequency, zip }).subtotalCents;
 
-  function addToCart() {
+  function confirmOrder() {
     addItem({ kind: "simple", jugCount: jugs, frequency, zip });
     router.push("/cart");
   }
@@ -110,12 +112,26 @@ export function SimpleOrder() {
                 New customers: a one-time {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} refundable jug deposit is billed
                 separately. Delivery days are assigned by your ZIP route.
               </p>
-              <Button variant="primary" className="mt-4 w-full" disabled={!ready} onClick={addToCart}>
+              <Button variant="primary" className="mt-4 w-full" disabled={!ready} onClick={() => setConfirming(true)}>
                 {ready ? "Add to cart →" : "Enter a serviced ZIP"}
               </Button>
             </Card>
         </div>
       </div>
+
+      <WaterFamConfirm open={confirming} onCancel={() => setConfirming(false)} onConfirm={confirmOrder}>
+        <ul className="space-y-1">
+          <li className="font-bold text-brand-navy">Alkaline Water Delivery</li>
+          <li>
+            {jugs} × 5-gallon jug{jugs > 1 ? "s" : ""} · {frequency}
+          </li>
+          <li>Delivered to ZIP {zip}</li>
+          <li className="pt-1 text-base font-extrabold text-brand-blue">
+            {formatUsd(totalCents)}
+            {recurring ? "/mo" : ""}
+          </li>
+        </ul>
+      </WaterFamConfirm>
     </div>
   );
 }

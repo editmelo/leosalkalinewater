@@ -2,11 +2,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { PlanId, OrderSelection, CustomerType } from "@/lib/order/types";
-import { PLANS, JUG_QUANTITIES } from "@/lib/order/products";
+import { PLANS, JUG_QUANTITIES, getPlan } from "@/lib/order/products";
+import { computeTotals, formatUsd } from "@/lib/order/pricing";
 import { isInServiceArea } from "@/lib/service-area";
 import { useCart } from "@/components/cart/CartProvider";
 import { ServiceAreaCheck } from "./ServiceAreaCheck";
 import { PlanCard } from "./PlanCard";
+import { WaterFamConfirm } from "./WaterFamConfirm";
 import { Field, inputClass } from "@/components/ui/Field";
 
 export function OrderBuilder() {
@@ -15,10 +17,14 @@ export function OrderBuilder() {
   const [jugCount, setJugCount] = useState(1);
   const [customerType, setCustomerType] = useState<CustomerType>("residential");
   const [zip, setZip] = useState("");
+  const [pendingPlanId, setPendingPlanId] = useState<PlanId | null>(null);
   const ready = isInServiceArea(zip);
 
-  function handleSelect(planId: PlanId) {
-    const sel: OrderSelection = { kind: "plan", planId, jugCount, customerType, zip };
+  const pendingPlan = pendingPlanId ? getPlan(pendingPlanId) : null;
+
+  function confirmOrder() {
+    if (!pendingPlanId) return;
+    const sel: OrderSelection = { kind: "plan", planId: pendingPlanId, jugCount, customerType, zip };
     addItem(sel);
     router.push("/cart");
   }
@@ -85,7 +91,7 @@ export function OrderBuilder() {
               <PlanCard
                 plan={plan}
                 jugCount={jugCount}
-                onSelect={() => handleSelect(plan.id)}
+                onSelect={() => setPendingPlanId(plan.id)}
                 disabled={!ready}
                 disabledReason="Enter a serviced ZIP"
               />
@@ -104,6 +110,26 @@ export function OrderBuilder() {
         non-return, and is billed separately upon subscription. Each plan includes 1 jug;
         additional jugs are +$10 each.
       </p>
+
+      <WaterFamConfirm
+        open={pendingPlanId !== null}
+        onCancel={() => setPendingPlanId(null)}
+        onConfirm={confirmOrder}
+      >
+        {pendingPlan && (
+          <ul className="space-y-1">
+            <li className="font-bold text-brand-navy">{pendingPlan.name}</li>
+            <li>
+              {jugCount} × 5-gallon jug{jugCount > 1 ? "s" : ""} · {customerType.charAt(0).toUpperCase() + customerType.slice(1)}
+            </li>
+            <li>Delivered to ZIP {zip}</li>
+            <li className="pt-1 text-base font-extrabold text-brand-blue">
+              {formatUsd(computeTotals({ kind: "plan", planId: pendingPlan.id, jugCount, customerType, zip }).subtotalCents)}
+              {pendingPlan.billing === "monthly" ? "/mo" : ""}
+            </li>
+          </ul>
+        )}
+      </WaterFamConfirm>
     </div>
   );
 }
