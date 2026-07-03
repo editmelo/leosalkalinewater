@@ -1,18 +1,19 @@
 "use client";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { isInServiceArea } from "@/lib/service-area";
+import { useCart } from "@/components/cart/CartProvider";
 import { ServiceAreaCheck } from "./ServiceAreaCheck";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
 import { formatUsd } from "@/lib/order/pricing";
-import { NEW_CUSTOMER_DEPOSIT_CENTS } from "@/lib/order/products";
+import { NEW_CUSTOMER_DEPOSIT_CENTS, SIMPLE_JUG_CENTS } from "@/lib/order/products";
+import type { SimpleFrequency } from "@/lib/order/types";
 
 // Simple "build your delivery" model (no fixed packages): flat per-jug price.
-const PER_JUG_CENTS = 2000;
-const FREQUENCIES = ["One-Time", "Weekly", "Biweekly", "Monthly"] as const;
-type Frequency = (typeof FREQUENCIES)[number];
+const FREQUENCIES: SimpleFrequency[] = ["One-Time", "Weekly", "Biweekly", "Monthly"];
 
 const pillBase =
   "rounded-lg border font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua/50";
@@ -25,12 +26,18 @@ function pill(active: boolean, extra: string) {
 }
 
 export function SimpleOrder() {
+  const router = useRouter();
+  const { addItem } = useCart();
   const [jugs, setJugs] = useState(2);
-  const [frequency, setFrequency] = useState<Frequency>("Weekly");
+  const [frequency, setFrequency] = useState<SimpleFrequency>("Weekly");
   const [zip, setZip] = useState("");
-  const [placed, setPlaced] = useState(false);
   const ready = isInServiceArea(zip);
-  const totalCents = jugs * PER_JUG_CENTS;
+  const totalCents = jugs * SIMPLE_JUG_CENTS;
+
+  function addToCart() {
+    addItem({ kind: "simple", jugCount: jugs, frequency, zip });
+    router.push("/cart");
+  }
 
   return (
     <div className="grid gap-10 md:grid-cols-2 md:items-start">
@@ -53,23 +60,11 @@ export function SimpleOrder() {
         </p>
         <h1 className="mt-1 text-3xl font-extrabold text-brand-navy">Build Your Delivery</h1>
         <p className="mt-2">
-          <span className="text-2xl font-extrabold text-brand-blue">{formatUsd(PER_JUG_CENTS)}</span>
+          <span className="text-2xl font-extrabold text-brand-blue">{formatUsd(SIMPLE_JUG_CENTS)}</span>
           <span className="text-sm text-brand-text/60"> / 5-gallon jug</span>
         </p>
 
-        {placed ? (
-          <Card className="mt-6 text-center">
-            <p className="font-[family-name:var(--font-heading)] font-bold text-brand-green">You&apos;re all set! 💧</p>
-            <p className="mt-1 text-sm text-brand-text/70">
-              {jugs} jug{jugs > 1 ? "s" : ""} · {frequency === "One-Time" ? "One-Time" : `${frequency} delivery`} · ZIP {zip}.
-              We&apos;ll assign your delivery day by route and reach out to confirm.
-            </p>
-            <Button variant="primary" className="mt-4" onClick={() => setPlaced(false)}>
-              Start another
-            </Button>
-          </Card>
-        ) : (
-          <>
+        <div>
             <div className="mt-6">
               <Field label="Number of jugs">
                 <div className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-10">
@@ -109,12 +104,11 @@ export function SimpleOrder() {
                 New customers: a one-time {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} refundable jug deposit is billed
                 separately. Delivery days are assigned by your ZIP route.
               </p>
-              <Button variant="primary" className="mt-4 w-full" disabled={!ready} onClick={() => setPlaced(true)}>
-                {ready ? "Start my order →" : "Enter a serviced ZIP"}
+              <Button variant="primary" className="mt-4 w-full" disabled={!ready} onClick={addToCart}>
+                {ready ? "Add to cart →" : "Enter a serviced ZIP"}
               </Button>
             </Card>
-          </>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ export function OrderBuilder() {
   const ready = isInServiceArea(zip);
 
   function handleSelect(planId: PlanId) {
-    const sel: OrderSelection = { planId, jugCount, customerType, zip };
+    const sel: OrderSelection = { kind: "plan", planId, jugCount, customerType, zip };
     addItem(sel);
     router.push("/cart");
   }

@@ -4,6 +4,7 @@ import { CartProvider, useCart } from "./CartProvider";
 import type { OrderSelection } from "@/lib/order/types";
 
 const SAMPLE: OrderSelection = {
+  kind: "plan",
   planId: "payg",
   jugCount: 2,
   zip: "46204",
@@ -16,7 +17,7 @@ function TestHarness() {
     <div>
       <span data-testid="count">{count}</span>
       <span data-testid="first-zip">{items[0]?.zip ?? ""}</span>
-      <span data-testid="first-plan">{items[0]?.planId ?? ""}</span>
+      <span data-testid="first-plan">{items[0] && items[0].kind === "plan" ? items[0].planId : ""}</span>
       <span data-testid="first-jugs">{items[0]?.jugCount ?? ""}</span>
       <button onClick={() => addItem(SAMPLE)}>add</button>
       <button onClick={clear}>clear</button>

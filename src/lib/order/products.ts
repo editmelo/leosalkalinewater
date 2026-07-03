@@ -32,3 +32,5 @@ export const JUG_QUANTITIES = [1, 2, 3, 4, 6, 8] as const;
 export const ADDON_JUG_CENTS = 1000;
 // One-time refundable jug deposit for new customers (covers damage / non-return).
 export const NEW_CUSTOMER_DEPOSIT_CENTS = 1500;
+// Flat per-jug price for the build-your-own (Store 2) model.
+export const SIMPLE_JUG_CENTS = 2000;

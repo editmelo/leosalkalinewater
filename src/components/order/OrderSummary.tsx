@@ -24,8 +24,9 @@ export function OrderSummary() {
                   {it.jugCount} × 5-Gallon Jug
                   {" · "}
                   {payload.deliveryFrequency}
-                  {" · "}
-                  {it.customerType.charAt(0).toUpperCase() + it.customerType.slice(1)}
+                  {payload.customerType
+                    ? ` · ${payload.customerType.charAt(0).toUpperCase()}${payload.customerType.slice(1)}`
+                    : ""}
                   {" · ZIP "}
                   {it.zip}
                 </p>
