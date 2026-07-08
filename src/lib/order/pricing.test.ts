@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { computeTotals } from "./pricing";
+import { computeTotals, billingDisplay } from "./pricing";
 import type { PlanId } from "./types";
 
 describe("computeTotals — named plans (Store 1)", () => {
@@ -35,15 +35,36 @@ describe("computeTotals — build-your-own (Store 2)", () => {
     expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly", firstTime: false }).subtotalCents).toBe(3000);
     // One-Time base $20 + 1 extra jug × $10 = $30
     expect(computeTotals({ kind: "simple", jugCount: 2, zip: "46204", frequency: "One-Time", firstTime: false }).subtotalCents).toBe(3000);
-    // Monthly base $15
-    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Monthly", firstTime: false }).subtotalCents).toBe(1500);
   });
 
-  it("first-time customers pay a $15/jug refundable deposit, separate from the subtotal", () => {
+  it("first-time customers add a $15/jug refundable deposit + a $10 pump, separate from the subtotal", () => {
     const firstTime = computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: true });
     expect(firstTime.depositCents).toBe(4500); // 3 jugs × $15
-    expect(firstTime.subtotalCents).toBe(7500); // water price unchanged by deposit
+    expect(firstTime.pumpCents).toBe(1000); // one $10 rechargeable pump
+    expect(firstTime.subtotalCents).toBe(7500); // water price unchanged by add-ons
     const returning = computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: false });
     expect(returning.depositCents).toBe(0);
+    expect(returning.pumpCents).toBe(0);
+  });
+});
+
+describe("billingDisplay — per-week / per-delivery", () => {
+  it("Weekly shows a per-week rate ($55/cycle → $13.75/week), billed every 4 weeks", () => {
+    const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Weekly", firstTime: false });
+    expect(d.rateCents).toBe(1375);
+    expect(d.unit).toBe("/week");
+    expect(d.billedCents).toBe(5500);
+    expect(d.recurring).toBe(true);
+  });
+  it("Biweekly shows a per-delivery rate ($30/cycle → $15/bi-weekly)", () => {
+    const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly", firstTime: false });
+    expect(d.rateCents).toBe(1500);
+    expect(d.unit).toBe("/bi-weekly");
+  });
+  it("One-Time is a single charge with no unit", () => {
+    const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "One-Time", firstTime: false });
+    expect(d.rateCents).toBe(2000);
+    expect(d.unit).toBe("");
+    expect(d.recurring).toBe(false);
   });
 });

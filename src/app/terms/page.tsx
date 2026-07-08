@@ -22,7 +22,7 @@ export default function TermsPage() {
       <h2>Orders &amp; Plans</h2>
       <p>
         Leo&apos;s Alkaline Water is a build-your-own delivery service: you choose the number of
-        5-gallon jugs and a delivery frequency &mdash; One-Time, Weekly, Biweekly, or Monthly. Each
+        5-gallon jugs and a delivery frequency &mdash; One-Time, Weekly, or Biweekly. Each
         plan includes one jug; additional jugs are +$10 each per delivery. We also offer named plans
         for convenience &mdash; <b>First Pour</b> (starter), <b>Stay Balanced</b> (biweekly),
         <b> Fully Hydrated</b> (weekly), and <b>Top Off</b> (one-time) &mdash; whose pricing and
@@ -37,13 +37,14 @@ export default function TermsPage() {
         pause or cancel. One-time orders are charged a single time at checkout.
       </p>
 
-      <h2>Jug Deposit &amp; Exchanges</h2>
+      <h2>First Order, Jug Deposit &amp; Exchanges</h2>
       <p>
-        New (first-time) customers pay a refundable $15-per-jug deposit to cover jug damage or
-        non-return. On future deliveries, we exchange your empty jugs for full ones, so returning
-        customers who exchange jugs are not charged a new deposit. Deposits are refunded when jugs
-        are returned in good condition. A damage fee, up to the deposit amount, applies to jugs that
-        are cracked, deformed, or not returned.
+        A first-time customer&apos;s order includes their First Fill &amp; Delivery, a refundable
+        $15-per-jug deposit (to cover jug damage or non-return), and a one-time $10 Rechargeable Pump
+        that is yours to keep. On future deliveries, we exchange your empty jugs for full ones, so
+        returning customers who exchange jugs are not charged a new deposit or pump. Deposits are
+        refunded when jugs are returned in good condition. A damage fee, up to the deposit amount,
+        applies to jugs that are cracked, deformed, or not returned.
       </p>
 
       <h2>Refunds &amp; Returns</h2>

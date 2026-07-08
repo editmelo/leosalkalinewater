@@ -15,7 +15,7 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
     () =>
       items.reduce((sum, it) => {
         const t = computeTotals(it);
-        return sum + t.subtotalCents + t.depositCents;
+        return sum + t.subtotalCents + t.depositCents + t.pumpCents;
       }, 0),
     [items],
   );

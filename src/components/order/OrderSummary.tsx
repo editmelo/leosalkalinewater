@@ -1,6 +1,6 @@
 "use client";
 import { useCart } from "@/components/cart/CartProvider";
-import { computeTotals, formatUsd } from "@/lib/order/pricing";
+import { computeTotals, billingDisplay, formatUsd } from "@/lib/order/pricing";
 import { buildOrderPayload } from "@/lib/order/payload";
 import { Card } from "@/components/ui/Card";
 
@@ -13,6 +13,7 @@ export function OrderSummary() {
       {items.map((it, i) => {
         const payload = buildOrderPayload(it);
         const t = computeTotals(it);
+        const d = billingDisplay(it);
         return (
           <Card key={i}>
             <div className="flex items-start justify-between">
@@ -43,12 +44,16 @@ export function OrderSummary() {
               </button>
             </div>
             <p className="mt-2 font-bold">
-              {formatUsd(t.subtotalCents)}
-              {payload.recurring ? "/mo" : ""}
+              {formatUsd(d.rateCents)}
+              {d.unit}
+              {d.recurring ? (
+                <span className="text-sm font-normal text-brand-text/60"> · {formatUsd(d.billedCents)} every 4 weeks</span>
+              ) : null}
             </p>
-            {t.depositCents > 0 && (
+            {(t.depositCents > 0 || t.pumpCents > 0) && (
               <p className="text-sm text-brand-text/70">
-                + {formatUsd(t.depositCents)} refundable jug deposit (one-time)
+                + {formatUsd(t.depositCents)} refundable deposit
+                {t.pumpCents > 0 ? ` + ${formatUsd(t.pumpCents)} rechargeable pump` : ""} (one-time)
               </p>
             )}
           </Card>

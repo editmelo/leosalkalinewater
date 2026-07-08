@@ -9,12 +9,13 @@ import { WaterFamConfirm } from "./WaterFamConfirm";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
-import { computeTotals, formatUsd } from "@/lib/order/pricing";
+import { computeTotals, billingDisplay, formatUsd } from "@/lib/order/pricing";
 import { NEW_CUSTOMER_DEPOSIT_CENTS } from "@/lib/order/products";
 import type { SimpleFrequency } from "@/lib/order/types";
 
-// Simple "build your delivery" model (no fixed packages): flat per-jug price.
-const FREQUENCIES: SimpleFrequency[] = ["One-Time", "Weekly", "Biweekly", "Monthly"];
+// Build-your-own model: pick jugs + frequency. Subscriptions bill every 4 weeks,
+// shown as a per-week (Weekly) / per-delivery (Biweekly) rate.
+const FREQUENCIES: SimpleFrequency[] = ["One-Time", "Weekly", "Biweekly"];
 
 const pillBase =
   "rounded-lg border font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua/50";
@@ -35,13 +36,15 @@ export function SimpleOrder() {
   const [zip, setZip] = useState("");
   const [confirming, setConfirming] = useState(false);
   const ready = isInServiceArea(zip);
-  const recurring = frequency !== "One-Time";
-  const totals = computeTotals({ kind: "simple", jugCount: jugs, frequency, zip, firstTime });
-  const totalCents = totals.subtotalCents;
+
+  const selection = { kind: "simple" as const, jugCount: jugs, frequency, zip, firstTime };
+  const totals = computeTotals(selection);
+  const { rateCents, unit, recurring, billedCents } = billingDisplay(selection);
   const depositCents = totals.depositCents;
+  const pumpCents = totals.pumpCents;
 
   function confirmOrder() {
-    addItem({ kind: "simple", jugCount: jugs, frequency, zip, firstTime });
+    addItem(selection);
     router.push("/cart");
   }
 
@@ -68,9 +71,12 @@ export function SimpleOrder() {
         <p className="mt-2 text-brand-text/70">Pick your jugs and how often — your price updates below.</p>
 
         <p className="mt-4 text-4xl font-extrabold text-brand-blue">
-          {formatUsd(totalCents)}
-          {recurring ? <span className="text-lg font-semibold text-brand-text/60"> /mo</span> : null}
+          {formatUsd(rateCents)}
+          {unit ? <span className="text-lg font-semibold text-brand-text/60"> {unit}</span> : null}
         </p>
+        {recurring && (
+          <p className="mt-1 text-sm text-brand-text/60">Billed {formatUsd(billedCents)} every 4 weeks</p>
+        )}
 
         <div>
             <div className="mt-6">
@@ -88,11 +94,20 @@ export function SimpleOrder() {
             <div className="mt-6">
               <Field label="Delivery frequency">
                 <div className="mt-2 space-y-2">
-                  {FREQUENCIES.map((f) => (
-                    <button key={f} className={pill(frequency === f, "w-full py-3 text-sm")} aria-pressed={frequency === f} onClick={() => setFrequency(f)}>
-                      {f === "One-Time" ? "One-Time (single delivery)" : `${f} Delivery`}
-                    </button>
-                  ))}
+                  {FREQUENCIES.map((f) => {
+                    const d = billingDisplay({ kind: "simple", jugCount: jugs, frequency: f, zip, firstTime });
+                    return (
+                      <button key={f} className={pill(frequency === f, "w-full px-4 py-3 text-sm")} aria-pressed={frequency === f} onClick={() => setFrequency(f)}>
+                        <span className="flex items-center justify-between gap-2">
+                          <span>{f === "One-Time" ? "One-Time (single delivery)" : `${f} Delivery`}</span>
+                          <span className={frequency === f ? "opacity-90" : "text-brand-blue"}>
+                            {formatUsd(d.rateCents)}
+                            {d.unit}
+                          </span>
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </Field>
             </div>
@@ -117,22 +132,25 @@ export function SimpleOrder() {
             <Card className="mt-6">
               <div className="flex items-center justify-between">
                 <span className="font-[family-name:var(--font-heading)] font-bold text-brand-navy">
-                  {recurring ? "Per month" : "Total"}
+                  {recurring ? "Billed every 4 weeks" : "Total"}
                 </span>
-                <span className="text-xl font-extrabold text-brand-blue">
-                  {formatUsd(totalCents)}
-                  {recurring ? "/mo" : ""}
-                </span>
+                <span className="text-xl font-extrabold text-brand-blue">{formatUsd(billedCents)}</span>
               </div>
-              {depositCents > 0 && (
-                <div className="mt-2 flex items-center justify-between text-sm text-brand-text/70">
-                  <span>+ Refundable jug deposit (one-time)</span>
-                  <span className="font-semibold">{formatUsd(depositCents)}</span>
+              {firstTime && (
+                <div className="mt-3 space-y-1 border-t border-black/5 pt-3 text-sm text-brand-text/70">
+                  <div className="flex items-center justify-between">
+                    <span>+ Refundable jug deposit ($15/jug)</span>
+                    <span className="font-semibold">{formatUsd(depositCents)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span>+ Rechargeable pump (yours to keep)</span>
+                    <span className="font-semibold">{formatUsd(pumpCents)}</span>
+                  </div>
                 </div>
               )}
-              <p className="mt-2 text-xs text-brand-text/60">
-                {depositCents > 0
-                  ? `First-time customers pay a one-time ${formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)}/jug refundable deposit, returned when jugs come back in good condition. `
+              <p className="mt-3 text-xs text-brand-text/60">
+                {firstTime
+                  ? "Your first order includes First Fill & Delivery, a refundable jug deposit, and a Rechargeable Pump (yours to keep!). The deposit is returned when jugs come back in good condition. "
                   : "Returning customers exchange empty jugs on delivery — no new deposit. "}
                 Delivery days are assigned by your ZIP route.
               </p>
@@ -151,12 +169,12 @@ export function SimpleOrder() {
           </li>
           <li>{firstTime ? "First-time customer" : "Returning customer (jug exchange)"} · ZIP {zip}</li>
           <li className="pt-1 text-base font-extrabold text-brand-blue">
-            {formatUsd(totalCents)}
-            {recurring ? "/mo" : ""}
+            {formatUsd(rateCents)}
+            {unit} {recurring ? <span className="text-sm font-normal text-brand-text/60">({formatUsd(billedCents)} every 4 weeks)</span> : null}
           </li>
-          {depositCents > 0 && (
+          {firstTime && (
             <li className="text-sm font-normal text-brand-text/70">
-              + {formatUsd(depositCents)} refundable jug deposit (one-time)
+              + {formatUsd(depositCents)} refundable deposit &amp; {formatUsd(pumpCents)} rechargeable pump (one-time)
             </li>
           )}
         </ul>
