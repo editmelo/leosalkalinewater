@@ -9,7 +9,7 @@ export function FinalCTA() {
           <h2 className="text-3xl font-extrabold">Ready to Feel the Difference?</h2>
           <p className="mt-2 text-center text-white/90">Join the Water Fam today.</p>
         </div>
-        <Button href="/store" variant="white" className="shrink-0">Order Delivery</Button>
+        <Button href="/store" variant="white" className="shrink-0">Keep your glass full</Button>
       </Container>
     </section>
   );

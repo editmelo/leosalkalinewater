@@ -1,4 +1,4 @@
-import { getPlan, ADDON_JUG_CENTS, SIMPLE_FREQUENCY_BASE_CENTS } from "./products";
+import { getPlan, ADDON_JUG_CENTS, SIMPLE_FREQUENCY_BASE_CENTS, NEW_CUSTOMER_DEPOSIT_CENTS } from "./products";
 import type { OrderSelection, OrderTotals, OrderLine } from "./types";
 
 export function computeTotals(sel: OrderSelection): OrderTotals {
@@ -14,7 +14,9 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
     if (extraJugs > 0) {
       lines.push({ label: "Additional jugs", qty: extraJugs, unitPriceCents: ADDON_JUG_CENTS });
     }
-    return { lines, subtotalCents: base + extraJugs * ADDON_JUG_CENTS };
+    // New customers pay a one-time refundable deposit per jug; returning (jug exchange) don't.
+    const depositCents = sel.firstTime ? qty * NEW_CUSTOMER_DEPOSIT_CENTS : 0;
+    return { lines, subtotalCents: base + extraJugs * ADDON_JUG_CENTS, depositCents };
   }
 
   // Store 1 (named plans): base price includes 1 jug; every additional jug adds $10.
@@ -25,7 +27,7 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
   if (extraJugs > 0) {
     lines.push({ label: "Additional jugs", qty: extraJugs, unitPriceCents: ADDON_JUG_CENTS });
   }
-  return { lines, subtotalCents: plan.priceCents + extraJugs * ADDON_JUG_CENTS };
+  return { lines, subtotalCents: plan.priceCents + extraJugs * ADDON_JUG_CENTS, depositCents: 0 };
 }
 
 export function formatUsd(cents: number): string {

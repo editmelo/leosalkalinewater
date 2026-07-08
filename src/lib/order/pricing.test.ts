@@ -30,12 +30,20 @@ describe("computeTotals — named plans (Store 1)", () => {
 describe("computeTotals — build-your-own (Store 2)", () => {
   it("base price varies by frequency, +$10 per additional jug", () => {
     // Weekly base $55 + 2 extra jugs × $10 = $75
-    expect(computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly" }).subtotalCents).toBe(7500);
+    expect(computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: false }).subtotalCents).toBe(7500);
     // Biweekly base $30, 1 jug
-    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly" }).subtotalCents).toBe(3000);
+    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly", firstTime: false }).subtotalCents).toBe(3000);
     // One-Time base $20 + 1 extra jug × $10 = $30
-    expect(computeTotals({ kind: "simple", jugCount: 2, zip: "46204", frequency: "One-Time" }).subtotalCents).toBe(3000);
+    expect(computeTotals({ kind: "simple", jugCount: 2, zip: "46204", frequency: "One-Time", firstTime: false }).subtotalCents).toBe(3000);
     // Monthly base $15
-    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Monthly" }).subtotalCents).toBe(1500);
+    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Monthly", firstTime: false }).subtotalCents).toBe(1500);
+  });
+
+  it("first-time customers pay a $15/jug refundable deposit, separate from the subtotal", () => {
+    const firstTime = computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: true });
+    expect(firstTime.depositCents).toBe(4500); // 3 jugs × $15
+    expect(firstTime.subtotalCents).toBe(7500); // water price unchanged by deposit
+    const returning = computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: false });
+    expect(returning.depositCents).toBe(0);
   });
 });

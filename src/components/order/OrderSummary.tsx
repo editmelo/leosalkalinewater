@@ -31,7 +31,7 @@ export function OrderSummary() {
                   {it.zip}
                 </p>
                 <p className="mt-1 text-xs text-brand-text/50">
-                  {payload.recurring ? "Monthly subscription · cancel anytime" : "One-time order"}
+                  {payload.recurring ? "Subscription · billed every 4 weeks · cancel anytime" : "One-time order"}
                 </p>
               </div>
               <button
@@ -46,6 +46,11 @@ export function OrderSummary() {
               {formatUsd(t.subtotalCents)}
               {payload.recurring ? "/mo" : ""}
             </p>
+            {t.depositCents > 0 && (
+              <p className="text-sm text-brand-text/70">
+                + {formatUsd(t.depositCents)} refundable jug deposit (one-time)
+              </p>
+            )}
           </Card>
         );
       })}

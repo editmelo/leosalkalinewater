@@ -21,7 +21,7 @@ describe("buildOrderPayload — named plans (Store 1)", () => {
 
 describe("buildOrderPayload — build-your-own (Store 2)", () => {
   it("One-Time: one-time order, no customer type", () => {
-    const p = buildOrderPayload({ kind: "simple", jugCount: 2, zip: "46204", frequency: "One-Time" });
+    const p = buildOrderPayload({ kind: "simple", jugCount: 2, zip: "46204", frequency: "One-Time", firstTime: false });
     expect(p.recurring).toBe(false);
     expect(p.planName).toBe("Alkaline Water Delivery");
     expect(p.deliveryFrequency).toBe("One-Time");
@@ -30,7 +30,7 @@ describe("buildOrderPayload — build-your-own (Store 2)", () => {
   });
 
   it("Weekly: recurring subscription", () => {
-    const p = buildOrderPayload({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Weekly" });
+    const p = buildOrderPayload({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Weekly", firstTime: false });
     expect(p.recurring).toBe(true);
     expect(p.cadence).toBe("MONTHLY");
   });

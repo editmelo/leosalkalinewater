@@ -31,14 +31,17 @@ export function SimpleOrder() {
   const { addItem } = useCart();
   const [jugs, setJugs] = useState(2);
   const [frequency, setFrequency] = useState<SimpleFrequency>("Weekly");
+  const [firstTime, setFirstTime] = useState(true);
   const [zip, setZip] = useState("");
   const [confirming, setConfirming] = useState(false);
   const ready = isInServiceArea(zip);
   const recurring = frequency !== "One-Time";
-  const totalCents = computeTotals({ kind: "simple", jugCount: jugs, frequency, zip }).subtotalCents;
+  const totals = computeTotals({ kind: "simple", jugCount: jugs, frequency, zip, firstTime });
+  const totalCents = totals.subtotalCents;
+  const depositCents = totals.depositCents;
 
   function confirmOrder() {
-    addItem({ kind: "simple", jugCount: jugs, frequency, zip });
+    addItem({ kind: "simple", jugCount: jugs, frequency, zip, firstTime });
     router.push("/cart");
   }
 
@@ -95,6 +98,19 @@ export function SimpleOrder() {
             </div>
 
             <div className="mt-6">
+              <Field label="Are you a first-time customer?">
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  <button className={pill(firstTime, "py-3 text-sm")} aria-pressed={firstTime} onClick={() => setFirstTime(true)}>
+                    First-time
+                  </button>
+                  <button className={pill(!firstTime, "py-3 text-sm")} aria-pressed={!firstTime} onClick={() => setFirstTime(false)}>
+                    Returning (jug exchange)
+                  </button>
+                </div>
+              </Field>
+            </div>
+
+            <div className="mt-6">
               <ServiceAreaCheck zip={zip} onZip={setZip} />
             </div>
 
@@ -108,9 +124,17 @@ export function SimpleOrder() {
                   {recurring ? "/mo" : ""}
                 </span>
               </div>
+              {depositCents > 0 && (
+                <div className="mt-2 flex items-center justify-between text-sm text-brand-text/70">
+                  <span>+ Refundable jug deposit (one-time)</span>
+                  <span className="font-semibold">{formatUsd(depositCents)}</span>
+                </div>
+              )}
               <p className="mt-2 text-xs text-brand-text/60">
-                New customers: a one-time {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} refundable jug deposit is billed
-                separately. Delivery days are assigned by your ZIP route.
+                {depositCents > 0
+                  ? `First-time customers pay a one-time ${formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)}/jug refundable deposit, returned when jugs come back in good condition. `
+                  : "Returning customers exchange empty jugs on delivery — no new deposit. "}
+                Delivery days are assigned by your ZIP route.
               </p>
               <Button variant="primary" className="mt-4 w-full" disabled={!ready} onClick={() => setConfirming(true)}>
                 {ready ? "Add to cart →" : "Enter a serviced ZIP"}
@@ -125,11 +149,16 @@ export function SimpleOrder() {
           <li>
             {jugs} × 5-gallon jug{jugs > 1 ? "s" : ""} · {frequency}
           </li>
-          <li>Delivered to ZIP {zip}</li>
+          <li>{firstTime ? "First-time customer" : "Returning customer (jug exchange)"} · ZIP {zip}</li>
           <li className="pt-1 text-base font-extrabold text-brand-blue">
             {formatUsd(totalCents)}
             {recurring ? "/mo" : ""}
           </li>
+          {depositCents > 0 && (
+            <li className="text-sm font-normal text-brand-text/70">
+              + {formatUsd(depositCents)} refundable jug deposit (one-time)
+            </li>
+          )}
         </ul>
       </WaterFamConfirm>
     </div>

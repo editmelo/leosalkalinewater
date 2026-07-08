@@ -1,14 +1,15 @@
-// Loading Jug — an animated 5-gallon water jug loader (the jug Leo delivers).
-// Water rises/sloshes with a rippling surface and bubbles drift up.
-// Pure SVG + CSS keyframes (see globals.css: law-jug-*). Goes still under
-// prefers-reduced-motion via the global animation reset.
+// Loading Jug — an animated 5-gallon water-cooler jug loader (the jug Leo delivers):
+// wide body, ridge bands, tapered bottom, short cap. Water rises with a rippling
+// surface and bubbles drift up. Pure SVG + CSS keyframes (globals.css: law-jug-*).
+// Goes still under prefers-reduced-motion via the global animation reset.
 
+// Wide cooler-jug silhouette with rounded shoulders and a tapered bottom point.
 const JUG =
-  "M52,22 L52,32 C52,42 22,44 22,72 L22,188 Q22,200 34,200 L86,200 Q98,200 98,188 L98,72 C98,44 68,42 68,32 L68,22 Z";
+  "M48,28 L72,28 L72,32 C72,37 100,38 100,54 L100,184 L60,208 L20,184 L20,54 C20,38 48,37 48,32 Z";
 const WAVE_FRONT =
-  "M-60,78 q15,-7 30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 V220 H-60 Z";
+  "M-60,86 q15,-7 30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 V220 H-60 Z";
 const WAVE_BACK =
-  "M-60,80 q15,-4 30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 V220 H-60 Z";
+  "M-60,88 q15,-4 30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 V220 H-60 Z";
 
 export default function LoadingBottle({
   label = "Loading your water…",
@@ -31,31 +32,40 @@ export default function LoadingBottle({
         </defs>
 
         {/* cap + neck collar */}
-        <rect x="47" y="8" width="26" height="15" rx="3" fill="#0F4C81" />
-        <rect x="47" y="8" width="26" height="5" rx="2" fill="#1d6aa8" />
-        <rect x="50" y="20" width="20" height="6" fill="#0F4C81" />
+        <rect x="46" y="8" width="28" height="16" rx="3" fill="#0F4C81" />
+        <rect x="46" y="8" width="28" height="5" rx="2" fill="#1d6aa8" />
+        <rect x="49" y="22" width="22" height="7" fill="#0F4C81" />
 
         {/* contents (clipped to the jug) */}
         <g clipPath="url(#lawJugClip)">
-          <rect x="0" y="0" width="120" height="220" fill="#eef6fb" />
+          {/* light-blue empty jug body */}
+          <rect x="0" y="0" width="120" height="220" fill="#d6edf7" />
+          {/* rising water */}
           <g className="law-jug-fill">
-            <rect x="0" y="78" width="120" height="160" fill="url(#lawWaterGrad)" />
+            <rect x="0" y="86" width="120" height="160" fill="url(#lawWaterGrad)" />
             <path className="law-jug-wave slow" d={WAVE_BACK} fill="#4AB7D8" opacity="0.55" />
             <path className="law-jug-wave" d={WAVE_FRONT} fill="url(#lawWaterGrad)" opacity="0.95" />
           </g>
+          {/* rising bubbles */}
           <g fill="#ffffff">
-            <circle className="law-jug-bubble" style={{ animationDelay: "0s" }} cx="44" cy="192" r="3" opacity="0.7" />
-            <circle className="law-jug-bubble" style={{ animationDelay: "0.8s" }} cx="62" cy="196" r="2.2" opacity="0.6" />
-            <circle className="law-jug-bubble" style={{ animationDelay: "1.5s" }} cx="74" cy="190" r="3.4" opacity="0.65" />
-            <circle className="law-jug-bubble" style={{ animationDelay: "2.1s" }} cx="54" cy="198" r="2" opacity="0.6" />
+            <circle className="law-jug-bubble" style={{ animationDelay: "0s" }} cx="44" cy="196" r="3" opacity="0.7" />
+            <circle className="law-jug-bubble" style={{ animationDelay: "0.8s" }} cx="62" cy="200" r="2.2" opacity="0.6" />
+            <circle className="law-jug-bubble" style={{ animationDelay: "1.5s" }} cx="74" cy="194" r="3.4" opacity="0.65" />
+            <circle className="law-jug-bubble" style={{ animationDelay: "2.1s" }} cx="54" cy="202" r="2" opacity="0.6" />
+          </g>
+          {/* ridge bands (cooler-jug rings) */}
+          <g fill="#ffffff" opacity="0.28">
+            <rect x="0" y="56" width="120" height="12" />
+            <rect x="0" y="120" width="120" height="11" />
+            <rect x="0" y="164" width="120" height="11" />
           </g>
         </g>
 
         {/* brand label */}
-        <rect x="42" y="118" width="36" height="22" rx="3" fill="#ffffff" opacity="0.9" />
+        <rect x="41" y="94" width="38" height="20" rx="3" fill="#ffffff" opacity="0.92" />
         <text
           x="60"
-          y="133"
+          y="108"
           textAnchor="middle"
           fontSize="8"
           fontWeight="700"

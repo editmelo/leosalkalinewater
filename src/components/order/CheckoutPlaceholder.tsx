@@ -12,7 +12,11 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
   const { items, clear } = useCart();
 
   const totalCents = useMemo(
-    () => items.reduce((sum, it) => sum + computeTotals(it).subtotalCents, 0),
+    () =>
+      items.reduce((sum, it) => {
+        const t = computeTotals(it);
+        return sum + t.subtotalCents + t.depositCents;
+      }, 0),
     [items],
   );
 
@@ -29,8 +33,8 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
         <span className="text-xl font-extrabold text-brand-blue">{formatUsd(totalCents)}</span>
       </div>
       <p className="mb-5 text-xs text-brand-text/60">
-        New customers: a one-time {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} refundable jug deposit is billed separately.
-        Recurring plans set up automatic billing after checkout.
+        Total due today includes any one-time refundable jug deposit ({formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)}/jug for
+        first-time customers). Recurring plans bill automatically every 4 weeks.
       </p>
 
       {isSquareClientConfigured() ? (

@@ -4,7 +4,8 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { Button } from "@/components/ui/Button";
-import { ShoppingCart, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
+import { BottleIcon } from "@/components/ui/BottleIcon";
 
 const NAV = [
   { href: "/", label: "Home" },
@@ -28,7 +29,7 @@ export function Header() {
           ))}
           <Button href="/store" variant="aqua">Order</Button>
           <Link href="/cart" className="relative" aria-label="Cart">
-            <ShoppingCart className="h-6 w-6 text-brand-blue" aria-hidden="true" />
+            <BottleIcon className="h-6 w-6 text-brand-blue" />
             {count > 0 && <span className="absolute -right-2 -top-1 rounded-full bg-brand-blue px-1.5 text-[10px] font-bold text-white">{count}</span>}
           </Link>
         </nav>

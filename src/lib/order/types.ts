@@ -17,6 +17,7 @@ export interface SimpleSelection {
   jugCount: number;
   zip: string;
   frequency: SimpleFrequency;
+  firstTime: boolean; // new customers pay a refundable $15/jug deposit; returning (jug exchange) don't
 }
 
 export type OrderSelection = PlanSelection | SimpleSelection;
@@ -29,5 +30,6 @@ export interface OrderLine {
 
 export interface OrderTotals {
   lines: OrderLine[];
-  subtotalCents: number;
+  subtotalCents: number; // recurring/one-time price of the water itself
+  depositCents: number; // one-time refundable jug deposit (new customers only), separate from subtotal
 }

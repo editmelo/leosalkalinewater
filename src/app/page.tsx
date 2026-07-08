@@ -10,6 +10,7 @@ import { ShopPreview } from "@/components/sections/ShopPreview";
 import { WaterFam } from "@/components/sections/WaterFam";
 import { PartnerBlock } from "@/components/sections/PartnerBlock";
 import { ServiceAreaBanner } from "@/components/sections/ServiceAreaBanner";
+import { Testimonials } from "@/components/sections/Testimonials";
 import { FounderTeaser } from "@/components/sections/FounderTeaser";
 import { FinalCTA } from "@/components/sections/FinalCTA";
 import { WaveDivider } from "@/components/motion/WaveDivider";
@@ -35,6 +36,7 @@ export default function Home() {
         <PartnerBlock />
         <FounderTeaser />
         <ServiceAreaBanner />
+        <Testimonials />
         <FinalCTA />
       </main>
       <Footer />
