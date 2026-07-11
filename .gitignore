@@ -45,7 +45,6 @@ next-env.d.ts
 # source media (kept out of repo; optimized derivatives live in public/)
 Leo_s 2026 Rough Edits/
 Leo_s Site Media/
-# Large uncompressed hero video — compress with ffmpeg before committing
-# See public/README-assets.md for instructions
-public/hero.mp4
+# public/hero.mp4 is now the web-optimized 720p Hero Reel (~11MB) and IS committed.
+# (The original 1.3GB raw cut lives in the gitignored source-media folder.)
 Certification Badges/
