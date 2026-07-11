@@ -10,11 +10,11 @@ import { Check } from "lucide-react";
 const OFFERINGS = [
   {
     name: "First Pour",
-    tagline: "Starter Kit · First order",
+    tagline: "Starter Kit · Add-on",
     price: "+$25",
-    priceNote: "one-time, with your first order",
+    priceNote: "one-time — new customers",
     image: "/products/starter-pack.jpg",
-    features: ["First Fill & Delivery", "Refundable $15 jug deposit", "Rechargeable pump — yours to keep!"],
+    features: ["Refundable $15 jug deposit", "Rechargeable pump — yours to keep!", "Add it to any plan at checkout"],
   },
   {
     name: "Stay Balanced",
@@ -93,8 +93,8 @@ export function ShopPreview() {
         </div>
 
         <p className="mt-6 text-center text-xs text-brand-text/60">
-          Each delivery includes 1 jug; additional jugs are +$10 each. First Pour is added automatically to your
-          first order.
+          Each delivery includes 1 jug; additional jugs are +$10 each. New to Leo&apos;s? Add the First Pour starter
+          kit to any plan.
         </p>
       </Container>
     </Section>

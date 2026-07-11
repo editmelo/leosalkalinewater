@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
 import { computeTotals, billingDisplay, formatUsd } from "@/lib/order/pricing";
-import { NEW_CUSTOMER_DEPOSIT_CENTS, FREQUENCY_NAMES } from "@/lib/order/products";
+import { NEW_CUSTOMER_DEPOSIT_CENTS, PUMP_CENTS, FREQUENCY_NAMES } from "@/lib/order/products";
+import { Check } from "lucide-react";
 import type { SimpleFrequency } from "@/lib/order/types";
 
 // Build-your-own model: pick jugs + frequency. Subscriptions bill every 4 weeks,
@@ -117,17 +118,48 @@ export function SimpleOrder() {
               </Field>
             </div>
 
+            {/* First Pour — a real add-on you choose, not fine print */}
             <div className="mt-6">
-              <Field label="Are you a first-time customer?">
-                <div className="mt-2 grid grid-cols-2 gap-2">
-                  <button className={pill(firstTime, "py-3 text-sm")} aria-pressed={firstTime} onClick={() => setFirstTime(true)}>
-                    First-time
-                  </button>
-                  <button className={pill(!firstTime, "py-3 text-sm")} aria-pressed={!firstTime} onClick={() => setFirstTime(false)}>
-                    Returning (jug exchange)
-                  </button>
+              <div
+                className={`rounded-xl border-2 p-4 transition ${
+                  firstTime ? "border-brand-green bg-brand-green/5" : "border-black/10 bg-white"
+                }`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="font-[family-name:var(--font-heading)] font-bold text-brand-navy">
+                      First Pour — Starter Kit
+                    </p>
+                    <p className="mt-0.5 text-sm text-brand-text/70">New to Leo&apos;s? Everything you need to get started.</p>
+                    <ul className="mt-2 space-y-1 text-sm text-brand-text/70">
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 shrink-0 text-brand-green" aria-hidden="true" />
+                        Refundable {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} jug deposit
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="h-4 w-4 shrink-0 text-brand-green" aria-hidden="true" />
+                        Rechargeable pump — yours to keep!
+                      </li>
+                    </ul>
+                  </div>
+                  <p className="shrink-0 text-xl font-extrabold text-brand-blue">
+                    +{formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS + PUMP_CENTS)}
+                  </p>
                 </div>
-              </Field>
+
+                <Button
+                  variant={firstTime ? "green" : "primary"}
+                  className="mt-3 w-full"
+                  onClick={() => setFirstTime(!firstTime)}
+                >
+                  {firstTime
+                    ? "✓ Added to your order"
+                    : `Add First Pour  +${formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS + PUMP_CENTS)}`}
+                </Button>
+                <p className="mt-2 text-xs text-brand-text/50">
+                  Already have your jug &amp; pump? Leave this off — we&apos;ll just exchange your empties on delivery.
+                </p>
+              </div>
             </div>
 
             <div className="mt-6">
@@ -142,30 +174,15 @@ export function SimpleOrder() {
                 <span className="text-xl font-extrabold text-brand-blue">{formatUsd(amountCents)}</span>
               </div>
               {firstTime && (
-                <div className="mt-3 border-t border-black/5 pt-3">
-                  <p className="font-[family-name:var(--font-heading)] text-xs font-bold uppercase tracking-wide text-brand-green">
-                    First Pour — Starter Kit (added to your first order)
-                  </p>
-                  <div className="mt-2 space-y-1 text-sm text-brand-text/70">
-                    <div className="flex items-center justify-between">
-                      <span>First Fill &amp; Delivery</span>
-                      <span className="font-semibold text-brand-green">Included</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Refundable jug deposit</span>
-                      <span className="font-semibold">{formatUsd(depositCents)}</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span>Rechargeable pump — yours to keep!</span>
-                      <span className="font-semibold">{formatUsd(pumpCents)}</span>
-                    </div>
-                  </div>
+                <div className="mt-2 flex items-center justify-between border-t border-black/5 pt-2 text-sm text-brand-text/70">
+                  <span>+ First Pour — Starter Kit (one-time)</span>
+                  <span className="font-semibold">{formatUsd(depositCents + pumpCents)}</span>
                 </div>
               )}
               <p className="mt-3 text-xs text-brand-text/60">
                 {firstTime
-                  ? `The ${formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} deposit is a one-time flat charge (any number of jugs) and is returned when your jugs come back in good condition. `
-                  : "Returning customers exchange empty jugs on delivery — no new deposit. "}
+                  ? `Includes a refundable ${formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} jug deposit — a one-time flat charge, returned when your jugs come back in good condition. `
+                  : ""}
                 Delivery days are assigned by your ZIP route.
               </p>
               <Button variant="primary" className="mt-4 w-full" disabled={!ready} onClick={() => setConfirming(true)}>
@@ -181,7 +198,7 @@ export function SimpleOrder() {
           <li>
             {jugs} × 5-gallon jug{jugs > 1 ? "s" : ""} · {frequency}
           </li>
-          <li>{firstTime ? "First-time customer" : "Returning customer (jug exchange)"} · ZIP {zip}</li>
+          <li>{FREQUENCY_NAMES[frequency]} · ZIP {zip}</li>
           <li className="pt-1 text-base font-extrabold text-brand-blue">
             {formatUsd(amountCents)}
             {cadenceLabel}{" "}
@@ -191,7 +208,7 @@ export function SimpleOrder() {
           </li>
           {firstTime && (
             <li className="text-sm font-normal text-brand-text/70">
-              + {formatUsd(depositCents)} refundable deposit &amp; {formatUsd(pumpCents)} rechargeable pump (one-time)
+              + {formatUsd(depositCents + pumpCents)} First Pour Starter Kit (one-time)
             </li>
           )}
         </ul>
