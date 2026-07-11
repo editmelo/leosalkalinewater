@@ -1,9 +1,9 @@
 "use client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
 import { isInServiceArea } from "@/lib/service-area";
 import { useCart } from "@/components/cart/CartProvider";
+import { ProductGallery } from "./ProductGallery";
 import { ServiceAreaCheck } from "./ServiceAreaCheck";
 import { WaterFamConfirm } from "./WaterFamConfirm";
 import { Button } from "@/components/ui/Button";
@@ -52,16 +52,7 @@ export function SimpleOrder() {
   return (
     <div className="grid gap-10 md:grid-cols-2 md:items-start">
       {/* Left — the water */}
-      <div className="relative aspect-square overflow-hidden rounded-3xl shadow-xl md:sticky md:top-28">
-        <Image
-          src="/media/waterfam.jpg"
-          alt="Leo delivering a 5-gallon jug of alkaline water"
-          fill
-          className="object-cover"
-          sizes="(max-width: 768px) 100vw, 45vw"
-          priority
-        />
-      </div>
+      <ProductGallery />
 
       {/* Right — everything the customer picks */}
       <div>
