@@ -4,17 +4,19 @@ import { Container } from "@/components/ui/Container";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Check } from "lucide-react";
+import { FirstPourQuickAdd } from "@/components/order/FirstPourQuickAdd";
 
-// Mirrors what the Store actually sells: pick jugs + a frequency. "First Pour" is the
-// starter kit automatically added to a first-time customer's first order.
+// First Pour is a one-click starter buy (quick-add straight to the cart).
+// The other three link to the Store, where you build your own delivery.
 const OFFERINGS = [
   {
     name: "First Pour",
-    tagline: "Starter Kit · Add-on",
-    price: "+$25",
-    priceNote: "one-time — new customers",
+    tagline: "Starter Kit · New customers",
+    price: "$45",
+    priceNote: "one-time — everything to get started",
     image: "/products/starter-pack.jpg",
-    features: ["Refundable $15 jug deposit", "Rechargeable pump — yours to keep!", "Add it to any plan at checkout"],
+    quickAdd: true,
+    features: ["First Fill & Delivery (1 jug)", "Refundable $15 jug deposit", "Rechargeable pump — yours to keep!"],
   },
   {
     name: "Stay Balanced",
@@ -85,16 +87,20 @@ export function ShopPreview() {
                 ))}
               </ul>
 
-              <Button href="/store" variant="primary" className="w-full">
-                Select
-              </Button>
+              {o.quickAdd ? (
+                <FirstPourQuickAdd />
+              ) : (
+                <Button href="/store" variant="primary" className="w-full">
+                  Select
+                </Button>
+              )}
             </Card>
           ))}
         </div>
 
         <p className="mt-6 text-center text-xs text-brand-text/60">
-          Each delivery includes 1 jug; additional jugs are +$10 each. New to Leo&apos;s? Add the First Pour starter
-          kit to any plan.
+          Each delivery includes 1 jug; additional jugs are +$10 each. New to Leo&apos;s? Grab a First Pour to get
+          your jug and pump.
         </p>
       </Container>
     </Section>
