@@ -39,7 +39,7 @@ export function SimpleOrder() {
 
   const selection = { kind: "simple" as const, jugCount: jugs, frequency, zip, firstTime };
   const totals = computeTotals(selection);
-  const { rateCents, unit, recurring, billedCents } = billingDisplay(selection);
+  const { amountCents, recurring, cadenceLabel, cadenceNote } = billingDisplay(selection);
   const depositCents = totals.depositCents;
   const pumpCents = totals.pumpCents;
 
@@ -71,12 +71,12 @@ export function SimpleOrder() {
         <p className="mt-2 text-brand-text/70">Pick your jugs and how often — your price updates below.</p>
 
         <p className="mt-4 text-4xl font-extrabold text-brand-blue">
-          {formatUsd(rateCents)}
-          {unit ? <span className="text-lg font-semibold text-brand-text/60"> {unit}</span> : null}
+          {formatUsd(amountCents)}
+          {cadenceLabel ? (
+            <span className="text-lg font-semibold text-brand-text/60">{cadenceLabel}</span>
+          ) : null}
         </p>
-        {recurring && (
-          <p className="mt-1 text-sm text-brand-text/60">Billed {formatUsd(billedCents)} every 4 weeks</p>
-        )}
+        {recurring && <p className="mt-1 text-sm text-brand-text/60">{cadenceNote}</p>}
 
         <div>
             <div className="mt-6">
@@ -101,8 +101,8 @@ export function SimpleOrder() {
                         <span className="flex items-center justify-between gap-2">
                           <span>{f === "One-Time" ? "One-Time (single delivery)" : `${f} Delivery`}</span>
                           <span className={frequency === f ? "opacity-90" : "text-brand-blue"}>
-                            {formatUsd(d.rateCents)}
-                            {d.unit}
+                            {formatUsd(d.amountCents)}
+                            {d.cadenceLabel}
                           </span>
                         </span>
                       </button>
@@ -132,14 +132,14 @@ export function SimpleOrder() {
             <Card className="mt-6">
               <div className="flex items-center justify-between">
                 <span className="font-[family-name:var(--font-heading)] font-bold text-brand-navy">
-                  {recurring ? "Billed every 4 weeks" : "Total"}
+                  {recurring ? "Per month (every 4 weeks)" : "Total"}
                 </span>
-                <span className="text-xl font-extrabold text-brand-blue">{formatUsd(billedCents)}</span>
+                <span className="text-xl font-extrabold text-brand-blue">{formatUsd(amountCents)}</span>
               </div>
               {firstTime && (
                 <div className="mt-3 space-y-1 border-t border-black/5 pt-3 text-sm text-brand-text/70">
                   <div className="flex items-center justify-between">
-                    <span>+ Refundable jug deposit ($15/jug)</span>
+                    <span>+ Refundable jug deposit (one-time)</span>
                     <span className="font-semibold">{formatUsd(depositCents)}</span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -150,7 +150,7 @@ export function SimpleOrder() {
               )}
               <p className="mt-3 text-xs text-brand-text/60">
                 {firstTime
-                  ? "Your first order includes First Fill & Delivery, a refundable jug deposit, and a Rechargeable Pump (yours to keep!). The deposit is returned when jugs come back in good condition. "
+                  ? `Your first order includes First Fill & Delivery, a one-time refundable ${formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} jug deposit, and a Rechargeable Pump (yours to keep!). The deposit is returned when jugs come back in good condition. `
                   : "Returning customers exchange empty jugs on delivery — no new deposit. "}
                 Delivery days are assigned by your ZIP route.
               </p>
@@ -169,8 +169,11 @@ export function SimpleOrder() {
           </li>
           <li>{firstTime ? "First-time customer" : "Returning customer (jug exchange)"} · ZIP {zip}</li>
           <li className="pt-1 text-base font-extrabold text-brand-blue">
-            {formatUsd(rateCents)}
-            {unit} {recurring ? <span className="text-sm font-normal text-brand-text/60">({formatUsd(billedCents)} every 4 weeks)</span> : null}
+            {formatUsd(amountCents)}
+            {cadenceLabel}{" "}
+            {recurring ? (
+              <span className="text-sm font-normal text-brand-text/60">(billed every 4 weeks)</span>
+            ) : null}
           </li>
           {firstTime && (
             <li className="text-sm font-normal text-brand-text/70">

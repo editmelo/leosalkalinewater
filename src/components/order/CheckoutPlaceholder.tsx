@@ -33,8 +33,8 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
         <span className="text-xl font-extrabold text-brand-blue">{formatUsd(totalCents)}</span>
       </div>
       <p className="mb-5 text-xs text-brand-text/60">
-        Total due today includes any one-time refundable jug deposit ({formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)}/jug for
-        first-time customers). Recurring plans bill automatically every 4 weeks.
+        First-time orders include a one-time refundable {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} jug deposit and a
+        rechargeable pump. Subscriptions bill automatically every 4 weeks.
       </p>
 
       {isSquareClientConfigured() ? (

@@ -44,10 +44,10 @@ export function OrderSummary() {
               </button>
             </div>
             <p className="mt-2 font-bold">
-              {formatUsd(d.rateCents)}
-              {d.unit}
+              {formatUsd(d.amountCents)}
+              {d.cadenceLabel}
               {d.recurring ? (
-                <span className="text-sm font-normal text-brand-text/60"> · {formatUsd(d.billedCents)} every 4 weeks</span>
+                <span className="text-sm font-normal text-brand-text/60"> · billed every 4 weeks</span>
               ) : null}
             </p>
             {(t.depositCents > 0 || t.pumpCents > 0) && (

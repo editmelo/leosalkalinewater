@@ -39,9 +39,10 @@ export default function TermsPage() {
 
       <h2>First Order, Jug Deposit &amp; Exchanges</h2>
       <p>
-        A first-time customer&apos;s order includes their First Fill &amp; Delivery, a refundable
-        $15-per-jug deposit (to cover jug damage or non-return), and a one-time $10 Rechargeable Pump
-        that is yours to keep. On future deliveries, we exchange your empty jugs for full ones, so
+        A first-time customer&apos;s order includes their First Fill &amp; Delivery, a one-time
+        refundable $15 jug deposit (a single flat charge regardless of how many jugs you order, to
+        cover jug damage or non-return), and a one-time $10 Rechargeable Pump that is yours to keep.
+        On future deliveries, we exchange your empty jugs for full ones, so
         returning customers who exchange jugs are not charged a new deposit or pump. Deposits are
         refunded when jugs are returned in good condition. A damage fee, up to the deposit amount,
         applies to jugs that are cracked, deformed, or not returned.

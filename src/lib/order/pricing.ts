@@ -14,8 +14,9 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
     if (extraJugs > 0) {
       lines.push({ label: "Additional jugs", qty: extraJugs, unitPriceCents: ADDON_JUG_CENTS });
     }
-    // First-time customers get the starter add-ons: refundable deposit per jug + a rechargeable pump.
-    const depositCents = sel.firstTime ? qty * NEW_CUSTOMER_DEPOSIT_CENTS : 0;
+    // First-time customers get the starter add-ons: a single flat refundable jug deposit
+    // (one $15 charge regardless of jug count) + a rechargeable pump.
+    const depositCents = sel.firstTime ? NEW_CUSTOMER_DEPOSIT_CENTS : 0;
     const pumpCents = sel.firstTime ? PUMP_CENTS : 0;
     return { lines, subtotalCents: base + extraJugs * ADDON_JUG_CENTS, depositCents, pumpCents };
   }
@@ -31,22 +32,25 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
   return { lines, subtotalCents: plan.priceCents + extraJugs * ADDON_JUG_CENTS, depositCents: 0, pumpCents: 0 };
 }
 
-// How to present the water price: subscriptions bill every 4 weeks but display as a
-// per-week (Weekly) or per-delivery (Biweekly) rate. One-time is a single charge.
+// How to present the water price. Subscriptions are charged the full cycle amount
+// (Weekly $55, Biweekly $30 — plus any extra jugs) once every 4 weeks. That's
+// effectively "monthly", but on a 4-week cycle so short months don't cost a billing
+// period. One-time orders are a single charge.
 export function billingDisplay(sel: OrderSelection): {
-  rateCents: number; // headline amount
-  unit: string; // "/week" | "/bi-weekly" | ""
+  amountCents: number; // charged per cycle (or once, for one-time)
   recurring: boolean;
-  billedCents: number; // amount charged per 4-week cycle
+  cadenceLabel: string; // "/month" | ""
+  cadenceNote: string; // "Billed every 4 weeks" | ""
 } {
   const { subtotalCents } = computeTotals(sel);
-  if (sel.kind === "simple" && sel.frequency === "Weekly") {
-    return { rateCents: Math.round(subtotalCents / 4), unit: "/week", recurring: true, billedCents: subtotalCents };
-  }
-  if (sel.kind === "simple" && sel.frequency === "Biweekly") {
-    return { rateCents: Math.round(subtotalCents / 2), unit: "/bi-weekly", recurring: true, billedCents: subtotalCents };
-  }
-  return { rateCents: subtotalCents, unit: "", recurring: false, billedCents: subtotalCents };
+  const recurring =
+    sel.kind === "simple" ? sel.frequency !== "One-Time" : getPlan(sel.planId).billing === "monthly";
+  return {
+    amountCents: subtotalCents,
+    recurring,
+    cadenceLabel: recurring ? "/month" : "",
+    cadenceNote: recurring ? "Billed every 4 weeks" : "",
+  };
 }
 
 export function formatUsd(cents: number): string {
