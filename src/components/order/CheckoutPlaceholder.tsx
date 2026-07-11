@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { computeTotals, formatUsd } from "@/lib/order/pricing";
 import { NEW_CUSTOMER_DEPOSIT_CENTS } from "@/lib/order/products";
-import { isSquareClientConfigured } from "@/lib/square/config";
+import { isSquareClientConfigured, IS_SQUARE_SANDBOX } from "@/lib/square/config";
 import { SquarePaymentForm } from "./SquarePaymentForm";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
@@ -36,6 +36,12 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
         First-time orders include a one-time refundable {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} jug deposit and a
         rechargeable pump. Subscriptions bill automatically every 4 weeks.
       </p>
+
+      {isSquareClientConfigured() && IS_SQUARE_SANDBOX && (
+        <p className="mb-4 rounded-lg border border-brand-gold/40 bg-brand-gold/10 px-3 py-2 text-center text-xs font-semibold text-brand-navy">
+          🧪 Test mode — Square Sandbox. Use a test card; no real money is charged.
+        </p>
+      )}
 
       {isSquareClientConfigured() ? (
         <SquarePaymentForm
