@@ -7,6 +7,7 @@ import {
   isSquareClientConfigured,
 } from "@/lib/square/config";
 import { formatUsd } from "@/lib/order/pricing";
+import type { CustomerDetails } from "@/lib/order/customer";
 import { Button } from "@/components/ui/Button";
 import LoadingBottle from "@/components/ui/loading-bottle";
 
@@ -38,9 +39,15 @@ function loadSquareSdk(): Promise<void> {
 
 export function SquarePaymentForm({
   amountCents,
+  customer,
+  note,
+  disabled = false,
   onPaid,
 }: {
   amountCents: number;
+  customer?: CustomerDetails;
+  note?: string;
+  disabled?: boolean;
   onPaid: (paymentId: string | null) => void;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -80,7 +87,7 @@ export function SquarePaymentForm({
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sourceId: result.token, amountCents }),
+        body: JSON.stringify({ sourceId: result.token, amountCents, customer, note }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Payment failed. Please try again.");
@@ -117,7 +124,7 @@ export function SquarePaymentForm({
           <LoadingBottle label="Processing your payment…" />
         </div>
       ) : (
-        <Button onClick={handlePay} variant="primary" className="w-full" disabled={!ready}>
+        <Button onClick={handlePay} variant="primary" className="w-full" disabled={!ready || disabled}>
           {ready ? `Pay ${formatUsd(amountCents)}` : "Loading secure card form…"}
         </Button>
       )}
