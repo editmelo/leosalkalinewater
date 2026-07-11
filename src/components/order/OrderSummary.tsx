@@ -3,11 +3,24 @@ import { useCart } from "@/components/cart/CartProvider";
 import { computeTotals, billingDisplay, formatUsd } from "@/lib/order/pricing";
 import { buildOrderPayload } from "@/lib/order/payload";
 import { Card } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { BottleIcon } from "@/components/ui/BottleIcon";
 
 export function OrderSummary() {
   const { items, removeItem } = useCart();
   if (!items.length)
-    return <p className="text-brand-text/70">Your cart is empty. Head to the Store to build an order.</p>;
+    return (
+      <div className="flex flex-col items-center gap-3 py-10 text-center">
+        <BottleIcon className="h-14 w-14 text-brand-blue/40" />
+        <p className="font-[family-name:var(--font-heading)] text-lg font-bold text-brand-navy">
+          Your jug is empty
+        </p>
+        <p className="text-sm text-brand-text/70">Head to the Store and let&apos;s fill it up.</p>
+        <Button href="/store" variant="primary" className="mt-2">
+          Keep your glass full
+        </Button>
+      </div>
+    );
   return (
     <div className="space-y-4">
       {items.map((it, i) => {
