@@ -1,12 +1,11 @@
 // Loading Jug — an animated 5-gallon water-cooler jug loader (the jug Leo delivers):
-// wide squat body, ridge bands, short cap, and a FLAT base (it sits upright, no point).
-// Water rises with a rippling surface and bubbles drift up. Pure SVG + CSS keyframes
-// (globals.css: law-jug-*). Goes still under prefers-reduced-motion.
+// tall narrow neck, sloping shoulders, wide body with ROUNDED bottom corners (no bevels),
+// and ridge bands. Water rises with a rippling surface and bubbles drift up.
+// Pure SVG + CSS keyframes (globals.css: law-jug-*). Still under prefers-reduced-motion.
 
-// Wide cooler-jug silhouette: short neck, shoulders flaring to a broad body,
-// gently tapering to a flat base.
+// Narrow neck → sloping shoulders → broad body → rounded bottom corners (flat base).
 const JUG =
-  "M58,20 L82,20 L82,28 C82,34 124,36 124,50 L124,140 L104,164 L36,164 L16,140 L16,50 C16,36 58,34 58,28 Z";
+  "M62,14 L62,36 C62,46 16,50 16,74 L16,146 Q16,162 32,162 L108,162 Q124,162 124,146 L124,74 C124,50 78,46 78,36 L78,14 Z";
 const WAVE_FRONT =
   "M-60,80 q15,-7 30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 t30,0 V190 H-60 Z";
 const WAVE_BACK =
@@ -32,10 +31,9 @@ export default function LoadingBottle({
           </clipPath>
         </defs>
 
-        {/* cap + neck */}
-        <rect x="56" y="4" width="28" height="15" rx="3" fill="#0F4C81" />
-        <rect x="56" y="4" width="28" height="5" rx="2" fill="#1d6aa8" />
-        <rect x="59" y="17" width="22" height="6" fill="#0F4C81" />
+        {/* cap on the neck */}
+        <rect x="56" y="3" width="28" height="14" rx="3" fill="#0F4C81" />
+        <rect x="56" y="3" width="28" height="5" rx="2" fill="#1d6aa8" />
 
         {/* contents (clipped to the jug) */}
         <g clipPath="url(#lawJugClip)">
@@ -49,24 +47,24 @@ export default function LoadingBottle({
           </g>
           {/* rising bubbles */}
           <g fill="#ffffff">
-            <circle className="law-jug-bubble" style={{ animationDelay: "0s" }} cx="48" cy="152" r="3" opacity="0.7" />
-            <circle className="law-jug-bubble" style={{ animationDelay: "0.8s" }} cx="70" cy="158" r="2.2" opacity="0.6" />
-            <circle className="law-jug-bubble" style={{ animationDelay: "1.5s" }} cx="92" cy="150" r="3.4" opacity="0.65" />
-            <circle className="law-jug-bubble" style={{ animationDelay: "2.1s" }} cx="60" cy="160" r="2" opacity="0.6" />
+            <circle className="law-jug-bubble" style={{ animationDelay: "0s" }} cx="46" cy="150" r="3" opacity="0.7" />
+            <circle className="law-jug-bubble" style={{ animationDelay: "0.8s" }} cx="70" cy="156" r="2.2" opacity="0.6" />
+            <circle className="law-jug-bubble" style={{ animationDelay: "1.5s" }} cx="94" cy="148" r="3.4" opacity="0.65" />
+            <circle className="law-jug-bubble" style={{ animationDelay: "2.1s" }} cx="58" cy="158" r="2" opacity="0.6" />
           </g>
           {/* ridge bands (cooler-jug rings) */}
-          <g fill="#ffffff" opacity="0.28">
-            <rect x="0" y="52" width="140" height="12" />
-            <rect x="0" y="98" width="140" height="10" />
-            <rect x="0" y="128" width="140" height="10" />
+          <g fill="#ffffff" opacity="0.3">
+            <rect x="0" y="74" width="140" height="14" />
+            <rect x="0" y="112" width="140" height="14" />
+            <rect x="0" y="142" width="140" height="12" />
           </g>
         </g>
 
         {/* brand label */}
-        <rect x="51" y="86" width="38" height="20" rx="3" fill="#ffffff" opacity="0.92" />
+        <rect x="48" y="94" width="44" height="20" rx="3" fill="#ffffff" opacity="0.92" />
         <text
           x="70"
-          y="100"
+          y="108"
           textAnchor="middle"
           fontSize="8"
           fontWeight="700"
