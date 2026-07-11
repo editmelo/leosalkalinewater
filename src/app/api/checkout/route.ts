@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { SquareError } from "square";
 import { getSquareClient, getSquareLocationId } from "@/lib/square/client";
-import { isCustomerComplete, type CustomerDetails } from "@/lib/order/customer";
+import { isCustomerComplete, billingAddressOf, type CustomerDetails } from "@/lib/order/customer";
 import { isInServiceArea } from "@/lib/service-area";
 
 // One-time card payment via the Square Payments API.
@@ -53,6 +53,19 @@ export async function POST(req: Request) {
     lastName: customer.lastName,
   };
 
+  // The card's billing address — same as delivery unless they said otherwise.
+  const b = billingAddressOf(customer);
+  const billingAddress = {
+    addressLine1: b.address1,
+    addressLine2: b.address2 || undefined,
+    locality: b.city,
+    administrativeDistrictLevel1: b.state,
+    postalCode: b.zip,
+    country: "US" as const,
+    firstName: customer.firstName,
+    lastName: customer.lastName,
+  };
+
   try {
     const resp = await client.payments.create({
       sourceId,
@@ -62,7 +75,7 @@ export async function POST(req: Request) {
       buyerEmailAddress: customer.email,
       buyerPhoneNumber: customer.phone || undefined,
       shippingAddress: deliveryAddress,
-      billingAddress: deliveryAddress,
+      billingAddress,
       note: typeof note === "string" && note ? note : undefined,
     });
     return NextResponse.json({

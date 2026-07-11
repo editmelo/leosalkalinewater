@@ -1,6 +1,6 @@
 "use client";
 import { Field, inputClass } from "@/components/ui/Field";
-import type { CustomerDetails } from "@/lib/order/customer";
+import type { Address, CustomerDetails } from "@/lib/order/customer";
 
 export function CustomerDetailsForm({
   value,
@@ -11,6 +11,9 @@ export function CustomerDetailsForm({
 }) {
   function set<K extends keyof CustomerDetails>(key: K, v: CustomerDetails[K]) {
     onChange({ ...value, [key]: v });
+  }
+  function setBilling<K extends keyof Address>(key: K, v: Address[K]) {
+    onChange({ ...value, billing: { ...value.billing, [key]: v } });
   }
 
   return (
@@ -108,6 +111,79 @@ export function CustomerDetailsForm({
             onChange={(e) => set("zip", e.target.value)}
           />
         </Field>
+      </div>
+
+      {/* Billing address */}
+      <div className="border-t border-black/5 pt-4">
+        <label className="flex cursor-pointer items-center gap-2">
+          <input
+            type="checkbox"
+            className="h-4 w-4 rounded border-black/20 text-brand-blue focus-visible:ring-2 focus-visible:ring-brand-aqua/50"
+            checked={value.billingSameAsDelivery}
+            onChange={(e) => set("billingSameAsDelivery", e.target.checked)}
+          />
+          <span className="text-sm font-semibold text-brand-navy">
+            Billing address is the same as my delivery address
+          </span>
+        </label>
+
+        {!value.billingSameAsDelivery && (
+          <div className="mt-4 space-y-3">
+            <p className="font-[family-name:var(--font-heading)] text-xs font-bold uppercase tracking-wide text-brand-blue">
+              Billing address (on your card)
+            </p>
+
+            <Field label="Street address">
+              <input
+                className={inputClass}
+                autoComplete="billing address-line1"
+                value={value.billing.address1}
+                onChange={(e) => setBilling("address1", e.target.value)}
+              />
+            </Field>
+
+            <Field label="Apt / Suite (optional)">
+              <input
+                className={inputClass}
+                autoComplete="billing address-line2"
+                value={value.billing.address2}
+                onChange={(e) => setBilling("address2", e.target.value)}
+              />
+            </Field>
+
+            <div className="grid gap-3 sm:grid-cols-3">
+              <Field label="City">
+                <input
+                  className={inputClass}
+                  autoComplete="billing address-level2"
+                  value={value.billing.city}
+                  onChange={(e) => setBilling("city", e.target.value)}
+                />
+              </Field>
+              <Field label="State">
+                <input
+                  className={inputClass}
+                  autoComplete="billing address-level1"
+                  value={value.billing.state}
+                  onChange={(e) => setBilling("state", e.target.value)}
+                />
+              </Field>
+              <Field label="ZIP">
+                <input
+                  className={inputClass}
+                  inputMode="numeric"
+                  autoComplete="billing postal-code"
+                  value={value.billing.zip}
+                  onChange={(e) => setBilling("zip", e.target.value)}
+                />
+              </Field>
+            </div>
+
+            <p className="text-xs text-brand-text/50">
+              Your billing address can be anywhere — only the <b>delivery</b> address has to be in our service area.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
