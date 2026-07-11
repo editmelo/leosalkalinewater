@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
 import { computeTotals, billingDisplay, formatUsd } from "@/lib/order/pricing";
-import { NEW_CUSTOMER_DEPOSIT_CENTS } from "@/lib/order/products";
+import { NEW_CUSTOMER_DEPOSIT_CENTS, FREQUENCY_NAMES } from "@/lib/order/products";
 import type { SimpleFrequency } from "@/lib/order/types";
 
 // Build-your-own model: pick jugs + frequency. Subscriptions bill every 4 weeks,
@@ -99,7 +99,12 @@ export function SimpleOrder() {
                     return (
                       <button key={f} className={pill(frequency === f, "w-full px-4 py-3 text-sm")} aria-pressed={frequency === f} onClick={() => setFrequency(f)}>
                         <span className="flex items-center justify-between gap-2">
-                          <span>{f === "One-Time" ? "One-Time (single delivery)" : `${f} Delivery`}</span>
+                          <span className="text-left">
+                            <span className="block font-bold">{FREQUENCY_NAMES[f]}</span>
+                            <span className="block text-xs opacity-75">
+                              {f === "One-Time" ? "One-time delivery" : `${f} delivery`}
+                            </span>
+                          </span>
                           <span className={frequency === f ? "opacity-90" : "text-brand-blue"}>
                             {formatUsd(d.amountCents)}
                             {d.cadenceLabel}
@@ -137,20 +142,29 @@ export function SimpleOrder() {
                 <span className="text-xl font-extrabold text-brand-blue">{formatUsd(amountCents)}</span>
               </div>
               {firstTime && (
-                <div className="mt-3 space-y-1 border-t border-black/5 pt-3 text-sm text-brand-text/70">
-                  <div className="flex items-center justify-between">
-                    <span>+ Refundable jug deposit (one-time)</span>
-                    <span className="font-semibold">{formatUsd(depositCents)}</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>+ Rechargeable pump (yours to keep)</span>
-                    <span className="font-semibold">{formatUsd(pumpCents)}</span>
+                <div className="mt-3 border-t border-black/5 pt-3">
+                  <p className="font-[family-name:var(--font-heading)] text-xs font-bold uppercase tracking-wide text-brand-green">
+                    First Pour — Starter Kit (added to your first order)
+                  </p>
+                  <div className="mt-2 space-y-1 text-sm text-brand-text/70">
+                    <div className="flex items-center justify-between">
+                      <span>First Fill &amp; Delivery</span>
+                      <span className="font-semibold text-brand-green">Included</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Refundable jug deposit</span>
+                      <span className="font-semibold">{formatUsd(depositCents)}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Rechargeable pump — yours to keep!</span>
+                      <span className="font-semibold">{formatUsd(pumpCents)}</span>
+                    </div>
                   </div>
                 </div>
               )}
               <p className="mt-3 text-xs text-brand-text/60">
                 {firstTime
-                  ? `Your first order includes First Fill & Delivery, a one-time refundable ${formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} jug deposit, and a Rechargeable Pump (yours to keep!). The deposit is returned when jugs come back in good condition. `
+                  ? `The ${formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} deposit is a one-time flat charge (any number of jugs) and is returned when your jugs come back in good condition. `
                   : "Returning customers exchange empty jugs on delivery — no new deposit. "}
                 Delivery days are assigned by your ZIP route.
               </p>

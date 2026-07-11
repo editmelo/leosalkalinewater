@@ -42,3 +42,11 @@ export const SIMPLE_FREQUENCY_BASE_CENTS: Record<SimpleFrequency, number> = {
   Biweekly: 3000,
   Weekly: 5500,
 };
+
+// Leo's branded tier names mapped onto the build-your-own frequencies.
+// ("First Pour" is the starter kit auto-included on a first-time customer's first order.)
+export const FREQUENCY_NAMES: Record<SimpleFrequency, string> = {
+  "One-Time": "Top Off",
+  Biweekly: "Stay Balanced",
+  Weekly: "Fully Hydrated",
+};

@@ -96,25 +96,32 @@ export function SquarePaymentForm({
     return <p className="text-sm text-brand-text/70">Card payments are being connected — check back soon.</p>;
   }
 
-  if (processing) {
-    return (
-      <div className="py-6">
-        <LoadingBottle label="Processing your payment…" />
-      </div>
-    );
-  }
-
+  // NOTE: the card container must stay mounted at all times. Square attaches an iframe to
+  // it, so unmounting it (e.g. while processing) destroys the card form and the customer
+  // can't correct their details after a decline.
   return (
     <div className="space-y-4">
       <div ref={containerRef} className="min-h-[90px]" />
+
       {error && (
-        <p role="alert" className="text-sm text-red-600">
-          {error}
-        </p>
+        <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-3">
+          <p className="text-sm font-semibold text-red-700">{error}</p>
+          <p className="mt-0.5 text-xs text-red-600">
+            Check your card details above and try again, or use a different card.
+          </p>
+        </div>
       )}
-      <Button onClick={handlePay} variant="primary" className="w-full" disabled={!ready}>
-        {ready ? `Pay ${formatUsd(amountCents)}` : "Loading secure card form…"}
-      </Button>
+
+      {processing ? (
+        <div className="py-2">
+          <LoadingBottle label="Processing your payment…" />
+        </div>
+      ) : (
+        <Button onClick={handlePay} variant="primary" className="w-full" disabled={!ready}>
+          {ready ? `Pay ${formatUsd(amountCents)}` : "Loading secure card form…"}
+        </Button>
+      )}
+
       <p className="text-center text-xs text-brand-text/50">
         Secured by Square. Your card details never touch our servers.
       </p>
