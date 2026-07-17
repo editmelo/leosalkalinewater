@@ -21,7 +21,7 @@ export default function AboutPage() {
           <Container className="max-w-3xl text-center">
             <p className="font-[family-name:var(--font-heading)] text-xs font-bold uppercase tracking-[0.2em] text-[#9fe0c0]">Est. 2019</p>
             <h1 className="mt-3 text-4xl font-extrabold sm:text-5xl">About Leo&apos;s Alkaline Water</h1>
-            <p className="tagline mt-3 text-2xl text-[#cdeefb]">We heal the Water, you heal yourself.</p>
+            <p className="tagline mt-3 text-2xl text-[#cdeefb]">We steward the Water. You steward your well-being.</p>
           </Container>
         </Section>
         <Mission />

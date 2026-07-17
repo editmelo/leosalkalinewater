@@ -8,7 +8,7 @@ export function Footer() {
         <div className="md:col-span-2">
           <div className="font-[family-name:var(--font-heading)] text-lg font-extrabold text-white">LEO&apos;S ALKALINE WATER</div>
           <p className="mt-2 max-w-xs opacity-80">Premium alkaline water, delivered fresh across Indianapolis. Powered with Kangen Water™.</p>
-          <p className="tagline mt-3 text-[#cdeefb]">We heal the Water, you heal yourself.</p>
+          <p className="tagline mt-3 text-[#cdeefb]">We steward the Water. You steward your well-being.</p>
         </div>
         <div>
           <h4 className="mb-3 text-xs font-bold uppercase tracking-wider text-white">Explore</h4>
