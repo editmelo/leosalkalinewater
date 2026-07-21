@@ -14,10 +14,11 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
     if (extraJugs > 0) {
       lines.push({ label: "Additional jugs", qty: extraJugs, unitPriceCents: ADDON_JUG_CENTS });
     }
-    // First-time customers get the starter add-ons: a single flat refundable jug deposit
-    // (one $15 charge regardless of jug count) + a rechargeable pump.
-    const depositCents = sel.firstTime ? NEW_CUSTOMER_DEPOSIT_CENTS : 0;
-    const pumpCents = sel.firstTime ? PUMP_CENTS : 0;
+    // First-time customers can add the starter items — a single flat refundable jug
+    // deposit ($15, any jug count) and/or a rechargeable pump ($10). Both optional;
+    // default to included when first-time (addDeposit/addPump undefined → true).
+    const depositCents = sel.firstTime && (sel.addDeposit ?? true) ? NEW_CUSTOMER_DEPOSIT_CENTS : 0;
+    const pumpCents = sel.firstTime && (sel.addPump ?? true) ? PUMP_CENTS : 0;
     return { lines, subtotalCents: base + extraJugs * ADDON_JUG_CENTS, depositCents, pumpCents };
   }
 
@@ -32,24 +33,45 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
   return { lines, subtotalCents: plan.priceCents + extraJugs * ADDON_JUG_CENTS, depositCents: 0, pumpCents: 0 };
 }
 
-// How to present the water price. Subscriptions are charged the full cycle amount
-// (Weekly $55, Biweekly $30 — plus any extra jugs) once every 4 weeks. That's
-// effectively "monthly", but on a 4-week cycle so short months don't cost a billing
-// period. One-time orders are a single charge.
+// How to present the water price.
+// MARKETING (browse surfaces): lead with the smaller per-delivery figure — Weekly
+//   $55/4wk → $13.75/week, Biweekly $30/4wk → $15 per delivery — so the customer sees
+//   a low, cadence-aligned number.
+// CHECKOUT (cart/pay): show the real amount charged (the full $55 / $30) every 4 weeks,
+//   so it's completely transparent that it's a recurring subscription.
 export function billingDisplay(sel: OrderSelection): {
-  amountCents: number; // charged per cycle (or once, for one-time)
+  amountCents: number; // the real charge per cycle (or once) — use at checkout
   recurring: boolean;
-  cadenceLabel: string; // "/month" | ""
-  cadenceNote: string; // "Billed every 4 weeks" | ""
+  perDeliveryCents: number; // marketing headline — per delivery
+  perDeliveryUnit: string; // "/week" | " / 2 weeks" | ""
+  cadenceNote: string; // e.g. "$55.00 billed every 4 weeks" | ""
 } {
   const { subtotalCents } = computeTotals(sel);
-  const recurring =
-    sel.kind === "simple" ? sel.frequency !== "One-Time" : getPlan(sel.planId).billing === "monthly";
+  if (sel.kind === "simple" && sel.frequency === "Weekly") {
+    return {
+      amountCents: subtotalCents,
+      recurring: true,
+      perDeliveryCents: Math.round(subtotalCents / 4),
+      perDeliveryUnit: "/week",
+      cadenceNote: `${formatUsd(subtotalCents)} billed every 4 weeks`,
+    };
+  }
+  if (sel.kind === "simple" && sel.frequency === "Biweekly") {
+    return {
+      amountCents: subtotalCents,
+      recurring: true,
+      perDeliveryCents: Math.round(subtotalCents / 2),
+      perDeliveryUnit: " / 2 weeks",
+      cadenceNote: `${formatUsd(subtotalCents)} billed every 4 weeks`,
+    };
+  }
+  const recurring = sel.kind === "plan" && getPlan(sel.planId).billing === "monthly";
   return {
     amountCents: subtotalCents,
     recurring,
-    cadenceLabel: recurring ? "/month" : "",
-    cadenceNote: recurring ? "Billed every 4 weeks" : "",
+    perDeliveryCents: subtotalCents,
+    perDeliveryUnit: "",
+    cadenceNote: recurring ? `${formatUsd(subtotalCents)} billed every 4 weeks` : "",
   };
 }
 

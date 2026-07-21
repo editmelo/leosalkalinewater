@@ -3,8 +3,8 @@ import { Button } from "@/components/ui/Button";
 
 const PLAN_SUMMARY = [
   { label: "First Pour · Starter Kit", price: "$45" },
-  { label: "Stay Balanced · Bi-Weekly", price: "$30/mo" },
-  { label: "Fully Hydrated · Weekly", price: "$55/mo" },
+  { label: "Stay Balanced · Bi-Weekly", price: "$15 / 2 wks" },
+  { label: "Fully Hydrated · Weekly", price: "$13.75/wk" },
   { label: "Top Off · One-Time", price: "$20" },
 ];
 
@@ -14,8 +14,8 @@ export function QuickOrder() {
       <p className="font-[family-name:var(--font-heading)] text-xs font-bold uppercase tracking-wide text-brand-blue">
         Choose Your Plan
       </p>
-      <h3 className="mt-1 font-extrabold text-brand-navy">Local Alkaline Water Delivery</h3>
-      <p className="mb-4 mt-1 text-sm text-brand-text/70">Starting at $20.</p>
+      <h3 className="mt-1 font-extrabold text-brand-navy">Indy&apos;s Alkaline Water Delivery</h3>
+      <p className="mb-4 mt-1 text-sm text-brand-text/70">Subscriptions from $13.75/week.</p>
       <ul className="mb-5 space-y-2">
         {PLAN_SUMMARY.map(({ label, price }) => (
           <li key={label} className="flex items-center justify-between text-sm">

@@ -185,6 +185,15 @@ export function CustomerDetailsForm({
           </div>
         )}
       </div>
+
+      <Field label="Delivery directions (optional)">
+        <textarea
+          className={`${inputClass} min-h-[72px] resize-y`}
+          placeholder="Gate code, where to leave the jugs, dog in yard, etc."
+          value={value.directions}
+          onChange={(e) => set("directions", e.target.value)}
+        />
+      </Field>
     </div>
   );
 }

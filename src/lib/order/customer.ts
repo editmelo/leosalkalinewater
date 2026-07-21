@@ -26,6 +26,9 @@ export interface CustomerDetails {
   // Billing address — the card's address. Often the same, so default to that.
   billingSameAsDelivery: boolean;
   billing: Address;
+
+  // Optional delivery instructions ("gate code 1234", "leave on side porch").
+  directions: string;
 }
 
 export const EMPTY_ADDRESS: Address = {
@@ -48,6 +51,7 @@ export const EMPTY_CUSTOMER: CustomerDetails = {
   zip: "",
   billingSameAsDelivery: true,
   billing: { ...EMPTY_ADDRESS },
+  directions: "",
 };
 
 const filled = (s: string) => s.trim().length > 0;

@@ -1,8 +1,7 @@
 "use client";
 import { useMemo, useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
-import { computeTotals, formatUsd } from "@/lib/order/pricing";
-import { NEW_CUSTOMER_DEPOSIT_CENTS } from "@/lib/order/products";
+import { computeTotals, billingDisplay, formatUsd } from "@/lib/order/pricing";
 import { buildOrderPayload } from "@/lib/order/payload";
 import { EMPTY_CUSTOMER, isCustomerComplete, type CustomerDetails } from "@/lib/order/customer";
 import { isSquareClientConfigured, IS_SQUARE_SANDBOX } from "@/lib/square/config";
@@ -29,18 +28,29 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
     [items],
   );
 
-  // A human-readable summary that rides along to Square (shows on the payment in Leo's dashboard).
-  const note = useMemo(
+  // Recurring (subscription) amount that will re-bill every 4 weeks.
+  const recurringCents = useMemo(
     () =>
-      items
-        .map((it) => {
-          const p = buildOrderPayload(it);
-          return `${it.jugCount} jug(s) · ${p.planName} · ${p.deliveryFrequency}`;
-        })
-        .join(" | ")
-        .slice(0, 480),
+      items.reduce((sum, it) => {
+        const d = billingDisplay(it);
+        return sum + (d.recurring ? d.amountCents : 0);
+      }, 0),
     [items],
   );
+  const hasRecurring = recurringCents > 0;
+
+  // A human-readable summary that rides along to Square (shows on the payment in Leo's dashboard).
+  const note = useMemo(() => {
+    const lines = items.map((it) => {
+      const p = buildOrderPayload(it);
+      const d = billingDisplay(it);
+      return `${it.jugCount} jug(s) · ${p.planName} · ${p.deliveryFrequency}${
+        d.recurring ? " (subscription — every 4 weeks)" : ""
+      }`;
+    });
+    const dir = customer.directions.trim() ? ` | Directions: ${customer.directions.trim()}` : "";
+    return (lines.join(" | ") + dir).slice(0, 480);
+  }, [items, customer.directions]);
 
   const detailsOk = isCustomerComplete(customer);
 
@@ -61,9 +71,16 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
           <span className="font-[family-name:var(--font-heading)] font-bold text-brand-navy">Total due today</span>
           <span className="text-xl font-extrabold text-brand-blue">{formatUsd(totalCents)}</span>
         </div>
+
+        {hasRecurring && (
+          <p className="mb-4 rounded-lg border border-brand-blue/20 bg-brand-blue/5 px-3 py-2 text-xs font-semibold text-brand-blue">
+            🔁 This is a recurring subscription. You&apos;ll be charged {formatUsd(totalCents)} today, then{" "}
+            {formatUsd(recurringCents)} automatically every 4 weeks. Cancel anytime.
+          </p>
+        )}
         <p className="mb-5 text-xs text-brand-text/60">
-          First-time orders include a one-time refundable {formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)} jug deposit and a
-          rechargeable pump. Subscriptions bill automatically every 4 weeks.
+          Your total due today includes any one-time starter items you selected. Delivery days are assigned by your ZIP
+          route.
         </p>
 
         {isSquareClientConfigured() && IS_SQUARE_SANDBOX && (

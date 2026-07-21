@@ -17,7 +17,9 @@ export interface SimpleSelection {
   jugCount: number;
   zip: string;
   frequency: SimpleFrequency;
-  firstTime: boolean; // new customers pay a refundable $15/jug deposit; returning (jug exchange) don't
+  firstTime: boolean; // returning (jug exchange) customers skip the starter items
+  addDeposit?: boolean; // first-time only; optional. undefined → included by default
+  addPump?: boolean; // first-time only; optional. undefined → included by default
 }
 
 export type OrderSelection = PlanSelection | SimpleSelection;

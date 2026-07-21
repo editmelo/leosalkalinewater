@@ -55,23 +55,27 @@ describe("computeTotals — build-your-own (Store 2)", () => {
   });
 });
 
-describe("billingDisplay — charged every 4 weeks", () => {
-  it("Weekly charges the full $55 cycle amount, labelled /month, billed every 4 weeks", () => {
+describe("billingDisplay — weekly-forward marketing, full charge every 4 weeks", () => {
+  it("Weekly: charges the full $55 cycle amount, shown as $13.75/week", () => {
     const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Weekly", firstTime: false });
-    expect(d.amountCents).toBe(5500);
-    expect(d.cadenceLabel).toBe("/month");
-    expect(d.cadenceNote).toBe("Billed every 4 weeks");
+    expect(d.amountCents).toBe(5500); // real charge every 4 weeks
+    expect(d.perDeliveryCents).toBe(1375); // marketing headline: $13.75/week
+    expect(d.perDeliveryUnit).toBe("/week");
     expect(d.recurring).toBe(true);
+    expect(d.cadenceNote).toBe("$55.00 billed every 4 weeks");
   });
-  it("Biweekly charges the full $30 cycle amount", () => {
+  it("Biweekly: charges the full $30 cycle amount, shown as $15 per delivery", () => {
     const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly", firstTime: false });
     expect(d.amountCents).toBe(3000);
-    expect(d.cadenceLabel).toBe("/month");
+    expect(d.perDeliveryCents).toBe(1500); // $15 per 2-week delivery
+    expect(d.perDeliveryUnit).toBe(" / 2 weeks");
+    expect(d.recurring).toBe(true);
   });
-  it("One-Time is a single charge with no cadence label", () => {
+  it("One-Time is a single charge with no per-delivery unit", () => {
     const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "One-Time", firstTime: false });
     expect(d.amountCents).toBe(2000);
-    expect(d.cadenceLabel).toBe("");
+    expect(d.perDeliveryCents).toBe(2000);
+    expect(d.perDeliveryUnit).toBe("");
     expect(d.recurring).toBe(false);
   });
 });

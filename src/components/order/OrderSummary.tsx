@@ -58,15 +58,20 @@ export function OrderSummary() {
             </div>
             <p className="mt-2 font-bold">
               {formatUsd(d.amountCents)}
-              {d.cadenceLabel}
               {d.recurring ? (
-                <span className="text-sm font-normal text-brand-text/60"> · billed every 4 weeks</span>
+                <span className="text-sm font-normal text-brand-text/60"> every 4 weeks</span>
               ) : null}
             </p>
             {(t.depositCents > 0 || t.pumpCents > 0) && (
               <p className="text-sm text-brand-text/70">
-                + {formatUsd(t.depositCents)} refundable deposit
-                {t.pumpCents > 0 ? ` + ${formatUsd(t.pumpCents)} rechargeable pump` : ""} (one-time)
+                {[
+                  t.depositCents > 0 ? `${formatUsd(t.depositCents)} refundable deposit` : null,
+                  t.pumpCents > 0 ? `${formatUsd(t.pumpCents)} rechargeable pump` : null,
+                ]
+                  .filter(Boolean)
+                  .map((s) => `+ ${s}`)
+                  .join("  ")}{" "}
+                <span className="text-brand-text/50">(one-time)</span>
               </p>
             )}
           </Card>
