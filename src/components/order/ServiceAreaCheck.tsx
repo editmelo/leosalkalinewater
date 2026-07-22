@@ -2,13 +2,13 @@
 import { useState } from "react";
 import { isInServiceArea } from "@/lib/service-area";
 import { Field, inputClass } from "@/components/ui/Field";
-import { NotifyMeForm } from "@/components/order/NotifyMeForm";
 
 export function ServiceAreaCheck({ zip, onZip, onStatus }: {
   zip: string; onZip: (z: string) => void; onStatus?: (ok: boolean) => void;
 }) {
   const [touched, setTouched] = useState(false);
   const ok = isInServiceArea(zip);
+  const show = touched && zip.trim().length >= 5;
   return (
     <div>
       <Field label="Delivery ZIP code">
@@ -17,11 +17,15 @@ export function ServiceAreaCheck({ zip, onZip, onStatus }: {
           onChange={(e) => { onZip(e.target.value); setTouched(true); onStatus?.(isInServiceArea(e.target.value)); }}
         />
       </Field>
-      {touched && zip.length >= 5 && !ok && (
-        <div className="mt-3 rounded-xl bg-brand-green/5 p-4 text-sm">
-          <p className="font-semibold text-brand-green">We don&apos;t currently service your area yet.</p>
-          <p className="mb-3 text-brand-text/70">Leave your email and we&apos;ll let you know the moment we reach you.</p>
-          <NotifyMeForm defaultZip={zip} />
+      {show && ok && (
+        <div className="mt-3 rounded-xl bg-brand-green/5 p-3 text-sm">
+          <p className="font-semibold text-brand-green">🎉 You&apos;re in our delivery zone — welcome to the Water Fam!</p>
+        </div>
+      )}
+      {show && !ok && (
+        <div className="mt-3 rounded-xl bg-brand-gold/10 p-3 text-sm">
+          <p className="font-semibold text-brand-navy">We don&apos;t serve your area yet — check back soon!</p>
+          <p className="text-brand-text/70">We&apos;re growing across the Indianapolis area.</p>
         </div>
       )}
     </div>
