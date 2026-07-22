@@ -1,5 +1,6 @@
 "use client";
 import { Field, inputClass } from "@/components/ui/Field";
+import { AddressAutocomplete } from "./AddressAutocomplete";
 import type { Address, CustomerDetails } from "@/lib/order/customer";
 
 export function CustomerDetailsForm({
@@ -64,6 +65,12 @@ export function CustomerDetailsForm({
           />
         </Field>
       </div>
+
+      <AddressAutocomplete
+        onPick={(a) =>
+          onChange({ ...value, address1: a.address1, city: a.city, state: a.state || value.state, zip: a.zip })
+        }
+      />
 
       <Field label="Street address">
         <input

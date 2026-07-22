@@ -30,13 +30,12 @@ export function SimpleOrder() {
   const [jugs, setJugs] = useState(2);
   const [frequency, setFrequency] = useState<SimpleFrequency>("Weekly");
   const [firstTime, setFirstTime] = useState(true);
-  const [addDeposit, setAddDeposit] = useState(true);
   const [addPump, setAddPump] = useState(true);
   const [zip, setZip] = useState("");
   const [confirming, setConfirming] = useState(false);
   const ready = isInServiceArea(zip);
 
-  const selection = { kind: "simple" as const, jugCount: jugs, frequency, zip, firstTime, addDeposit, addPump };
+  const selection = { kind: "simple" as const, jugCount: jugs, frequency, zip, firstTime, addPump };
   const totals = computeTotals(selection);
   const { amountCents, recurring, perDeliveryCents, perDeliveryUnit, cadenceNote } = billingDisplay(selection);
   const depositCents = totals.depositCents;
@@ -87,7 +86,7 @@ export function SimpleOrder() {
         <Field label="Delivery frequency">
           <div className="mt-2 space-y-2">
             {FREQUENCIES.map((f) => {
-              const d = billingDisplay({ kind: "simple", jugCount: jugs, frequency: f, zip, firstTime, addDeposit, addPump });
+              const d = billingDisplay({ kind: "simple", jugCount: jugs, frequency: f, zip, firstTime, addPump });
               return (
                 <button key={f} className={pill(frequency === f, "w-full px-4 py-3 text-sm")} aria-pressed={frequency === f} onClick={() => setFrequency(f)}>
                   <span className="flex items-center justify-between gap-2">
@@ -128,19 +127,18 @@ export function SimpleOrder() {
 
         {firstTime && (
           <div className="mt-3 space-y-2 rounded-xl border border-black/10 bg-white p-3">
-            <p className="text-xs font-semibold text-brand-text/60">Getting started (optional)</p>
-            <label className="flex cursor-pointer items-center justify-between gap-2 text-sm">
-              <span className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  className="h-4 w-4 rounded border-black/20 text-brand-blue focus-visible:ring-2 focus-visible:ring-brand-aqua/50"
-                  checked={addDeposit}
-                  onChange={(e) => setAddDeposit(e.target.checked)}
-                />
-                Refundable jug deposit <span className="text-xs text-brand-text/50">(returned with your jugs)</span>
+            <p className="text-xs font-semibold text-brand-text/60">Getting started</p>
+            {/* Deposit is required for new customers — shown, not optional. $15 per jug. */}
+            <div className="flex items-center justify-between gap-2 text-sm">
+              <span>
+                Refundable jug deposit{" "}
+                <span className="text-xs text-brand-text/50">
+                  ({formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)}/jug × {jugs}, returned with your jugs)
+                </span>
               </span>
-              <span className="font-semibold">{formatUsd(NEW_CUSTOMER_DEPOSIT_CENTS)}</span>
-            </label>
+              <span className="font-semibold">{formatUsd(depositCents)}</span>
+            </div>
+            {/* Pump is the optional one. */}
             <label className="flex cursor-pointer items-center justify-between gap-2 text-sm">
               <span className="flex items-center gap-2">
                 <input

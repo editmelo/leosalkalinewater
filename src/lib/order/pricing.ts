@@ -14,10 +14,9 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
     if (extraJugs > 0) {
       lines.push({ label: "Additional jugs", qty: extraJugs, unitPriceCents: ADDON_JUG_CENTS });
     }
-    // First-time customers can add the starter items — a single flat refundable jug
-    // deposit ($15, any jug count) and/or a rechargeable pump ($10). Both optional;
-    // default to included when first-time (addDeposit/addPump undefined → true).
-    const depositCents = sel.firstTime && (sel.addDeposit ?? true) ? NEW_CUSTOMER_DEPOSIT_CENTS : 0;
+    // First-time customers: a refundable $15-PER-JUG deposit (always included), plus an
+    // OPTIONAL $10 rechargeable pump (addPump undefined → included by default).
+    const depositCents = sel.firstTime ? qty * NEW_CUSTOMER_DEPOSIT_CENTS : 0;
     const pumpCents = sel.firstTime && (sel.addPump ?? true) ? PUMP_CENTS : 0;
     return { lines, subtotalCents: base + extraJugs * ADDON_JUG_CENTS, depositCents, pumpCents };
   }

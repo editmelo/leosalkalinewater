@@ -18,8 +18,7 @@ export interface SimpleSelection {
   zip: string;
   frequency: SimpleFrequency;
   firstTime: boolean; // returning (jug exchange) customers skip the starter items
-  addDeposit?: boolean; // first-time only; optional. undefined → included by default
-  addPump?: boolean; // first-time only; optional. undefined → included by default
+  addPump?: boolean; // first-time only; OPTIONAL rechargeable pump. undefined → included by default
 }
 
 export type OrderSelection = PlanSelection | SimpleSelection;

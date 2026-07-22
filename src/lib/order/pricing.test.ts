@@ -37,9 +37,9 @@ describe("computeTotals — build-your-own (Store 2)", () => {
     expect(computeTotals({ kind: "simple", jugCount: 2, zip: "46204", frequency: "One-Time", firstTime: false }).subtotalCents).toBe(3000);
   });
 
-  it("first-time customers add a FLAT $15 refundable deposit + a $10 pump, separate from the subtotal", () => {
+  it("first-time customers add a $15-PER-JUG refundable deposit + a $10 pump, separate from the subtotal", () => {
     const firstTime = computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: true });
-    expect(firstTime.depositCents).toBe(1500); // flat $15 — NOT multiplied by jug count
+    expect(firstTime.depositCents).toBe(4500); // $15 × 3 jugs
     expect(firstTime.pumpCents).toBe(1000); // one $10 rechargeable pump
     expect(firstTime.subtotalCents).toBe(7500); // water price unchanged by add-ons
     const returning = computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: false });
@@ -47,11 +47,17 @@ describe("computeTotals — build-your-own (Store 2)", () => {
     expect(returning.pumpCents).toBe(0);
   });
 
-  it("keeps the deposit flat at $15 no matter how many jugs", () => {
+  it("deposit is $15 per jug (1 jug → $15, 8 jugs → $120)", () => {
     const one = computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Weekly", firstTime: true });
     const many = computeTotals({ kind: "simple", jugCount: 8, zip: "46204", frequency: "Weekly", firstTime: true });
     expect(one.depositCents).toBe(1500);
-    expect(many.depositCents).toBe(1500);
+    expect(many.depositCents).toBe(12000);
+  });
+
+  it("the pump is optional (addPump: false removes only the pump)", () => {
+    const noPump = computeTotals({ kind: "simple", jugCount: 2, zip: "46204", frequency: "Weekly", firstTime: true, addPump: false });
+    expect(noPump.pumpCents).toBe(0);
+    expect(noPump.depositCents).toBe(3000); // deposit still applies ($15 × 2)
   });
 });
 
