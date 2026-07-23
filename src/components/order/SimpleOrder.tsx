@@ -38,7 +38,7 @@ function pill(active: boolean, extra: string) {
 export function SimpleOrder() {
   const router = useRouter();
   const { addItem } = useCart();
-  const [jugs, setJugs] = useState(2);
+  const [jugs, setJugs] = useState(1);
   const [frequency, setFrequency] = useState<SimpleFrequency>("Weekly");
   const [firstTime, setFirstTime] = useState(true);
   const [pumpQty, setPumpQty] = useState(1);

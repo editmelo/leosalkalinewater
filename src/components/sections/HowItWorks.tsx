@@ -5,9 +5,9 @@ import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 
 const STEPS = [
-  { n: "1", t: "Pick your plan", d: "Bi-Weekly, Weekly, Pay as You Go, or the Starter Pack." },
-  { n: "2", t: "Add your jugs & ZIP", d: "Tell us how many 5-gallon jugs and confirm we serve your Indianapolis-area ZIP." },
-  { n: "3", t: "We deliver", d: "You hydrate. We handle the rest." },
+  { n: "1", t: "Build your delivery", d: "Just $15 per 5-gallon jug — choose how many you need and how often: one-time, weekly, or bi-weekly." },
+  { n: "2", t: "Confirm your area", d: "Enter your ZIP to make sure we deliver to you. We serve the Indianapolis area and set your day by route." },
+  { n: "3", t: "We deliver & swap", d: "Leave your empty jugs out and we'll exchange them for fresh ones. Stay hydrated — we handle the rest." },
 ];
 export function HowItWorks() {
   return (
