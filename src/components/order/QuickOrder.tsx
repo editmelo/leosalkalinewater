@@ -1,31 +1,18 @@
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 
-const PLAN_SUMMARY = [
-  { label: "First Pour · Starter Kit", price: "$45" },
-  { label: "Stay Balanced · Bi-Weekly", price: "$15 / 2 wks" },
-  { label: "Fully Hydrated · Weekly", price: "$13.75/wk" },
-  { label: "Top Off · One-Time", price: "$20" },
-];
-
 export function QuickOrder() {
   return (
-    <Card className="w-full max-w-sm">
+    <Card className="mx-auto w-full max-w-sm text-center">
       <p className="font-[family-name:var(--font-heading)] text-xs font-bold uppercase tracking-wide text-brand-blue">
-        Choose Your Plan
+        Indy&apos;s Alkaline Water Delivery
       </p>
-      <h3 className="mt-1 font-extrabold text-brand-navy">Indy&apos;s Alkaline Water Delivery</h3>
-      <p className="mb-4 mt-1 text-sm text-brand-text/70">Subscriptions from $13.75/week.</p>
-      <ul className="mb-5 space-y-2">
-        {PLAN_SUMMARY.map(({ label, price }) => (
-          <li key={label} className="flex items-center justify-between text-sm">
-            <span className="text-brand-text">{label}</span>
-            <span className="font-semibold text-brand-blue">{price}</span>
-          </li>
-        ))}
-      </ul>
+      <p className="mt-3 text-4xl font-extrabold text-brand-navy">
+        $15<span className="text-lg font-semibold text-brand-text/60"> / jug</span>
+      </p>
+      <p className="mb-5 mt-1 text-sm text-brand-text/70">Starting at $15. Pick your jugs &amp; how often.</p>
       <Button href="/store" variant="primary" className="w-full">
-        View plans &amp; order
+        Order Now
       </Button>
     </Card>
   );

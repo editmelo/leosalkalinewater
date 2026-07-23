@@ -30,23 +30,18 @@ export const JUG_QUANTITIES = [1, 2, 3, 4, 6, 8] as const;
 
 // Every plan's base price includes 1 jug; each additional jug is +$10.
 export const ADDON_JUG_CENTS = 1000;
-// First-time customers only: one-time refundable jug deposit (per jug; covers damage / non-return).
+// First-time customers only: one-time refundable jug deposit, $15 PER JUG (damage / non-return).
 export const NEW_CUSTOMER_DEPOSIT_CENTS = 1500;
-// First-time customers only: one-time rechargeable pump — yours to keep.
-export const PUMP_CENTS = 1000;
-// Store 2 (build-your-own) price per 4-week billing cycle, by frequency; each includes 1 jug,
-// then +$10 per additional jug (ADDON_JUG_CENTS). Displayed as a per-week / per-delivery rate:
-// Weekly $55/cycle → $13.75/week; Biweekly $30/cycle → $15/bi-weekly; One-Time $20 (single charge).
-export const SIMPLE_FREQUENCY_BASE_CENTS: Record<SimpleFrequency, number> = {
-  "One-Time": 2000,
-  Biweekly: 3000,
-  Weekly: 5500,
-};
+// Rechargeable pump — $15 each, optional, quantity selectable (first-time only).
+export const PUMP_CENTS = 1500;
 
-// Leo's branded tier names mapped onto the build-your-own frequencies.
-// ("First Pour" is the starter kit auto-included on a first-time customer's first order.)
-export const FREQUENCY_NAMES: Record<SimpleFrequency, string> = {
-  "One-Time": "Top Off",
-  Biweekly: "Stay Balanced",
-  Weekly: "Fully Hydrated",
+// The store: flat $15 per 5-gallon jug, per delivery. No tiers, no per-jug add-on math.
+export const JUG_PRICE_CENTS = 1500;
+
+// How many deliveries fall in one 4-week billing cycle, by frequency. Used so a Weekly
+// customer sees "$15/week" but is billed the full 4-week amount once every 4 weeks.
+export const SIMPLE_DELIVERIES_PER_CYCLE: Record<SimpleFrequency, number> = {
+  "One-Time": 1,
+  Weekly: 4,
+  Biweekly: 2,
 };

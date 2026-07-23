@@ -1,24 +1,30 @@
-import { getPlan, ADDON_JUG_CENTS, SIMPLE_FREQUENCY_BASE_CENTS, NEW_CUSTOMER_DEPOSIT_CENTS, PUMP_CENTS } from "./products";
+import {
+  getPlan,
+  ADDON_JUG_CENTS,
+  JUG_PRICE_CENTS,
+  SIMPLE_DELIVERIES_PER_CYCLE,
+  NEW_CUSTOMER_DEPOSIT_CENTS,
+  PUMP_CENTS,
+} from "./products";
 import type { OrderSelection, OrderTotals, OrderLine } from "./types";
 
 export function computeTotals(sel: OrderSelection): OrderTotals {
   const qty = Math.max(1, sel.jugCount);
   const extraJugs = qty - 1;
 
-  // Store 2 (build-your-own): base price varies by frequency; +$10 per additional jug.
+  // The store: flat $15 per jug, per delivery. subtotalCents is what's actually charged
+  // per billing event — a single delivery for One-Time, or a full 4-week cycle for
+  // Weekly (×4 deliveries) / Bi-Weekly (×2 deliveries).
   if (sel.kind === "simple") {
-    const base = SIMPLE_FREQUENCY_BASE_CENTS[sel.frequency];
+    const perDelivery = qty * JUG_PRICE_CENTS;
+    const subtotalCents = perDelivery * SIMPLE_DELIVERIES_PER_CYCLE[sel.frequency];
     const lines: OrderLine[] = [
-      { label: `Alkaline Water Delivery — ${sel.frequency} (1 jug included)`, qty: 1, unitPriceCents: base },
+      { label: "5-Gallon Alkaline Water", qty, unitPriceCents: JUG_PRICE_CENTS },
     ];
-    if (extraJugs > 0) {
-      lines.push({ label: "Additional jugs", qty: extraJugs, unitPriceCents: ADDON_JUG_CENTS });
-    }
-    // First-time customers: a refundable $15-PER-JUG deposit (always included), plus an
-    // OPTIONAL $10 rechargeable pump (addPump undefined → included by default).
+    // First-time: refundable $15-per-jug deposit (always), plus optional $15 pumps (default 1).
     const depositCents = sel.firstTime ? qty * NEW_CUSTOMER_DEPOSIT_CENTS : 0;
-    const pumpCents = sel.firstTime && (sel.addPump ?? true) ? PUMP_CENTS : 0;
-    return { lines, subtotalCents: base + extraJugs * ADDON_JUG_CENTS, depositCents, pumpCents };
+    const pumpCents = sel.firstTime ? Math.max(0, sel.pumpQty ?? 1) * PUMP_CENTS : 0;
+    return { lines, subtotalCents, depositCents, pumpCents };
   }
 
   // Store 1 (named plans): base price includes 1 jug; every additional jug adds $10.
