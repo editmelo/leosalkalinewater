@@ -18,6 +18,12 @@ const FREQUENCY_LABEL: Record<SimpleFrequency, string> = {
   Weekly: "Weekly Delivery",
   Biweekly: "Bi-Weekly Delivery",
 };
+// Short labels for the pill buttons (the full labels are used in the cart/summary).
+const FREQUENCY_SHORT: Record<SimpleFrequency, string> = {
+  "One-Time": "One-Time",
+  Weekly: "Weekly",
+  Biweekly: "Bi-Weekly",
+};
 
 const pillBase =
   "rounded-lg border font-semibold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-aqua/50";
@@ -88,21 +94,12 @@ export function SimpleOrder() {
 
       <div className="mt-6 text-left">
         <Field label="Delivery frequency">
-          <div className="mt-2 space-y-2">
-            {FREQUENCIES.map((f) => {
-              const d = billingDisplay({ kind: "simple", jugCount: jugs, frequency: f, zip, firstTime, pumpQty });
-              return (
-                <button key={f} className={pill(frequency === f, "w-full px-4 py-3 text-sm")} aria-pressed={frequency === f} onClick={() => setFrequency(f)}>
-                  <span className="flex items-center justify-between gap-2">
-                    <span className="font-bold">{FREQUENCY_LABEL[f]}</span>
-                    <span className={frequency === f ? "opacity-95" : "text-brand-blue"}>
-                      {formatUsd(d.perDeliveryCents)}
-                      {d.perDeliveryUnit}
-                    </span>
-                  </span>
-                </button>
-              );
-            })}
+          <div className="mt-2 grid grid-cols-3 gap-2">
+            {FREQUENCIES.map((f) => (
+              <button key={f} className={pill(frequency === f, "py-3 text-sm")} aria-pressed={frequency === f} onClick={() => setFrequency(f)}>
+                {FREQUENCY_SHORT[f]}
+              </button>
+            ))}
           </div>
         </Field>
       </div>
