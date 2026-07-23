@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { isInServiceArea } from "@/lib/service-area";
 import { Field, inputClass } from "@/components/ui/Field";
+import { WaitlistForm } from "./WaitlistForm";
 
 export function ServiceAreaCheck({ zip, onZip, onStatus }: {
   zip: string; onZip: (z: string) => void; onStatus?: (ok: boolean) => void;
@@ -25,7 +26,8 @@ export function ServiceAreaCheck({ zip, onZip, onStatus }: {
       {show && !ok && (
         <div className="mt-3 rounded-xl bg-brand-gold/10 p-3 text-sm">
           <p className="font-semibold text-brand-navy">We don&apos;t serve your area yet — check back soon!</p>
-          <p className="text-brand-text/70">We&apos;re growing across the Indianapolis area.</p>
+          <p className="text-brand-text/70">We&apos;re growing across the Indianapolis area — leave your info and we&apos;ll reach out when we get to you.</p>
+          <WaitlistForm zip={zip} />
         </div>
       )}
     </div>

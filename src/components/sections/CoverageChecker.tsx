@@ -3,6 +3,7 @@ import { useState } from "react";
 import { isInServiceArea } from "@/lib/service-area";
 import { inputClass } from "@/components/ui/Field";
 import { Button } from "@/components/ui/Button";
+import { WaitlistForm } from "@/components/order/WaitlistForm";
 
 // Standalone "do we deliver to you?" checker — enter a ZIP, get an instant answer.
 // No email capture, no backend.
@@ -45,9 +46,10 @@ export function CoverageChecker() {
             We don&apos;t serve your area yet — check back soon!
           </p>
           <p className="mt-1 text-sm text-brand-text/70">
-            We&apos;re growing fast across the Indianapolis area. Follow along and we&apos;ll be in your neighborhood
-            before you know it.
+            We&apos;re growing fast across the Indianapolis area — leave your info and you&apos;ll be first to know when
+            we reach you.
           </p>
+          <WaitlistForm zip={zip} />
         </div>
       )}
     </div>
