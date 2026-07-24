@@ -4,10 +4,10 @@ import { CONTACT } from "@/lib/brand";
 export function Footer() {
   return (
     <footer className="bg-brand-navy text-sm text-[#cfe3f0]">
-      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 sm:px-8 md:grid-cols-4">
+      <div className="mx-auto grid max-w-6xl gap-8 px-5 py-14 text-center sm:px-8 md:grid-cols-4 md:text-left">
         <div className="md:col-span-2">
           <div className="font-[family-name:var(--font-heading)] text-lg font-extrabold text-white">LEO&apos;S ALKALINE WATER</div>
-          <p className="mt-2 max-w-xs opacity-80">Premium alkaline water, delivered fresh across Indianapolis. Powered with Kangen Water™.</p>
+          <p className="mx-auto mt-2 max-w-xs opacity-80 md:mx-0">Premium alkaline water, delivered fresh across Indianapolis. Powered with Kangen Water™.</p>
           <p className="tagline mt-3 text-[#cdeefb]">We steward the Water. You steward your well-being.</p>
         </div>
         <div>
