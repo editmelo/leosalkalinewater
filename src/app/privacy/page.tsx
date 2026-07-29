@@ -14,15 +14,16 @@ export default function PrivacyPage() {
       <h2>Information We Collect</h2>
       <p>
         When you place an order, sign up for delivery, or contact us, we may collect: your name,
-        email address, and phone number; your delivery address and ZIP code; order details (jug
-        quantity and delivery frequency); and payment information processed by our payment provider,
-        Square. We do not store your full card number.
+        email address, and phone number; your delivery address and ZIP code; order and subscription
+        details (jug quantity and delivery frequency); and payment information processed by our
+        payment provider, Square. We do not store your full card number.
       </p>
 
       <h2>How We Use It</h2>
       <p>
-        We use this information to process and deliver your orders, communicate with you about your
-        service, respond to inquiries, and improve our offerings.
+        We use this information to process and deliver your orders, manage your recurring
+        subscription, communicate with you about your service, respond to inquiries, and improve our
+        offerings.
       </p>
 
       <h2>Payment Processing (Square)</h2>
@@ -34,7 +35,7 @@ export default function PrivacyPage() {
 
       <h2>Email &amp; Notifications</h2>
       <p>
-        If you provide your email to place an order, we use it to send order and delivery updates. If you sign up to be notified when we reach your area, we use
+        If you provide your email to place or manage an order, we use it to send order and delivery updates. If you sign up to be notified when we reach your area, we use
         your email solely for that purpose. You can opt out of non-essential emails at any time.
       </p>
 

@@ -45,7 +45,7 @@ export function OrderSummary() {
                   {it.zip}
                 </p>
                 <p className="mt-1 text-xs text-brand-text/50">
-                  {d.recurring ? "Prepaid delivery cycle — one charge, no auto-renewal" : "One-time order"}
+                  {d.recurring ? "Recurring · auto-renews every 4 weeks · contact us to change or cancel" : "One-time order"}
                 </p>
               </div>
               <button

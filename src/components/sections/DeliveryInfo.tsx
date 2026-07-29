@@ -9,8 +9,8 @@ export function DeliveryInfo({ className = "" }: { className?: string }) {
           How Delivery Works
         </p>
         <p className="mt-4 text-lg leading-relaxed text-brand-text/85">
-          Our Water delivery service is designed for your convenience. Choose the delivery schedule that
-          fits your flow — weekly or every other week. Your delivery day is based on your address, so
+          Our Water delivery service is designed for your convenience. Choose the subscription that fits
+          your flow — weekly or every other week. Your delivery day is based on your address, so
           you&apos;ll always know when to expect us. On delivery day, simply place your empty jug(s) by
           your door for exchange, then bring your fresh Water inside and stay intentionally hydrated.
         </p>

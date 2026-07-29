@@ -28,8 +28,20 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
     [items],
   );
 
-  // Any multi-delivery item (Weekly/Bi-weekly) is a prepaid cycle — charged once, no auto-rebill.
-  const hasCycle = useMemo(() => items.some((it) => billingDisplay(it).recurring), [items]);
+  // Recurring (Weekly/Bi-weekly) orders auto-renew every 4 weeks. Track the renewing amount
+  // and require explicit authorization before charging — the disclosure + consent that
+  // auto-renewal (negative-option) billing legally needs.
+  const recurringCents = useMemo(
+    () =>
+      items.reduce((sum, it) => {
+        const d = billingDisplay(it);
+        return sum + (d.recurring ? d.amountCents : 0);
+      }, 0),
+    [items],
+  );
+  const hasCycle = recurringCents > 0;
+  const [consent, setConsent] = useState(false);
+  const canPay = isCustomerComplete(customer) && (!hasCycle || consent);
 
   // A human-readable summary that rides along to Square (shows on the payment in Leo's dashboard).
   const note = useMemo(() => {
@@ -37,7 +49,7 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
       const p = buildOrderPayload(it);
       const d = billingDisplay(it);
       return `${it.jugCount} jug(s) · ${p.planName} · ${p.deliveryFrequency}${
-        d.recurring ? " (prepaid delivery cycle)" : ""
+        d.recurring ? " (recurring — renews every 4 weeks)" : ""
       }`;
     });
     const dir = customer.directions.trim() ? ` | Directions: ${customer.directions.trim()}` : "";
@@ -67,14 +79,33 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
 
         {hasCycle && (
           <p className="mb-4 rounded-lg border border-brand-blue/20 bg-brand-blue/5 px-3 py-2 text-xs font-semibold text-brand-blue">
-            💧 One-time charge. Weekly &amp; bi-weekly orders prepay a delivery cycle — you won&apos;t be charged
-            automatically. We&apos;ll reach out when it&apos;s time for your next order.
+            🔁 This is a recurring order. You&apos;ll be charged {formatUsd(totalCents)} today, then{" "}
+            {formatUsd(recurringCents)} <b>automatically every 4 weeks</b> until you contact us to change or cancel.
           </p>
         )}
         <p className="mb-5 text-xs text-brand-text/60">
           Your total due today includes any one-time starter items you selected. Delivery days are assigned by your ZIP
           route.
         </p>
+
+        {hasCycle && (
+          <label className="mb-4 flex items-start gap-2 rounded-lg bg-brand-bg px-3 py-2 text-xs text-brand-text/80">
+            <input
+              type="checkbox"
+              checked={consent}
+              onChange={(e) => setConsent(e.target.checked)}
+              className="mt-0.5 h-4 w-4 shrink-0 accent-brand-blue"
+            />
+            <span>
+              I authorize Leo&apos;s Alkaline Water to charge my card {formatUsd(recurringCents)} every 4 weeks for my
+              recurring delivery until I cancel by contacting them. I&apos;ve read the{" "}
+              <a href="/terms" className="text-brand-blue underline" target="_blank" rel="noreferrer">
+                Terms
+              </a>
+              .
+            </span>
+          </label>
+        )}
 
         {isSquareClientConfigured() && IS_SQUARE_SANDBOX && (
           <p className="mb-4 rounded-lg border border-brand-gold/40 bg-brand-gold/10 px-3 py-2 text-center text-xs font-semibold text-brand-navy">
@@ -88,12 +119,18 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
           </p>
         )}
 
+        {detailsOk && hasCycle && !consent && (
+          <p className="mb-4 rounded-lg bg-brand-aqua/10 px-3 py-2 text-center text-xs font-semibold text-brand-blue">
+            Please authorize the recurring charge above to continue.
+          </p>
+        )}
+
         {isSquareClientConfigured() ? (
           <SquarePaymentForm
             amountCents={totalCents}
             customer={customer}
             note={note}
-            disabled={!detailsOk}
+            disabled={!canPay}
             onPaid={(id) => {
               const zip = customer.zip;
               clear();
@@ -106,7 +143,7 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
             <p className="mt-1 mb-4 text-sm text-brand-text/70">
               Square isn&apos;t connected yet — use this to walk the full order flow. No card is charged.
             </p>
-            <Button variant="primary" className="w-full" onClick={placeDemoOrder} disabled={!detailsOk}>
+            <Button variant="primary" className="w-full" onClick={placeDemoOrder} disabled={!canPay}>
               Place order (demo)
             </Button>
           </div>

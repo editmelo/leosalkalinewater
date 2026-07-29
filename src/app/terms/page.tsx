@@ -27,15 +27,15 @@ export default function TermsPage() {
         before you pay.
       </p>
 
-      <h2>Billing</h2>
+      <h2>Billing &amp; Automatic Renewal</h2>
       <p>
-        Every order is charged one time at checkout, processed securely through Square. If you choose
-        Weekly or Bi-Weekly, your payment prepays that delivery cycle &mdash; four deliveries
-        (Weekly) or two (Bi-Weekly) &mdash; as a single up-front charge; for pricing clarity the site
-        may show this as a per-week rate. <b>We do not automatically charge your card again.</b> When
-        your cycle is ending, we&apos;ll reach out so you can place your next order. We will never
-        bill your card on a recurring or automatic basis without your separate, explicit
-        authorization.
+        Weekly and Bi-Weekly orders are <b>recurring</b>. Your card is charged for the delivery cycle
+        at checkout and then <b>automatically every 4 weeks</b> for the same amount, until you change
+        or cancel. For pricing clarity the site may show a per-week or per-delivery rate, but each
+        charge covers the full 4-week cycle &mdash; four deliveries (Weekly) or two (Bi-Weekly).
+        One-Time orders are charged a single time and do not renew. By placing a recurring order, you
+        authorize Leo&apos;s Alkaline Water to charge your payment method on this 4-week schedule until
+        you cancel. We&apos;ll send a receipt for each charge.
       </p>
 
       <h2>First Order, Jug Deposit &amp; Exchanges</h2>
@@ -58,15 +58,17 @@ export default function TermsPage() {
 
       <h2>Cancellations &amp; Changes</h2>
       <p>
-        You can change your jug quantity or delivery frequency, or stop future deliveries, at any
-        time by contacting us. Because each order is charged individually, there is no recurring plan
-        to cancel &mdash; simply reach out and we&apos;ll adjust or pause your deliveries.
+        To change your jug quantity or delivery frequency, pause, or cancel your recurring order,
+        contact us and we&apos;ll update it. Changes apply to future cycles. To avoid being charged
+        for an upcoming cycle, please reach out <b>before your next 4-week renewal</b>. There is no
+        cancellation fee.
       </p>
 
       <h2>Payments</h2>
       <p>
         Payments are processed securely through Square. We do not store your full card number on our
-        systems, and we do not place recurring or automatic charges on your card.
+        systems. Recurring charges for active orders occur automatically according to the 4-week
+        billing schedule above until you cancel.
       </p>
 
       <h2>Product Disclaimer</h2>

@@ -68,7 +68,7 @@ export function SimpleOrder() {
       </p>
       <h1 className="mt-1 text-3xl font-extrabold text-brand-navy sm:text-4xl">Build Your Delivery</h1>
       <p className="mt-2 text-brand-text/70">
-        Just <b>{formatUsd(JUG_PRICE_CENTS)} per jug</b> — pick how many and how often.
+        Just <b>{formatUsd(JUG_PRICE_CENTS)} per 5-gallon jug</b> — pick how many and how often.
       </p>
 
       {/* Headline: per-delivery price */}
@@ -80,7 +80,7 @@ export function SimpleOrder() {
       </p>
 
       <div className="mt-6 text-left">
-        <Field label="Number of jugs">
+        <Field label="Number of 5-gallon jugs">
           <div className="mt-2 grid grid-cols-5 gap-2 sm:grid-cols-10">
             {Array.from({ length: 20 }, (_, i) => i + 1).map((n) => (
               <button key={n} className={pill(jugs === n, "h-11 text-sm")} aria-pressed={jugs === n} onClick={() => setJugs(n)}>
@@ -197,8 +197,9 @@ export function SimpleOrder() {
 
         {recurring && (
           <p className="mt-2 text-xs text-brand-text/60">
-            One charge today covers {deliveries} {frequency === "Weekly" ? "weekly" : "bi-weekly"} deliveries. No
-            automatic renewal — we&apos;ll reach out when you&apos;re ready to reorder.
+            🔁 Recurring order: {formatUsd(amountCents)} covers {deliveries}{" "}
+            {frequency === "Weekly" ? "weekly" : "bi-weekly"} deliveries, then <b>renews automatically every 4 weeks</b>{" "}
+            until you contact us to change or cancel.
           </p>
         )}
         <p className="mt-1 text-xs text-brand-text/50">Delivery days are assigned by your ZIP route.</p>
@@ -222,7 +223,7 @@ export function SimpleOrder() {
           <li className="pt-1 text-base font-extrabold text-brand-blue">
             {formatUsd(amountCents)}
             {recurring ? (
-              <span className="text-sm font-normal text-brand-text/60"> · covers {deliveries} deliveries</span>
+              <span className="text-sm font-normal text-brand-text/60"> · auto-renews every 4 weeks</span>
             ) : null}
           </li>
           {firstTime && (
