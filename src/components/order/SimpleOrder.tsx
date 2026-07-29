@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { isInServiceArea } from "@/lib/service-area";
+import { getDeliveryDay } from "@/lib/order/delivery-schedule";
 import { useCart } from "@/components/cart/CartProvider";
 import { ServiceAreaCheck } from "./ServiceAreaCheck";
 import { WaterFamConfirm } from "./WaterFamConfirm";
@@ -45,6 +46,7 @@ export function SimpleOrder() {
   const [zip, setZip] = useState("");
   const [confirming, setConfirming] = useState(false);
   const ready = isInServiceArea(zip);
+  const deliveryDay = getDeliveryDay(zip);
 
   const selection = { kind: "simple" as const, jugCount: jugs, frequency, zip, firstTime, pumpQty };
   const totals = computeTotals(selection);
@@ -210,6 +212,11 @@ export function SimpleOrder() {
           <li>
             {jugs} × 5-gallon jug{jugs > 1 ? "s" : ""} · ZIP {zip}
           </li>
+          {deliveryDay && (
+            <li className="text-sm font-normal text-brand-text/70">
+              Delivered on <b>{deliveryDay.emoji} {deliveryDay.day}s</b> ({deliveryDay.region})
+            </li>
+          )}
           <li className="pt-1 text-base font-extrabold text-brand-blue">
             {formatUsd(amountCents)}
             {recurring ? <span className="text-sm font-normal text-brand-text/60"> / month (every 4 weeks)</span> : null}

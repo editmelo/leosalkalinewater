@@ -10,7 +10,7 @@ import { CustomerDetailsForm } from "./CustomerDetailsForm";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 
-export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationId: string) => void }) {
+export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationId: string, zip: string) => void }) {
   const { items, clear } = useCart();
 
   // Pre-fill the ZIP they already gave us in the store.
@@ -56,8 +56,9 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
 
   function placeDemoOrder() {
     const id = "DEMO-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+    const zip = customer.zip;
     clear();
-    onComplete(id);
+    onComplete(id, zip);
   }
 
   return (
@@ -102,8 +103,9 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
             note={note}
             disabled={!detailsOk}
             onPaid={(id) => {
+              const zip = customer.zip;
               clear();
-              onComplete(id ?? "PAID");
+              onComplete(id ?? "PAID", zip);
             }}
           />
         ) : (

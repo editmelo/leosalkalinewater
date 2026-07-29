@@ -4,6 +4,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Section } from "@/components/ui/Section";
 import { Container } from "@/components/ui/Container";
 import { SimpleOrder } from "@/components/order/SimpleOrder";
+import { DeliverySchedule } from "@/components/sections/DeliverySchedule";
 import { DeliveryInfo } from "@/components/sections/DeliveryInfo";
 
 export const metadata = {
@@ -35,6 +36,7 @@ export default function StorePage() {
             <SimpleOrder />
           </Container>
         </section>
+        <DeliverySchedule className="bg-white" />
         <DeliveryInfo className="bg-[#eef7f1]" />
       </main>
       <Footer />

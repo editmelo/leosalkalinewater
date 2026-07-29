@@ -7,4 +7,6 @@ export const SERVICE_AREA_ZIPS: ReadonlySet<string> = new Set([
   "46256","46259","46260","46268","46278","46280","46290",
   // Immediate suburbs (Carmel, Fishers, Greenwood, Beech Grove, Lawrence, Speedway)
   "46032","46033","46037","46038","46060","46142","46143","46107",
+  // On Leo's fixed delivery routes (see delivery-schedule.ts)
+  "46113","46183","46055","46163",
 ]);

@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { isInServiceArea } from "@/lib/service-area";
+import { getDeliveryDay } from "@/lib/order/delivery-schedule";
 import { Field, inputClass } from "@/components/ui/Field";
 import { WaitlistForm } from "./WaitlistForm";
 
@@ -9,6 +10,7 @@ export function ServiceAreaCheck({ zip, onZip, onStatus }: {
 }) {
   const [touched, setTouched] = useState(false);
   const ok = isInServiceArea(zip);
+  const day = getDeliveryDay(zip);
   const show = touched && zip.trim().length >= 5;
   return (
     <div>
@@ -21,6 +23,11 @@ export function ServiceAreaCheck({ zip, onZip, onStatus }: {
       {show && ok && (
         <div className="mt-3 rounded-xl bg-brand-green/5 p-3 text-sm">
           <p className="font-semibold text-brand-green">🎉 You&apos;re in our delivery zone — welcome to the Water Fam!</p>
+          {day && (
+            <p className="mt-0.5 text-brand-text/70">
+              We deliver to your area on <b>{day.emoji} {day.day}s</b> ({day.region}).
+            </p>
+          )}
         </div>
       )}
       {show && !ok && (
