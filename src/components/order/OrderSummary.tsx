@@ -45,7 +45,7 @@ export function OrderSummary() {
                   {it.zip}
                 </p>
                 <p className="mt-1 text-xs text-brand-text/50">
-                  {payload.recurring ? "Subscription · billed every 4 weeks · cancel anytime" : "One-time order"}
+                  {d.recurring ? "Prepaid delivery cycle — one charge, no auto-renewal" : "One-time order"}
                 </p>
               </div>
               <button
@@ -57,10 +57,7 @@ export function OrderSummary() {
               </button>
             </div>
             <p className="mt-2 font-bold">
-              {formatUsd(d.amountCents)}
-              {d.recurring ? (
-                <span className="text-sm font-normal text-brand-text/60"> every 4 weeks</span>
-              ) : null}
+              {d.recurring ? d.cadenceNote : formatUsd(d.amountCents)}
             </p>
             {(t.depositCents > 0 || t.pumpCents > 0) && (
               <p className="text-sm text-brand-text/70">

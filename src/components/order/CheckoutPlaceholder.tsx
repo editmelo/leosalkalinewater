@@ -28,16 +28,8 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
     [items],
   );
 
-  // Recurring (subscription) amount that will re-bill every 4 weeks.
-  const recurringCents = useMemo(
-    () =>
-      items.reduce((sum, it) => {
-        const d = billingDisplay(it);
-        return sum + (d.recurring ? d.amountCents : 0);
-      }, 0),
-    [items],
-  );
-  const hasRecurring = recurringCents > 0;
+  // Any multi-delivery item (Weekly/Bi-weekly) is a prepaid cycle — charged once, no auto-rebill.
+  const hasCycle = useMemo(() => items.some((it) => billingDisplay(it).recurring), [items]);
 
   // A human-readable summary that rides along to Square (shows on the payment in Leo's dashboard).
   const note = useMemo(() => {
@@ -45,7 +37,7 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
       const p = buildOrderPayload(it);
       const d = billingDisplay(it);
       return `${it.jugCount} jug(s) · ${p.planName} · ${p.deliveryFrequency}${
-        d.recurring ? " (subscription — every 4 weeks)" : ""
+        d.recurring ? " (prepaid delivery cycle)" : ""
       }`;
     });
     const dir = customer.directions.trim() ? ` | Directions: ${customer.directions.trim()}` : "";
@@ -73,10 +65,10 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
           <span className="text-xl font-extrabold text-brand-blue">{formatUsd(totalCents)}</span>
         </div>
 
-        {hasRecurring && (
+        {hasCycle && (
           <p className="mb-4 rounded-lg border border-brand-blue/20 bg-brand-blue/5 px-3 py-2 text-xs font-semibold text-brand-blue">
-            🔁 This is a recurring subscription. You&apos;ll be charged {formatUsd(totalCents)} today, then{" "}
-            {formatUsd(recurringCents)} automatically every 4 weeks. Cancel anytime.
+            💧 One-time charge. Weekly &amp; bi-weekly orders prepay a delivery cycle — you won&apos;t be charged
+            automatically. We&apos;ll reach out when it&apos;s time for your next order.
           </p>
         )}
         <p className="mb-5 text-xs text-brand-text/60">

@@ -57,14 +57,14 @@ describe("computeTotals — build-your-own store (flat $15/jug)", () => {
   });
 });
 
-describe("billingDisplay — $15/week shown, full amount billed every 4 weeks", () => {
-  it("Weekly 1 jug: shown as $15/week, billed $60 every 4 weeks", () => {
+describe("billingDisplay — $15/week shown, full cycle charged once", () => {
+  it("Weekly 1 jug: shown as $15/week, $60 charged once for 4 deliveries", () => {
     const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Weekly", firstTime: false });
     expect(d.amountCents).toBe(6000); // $15 × 4 deliveries
     expect(d.perDeliveryCents).toBe(1500); // $15/week
     expect(d.perDeliveryUnit).toBe("/week");
     expect(d.recurring).toBe(true);
-    expect(d.cadenceNote).toBe("$60.00 billed every 4 weeks");
+    expect(d.cadenceNote).toBe("$60.00 — covers 4 weekly deliveries");
   });
   it("Bi-Weekly 1 jug: shown as $15 / 2 weeks, billed $30 every 4 weeks", () => {
     const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly", firstTime: false });

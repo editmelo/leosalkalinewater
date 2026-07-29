@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
 import { computeTotals, billingDisplay, formatUsd } from "@/lib/order/pricing";
-import { NEW_CUSTOMER_DEPOSIT_CENTS, PUMP_CENTS, JUG_PRICE_CENTS } from "@/lib/order/products";
+import { NEW_CUSTOMER_DEPOSIT_CENTS, PUMP_CENTS, JUG_PRICE_CENTS, SIMPLE_DELIVERIES_PER_CYCLE } from "@/lib/order/products";
 import type { SimpleFrequency } from "@/lib/order/types";
 
 const FREQUENCIES: SimpleFrequency[] = ["One-Time", "Weekly", "Biweekly"];
@@ -47,6 +47,7 @@ export function SimpleOrder() {
   const [confirming, setConfirming] = useState(false);
   const ready = isInServiceArea(zip);
   const deliveryDay = getDeliveryDay(zip);
+  const deliveries = SIMPLE_DELIVERIES_PER_CYCLE[frequency];
 
   const selection = { kind: "simple" as const, jugCount: jugs, frequency, zip, firstTime, pumpQty };
   const totals = computeTotals(selection);
@@ -169,7 +170,7 @@ export function SimpleOrder() {
       <Card className="mt-6 text-left">
         <div className="flex items-center justify-between">
           <span className="font-[family-name:var(--font-heading)] font-bold text-brand-navy">
-            {recurring ? "Per month*" : "Total"}
+            {recurring ? `Water · ${deliveries} deliveries` : "Water"}
           </span>
           <span className="text-xl font-extrabold text-brand-blue">{formatUsd(amountCents)}</span>
         </div>
@@ -196,7 +197,8 @@ export function SimpleOrder() {
 
         {recurring && (
           <p className="mt-2 text-xs text-brand-text/60">
-            *&ldquo;Per month&rdquo; means billed every 4 weeks. This subscription renews automatically — cancel anytime.
+            One charge today covers {deliveries} {frequency === "Weekly" ? "weekly" : "bi-weekly"} deliveries. No
+            automatic renewal — we&apos;ll reach out when you&apos;re ready to reorder.
           </p>
         )}
         <p className="mt-1 text-xs text-brand-text/50">Delivery days are assigned by your ZIP route.</p>
@@ -219,7 +221,9 @@ export function SimpleOrder() {
           )}
           <li className="pt-1 text-base font-extrabold text-brand-blue">
             {formatUsd(amountCents)}
-            {recurring ? <span className="text-sm font-normal text-brand-text/60"> / month (every 4 weeks)</span> : null}
+            {recurring ? (
+              <span className="text-sm font-normal text-brand-text/60"> · covers {deliveries} deliveries</span>
+            ) : null}
           </li>
           {firstTime && (
             <li className="text-sm font-normal text-brand-text/70">

@@ -40,16 +40,18 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
 
 // How to present the water price.
 // MARKETING (browse surfaces): lead with the smaller per-delivery figure — Weekly
-//   $55/4wk → $13.75/week, Biweekly $30/4wk → $15 per delivery — so the customer sees
+//   $60/cycle → $15/week, Biweekly $30/cycle → $15 per delivery — so the customer sees
 //   a low, cadence-aligned number.
-// CHECKOUT (cart/pay): show the real amount charged (the full $55 / $30) every 4 weeks,
-//   so it's completely transparent that it's a recurring subscription.
+// CHECKOUT (cart/pay): show the real amount charged (the full $60 / $30) as a single
+//   up-front charge that PREPAYS a delivery cycle. `recurring` means "multi-delivery
+//   cycle" (Weekly = 4 deliveries, Biweekly = 2) — NOT auto-rebilling. Payments are
+//   one-time today; Leo follows up for the next order. (Auto-renewal = a later pass.)
 export function billingDisplay(sel: OrderSelection): {
-  amountCents: number; // the real charge per cycle (or once) — use at checkout
-  recurring: boolean;
+  amountCents: number; // the real charge (prepays the cycle, or a single delivery) — use at checkout
+  recurring: boolean; // true = multi-delivery prepaid cycle (not auto-billed)
   perDeliveryCents: number; // marketing headline — per delivery
   perDeliveryUnit: string; // "/week" | " / 2 weeks" | ""
-  cadenceNote: string; // e.g. "$55.00 billed every 4 weeks" | ""
+  cadenceNote: string; // e.g. "$60.00 — covers 4 weekly deliveries" | ""
 } {
   const { subtotalCents } = computeTotals(sel);
   if (sel.kind === "simple" && sel.frequency === "Weekly") {
@@ -58,7 +60,7 @@ export function billingDisplay(sel: OrderSelection): {
       recurring: true,
       perDeliveryCents: Math.round(subtotalCents / 4),
       perDeliveryUnit: "/week",
-      cadenceNote: `${formatUsd(subtotalCents)} billed every 4 weeks`,
+      cadenceNote: `${formatUsd(subtotalCents)} — covers 4 weekly deliveries`,
     };
   }
   if (sel.kind === "simple" && sel.frequency === "Biweekly") {
@@ -67,7 +69,7 @@ export function billingDisplay(sel: OrderSelection): {
       recurring: true,
       perDeliveryCents: Math.round(subtotalCents / 2),
       perDeliveryUnit: " / 2 weeks",
-      cadenceNote: `${formatUsd(subtotalCents)} billed every 4 weeks`,
+      cadenceNote: `${formatUsd(subtotalCents)} — covers 2 deliveries`,
     };
   }
   const recurring = sel.kind === "plan" && getPlan(sel.planId).billing === "monthly";
@@ -76,7 +78,7 @@ export function billingDisplay(sel: OrderSelection): {
     recurring,
     perDeliveryCents: subtotalCents,
     perDeliveryUnit: "",
-    cadenceNote: recurring ? `${formatUsd(subtotalCents)} billed every 4 weeks` : "",
+    cadenceNote: recurring ? `${formatUsd(subtotalCents)} per cycle` : "",
   };
 }
 
