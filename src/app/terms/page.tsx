@@ -19,55 +19,54 @@ export default function TermsPage() {
         order. You may sign up to be notified when we expand to your area.
       </p>
 
-      <h2>Orders &amp; Plans</h2>
+      <h2>Orders</h2>
       <p>
         Leo&apos;s Alkaline Water is a build-your-own delivery service: you choose the number of
-        5-gallon jugs and a delivery frequency &mdash; One-Time, Weekly, or Biweekly. Each
-        plan includes one jug; additional jugs are +$10 each per delivery. We also offer named plans
-        for convenience &mdash; <b>First Pour</b> (starter), <b>Stay Balanced</b> (biweekly),
-        <b> Fully Hydrated</b> (weekly), and <b>Top Off</b> (one-time) &mdash; whose pricing and
-        inclusions are subject to change; the current price and details are always shown at checkout.
+        5-gallon jugs and a delivery frequency &mdash; One-Time, Weekly, or Bi-Weekly. Water is $15
+        per 5-gallon jug, per delivery. Current pricing and any options are always shown at checkout
+        before you pay.
       </p>
 
-      <h2>Billing (Every 4 Weeks)</h2>
+      <h2>Billing</h2>
       <p>
-        Recurring subscriptions are billed on a 4-week cycle, not a calendar month. For clarity, we
-        may display pricing as a per-week rate on the site, but your card is charged once every 4
-        weeks for the full cycle. Subscriptions renew automatically at each 4-week interval until you
-        pause or cancel. One-time orders are charged a single time at checkout.
+        Every order is charged one time at checkout, processed securely through Square. If you choose
+        Weekly or Bi-Weekly, your payment prepays that delivery cycle &mdash; four deliveries
+        (Weekly) or two (Bi-Weekly) &mdash; as a single up-front charge; for pricing clarity the site
+        may show this as a per-week rate. <b>We do not automatically charge your card again.</b> When
+        your cycle is ending, we&apos;ll reach out so you can place your next order. We will never
+        bill your card on a recurring or automatic basis without your separate, explicit
+        authorization.
       </p>
 
       <h2>First Order, Jug Deposit &amp; Exchanges</h2>
       <p>
         A first-time customer&apos;s order includes their First Fill &amp; Delivery, a one-time
-        refundable $15 jug deposit (a single flat charge regardless of how many jugs you order, to
-        cover jug damage or non-return), and a one-time $10 Rechargeable Pump that is yours to keep.
-        On future deliveries, we exchange your empty jugs for full ones, so
-        returning customers who exchange jugs are not charged a new deposit or pump. Deposits are
-        refunded when jugs are returned in good condition. A damage fee, up to the deposit amount,
-        applies to jugs that are cracked, deformed, or not returned.
+        refundable jug deposit of $15 per jug (to cover jug damage or non-return), and an optional
+        $15 Rechargeable Pump that is yours to keep. On future deliveries, we exchange your empty
+        jugs for full ones, so returning customers who exchange jugs are not charged a new deposit or
+        pump. Deposits are refunded when jugs are returned in good condition. A damage fee, up to the
+        deposit amount, applies to jugs that are cracked, deformed, or not returned.
       </p>
 
       <h2>Refunds &amp; Returns</h2>
       <p>
-        One-time orders may be refunded if you contact us before the order is dispatched for
-        delivery. Because water is a consumable product, once it has been delivered it is
-        non-refundable. Jug deposits are refunded as described above when jugs are returned. Billing
-        disputes for subscriptions (such as proration or an unexpected charge) are handled case by
-        case &mdash; please contact us and we&apos;ll work it out with you.
+        Orders may be refunded if you contact us before the order is dispatched for delivery. Because
+        water is a consumable product, once it has been delivered it is non-refundable. Jug deposits
+        are refunded as described above when jugs are returned. If you ever see a charge you
+        didn&apos;t expect, contact us and we&apos;ll make it right.
       </p>
 
       <h2>Cancellations &amp; Changes</h2>
       <p>
-        You may pause a subscription, change your jug quantity or delivery frequency, or cancel at
-        any time by contacting us. Self-service account management is coming soon.
+        You can change your jug quantity or delivery frequency, or stop future deliveries, at any
+        time by contacting us. Because each order is charged individually, there is no recurring plan
+        to cancel &mdash; simply reach out and we&apos;ll adjust or pause your deliveries.
       </p>
 
       <h2>Payments</h2>
       <p>
         Payments are processed securely through Square. We do not store your full card number on our
-        systems. Recurring charges for active subscriptions occur automatically according to the
-        4-week billing schedule above.
+        systems, and we do not place recurring or automatic charges on your card.
       </p>
 
       <h2>Product Disclaimer</h2>

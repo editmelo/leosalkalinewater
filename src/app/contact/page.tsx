@@ -26,7 +26,7 @@ export default function ContactPage() {
           <Container className="max-w-2xl text-center">
             <h1 className="text-3xl font-extrabold text-brand-navy sm:text-4xl">Get in Touch</h1>
             <p className="mx-auto mt-3 max-w-lg text-brand-text/75">
-              Questions about delivery, your subscription, or joining the Water Fam? Reach out — Leo would love to hear
+              Questions about delivery, your order, or joining the Water Fam? Reach out — Leo would love to hear
               from you.
             </p>
 
