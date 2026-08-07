@@ -69,14 +69,17 @@ export async function POST(req: Request) {
 
   // Square buries the shipping address in the transaction view, so fold the delivery
   // details into the payment NOTE — that's what Leo actually reads on each order.
+  // One detail per line so it's easy to scan in the dashboard.
   const day = getDeliveryDay(customer.zip);
-  const deliverTo =
-    `Deliver to: ${customer.firstName} ${customer.lastName}, ` +
-    `${customer.address1}${customer.address2 ? ` ${customer.address2}` : ""}, ` +
-    `${customer.city}, ${customer.state} ${customer.zip} · ${customer.phone}` +
-    (day ? ` · ${day.day} route` : "");
+  const addressLine = `${customer.address1}${customer.address2 ? ` ${customer.address2}` : ""}, ${customer.city}, ${customer.state} ${customer.zip}`;
+  const headerLines = [
+    `Deliver to: ${customer.firstName} ${customer.lastName}`,
+    addressLine,
+    `Phone: ${customer.phone}`,
+    day ? `Route: ${day.day}` : "",
+  ].filter(Boolean);
   const itemNote = typeof note === "string" && note ? note : "";
-  const fullNote = [deliverTo, itemNote].filter(Boolean).join(" | ").slice(0, 500);
+  const fullNote = [...headerLines, itemNote].filter(Boolean).join("\n").slice(0, 500);
 
   try {
     const resp = await client.payments.create({

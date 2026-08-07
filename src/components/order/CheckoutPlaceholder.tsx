@@ -44,6 +44,7 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
   const canPay = isCustomerComplete(customer) && (!hasCycle || consent);
 
   // A human-readable summary that rides along to Square (shows on the payment in Leo's dashboard).
+  // One item per line; the delivery block is prepended server-side in the checkout route.
   const note = useMemo(() => {
     const lines = items.map((it) => {
       const p = buildOrderPayload(it);
@@ -52,8 +53,8 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
         d.recurring ? " (recurring — renews every 4 weeks)" : ""
       }`;
     });
-    const dir = customer.directions.trim() ? ` | Directions: ${customer.directions.trim()}` : "";
-    return (lines.join(" | ") + dir).slice(0, 480);
+    if (customer.directions.trim()) lines.push(`Directions: ${customer.directions.trim()}`);
+    return lines.join("\n");
   }, [items, customer.directions]);
 
   const detailsOk = isCustomerComplete(customer);
