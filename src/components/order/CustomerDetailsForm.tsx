@@ -54,7 +54,7 @@ export function CustomerDetailsForm({
             onChange={(e) => set("email", e.target.value)}
           />
         </Field>
-        <Field label="Phone (optional)">
+        <Field label="Phone">
           <input
             className={inputClass}
             type="tel"
@@ -62,6 +62,7 @@ export function CustomerDetailsForm({
             placeholder="317-555-0123"
             value={value.phone}
             onChange={(e) => set("phone", e.target.value)}
+            required
           />
         </Field>
       </div>

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { SquareError } from "square";
 import { getSquareClient, getSquareLocationId } from "@/lib/square/client";
-import { isCustomerComplete, billingAddressOf, type CustomerDetails } from "@/lib/order/customer";
+import { isCustomerComplete, billingAddressOf, normalizePhoneToE164, type CustomerDetails } from "@/lib/order/customer";
 import { isInServiceArea } from "@/lib/service-area";
 
 // One-time card payment via the Square Payments API.
@@ -73,7 +73,9 @@ export async function POST(req: Request) {
       amountMoney: { amount: BigInt(cents), currency: "USD" },
       locationId,
       buyerEmailAddress: customer.email,
-      buyerPhoneNumber: customer.phone || undefined,
+      // Square requires E.164 (e.g. +13175550123). Raw "317-555-0123" is rejected as
+      // "buyer_phone_number is not valid" — normalize, and omit if it can't be parsed.
+      buyerPhoneNumber: normalizePhoneToE164(customer.phone) ?? undefined,
       shippingAddress: deliveryAddress,
       billingAddress,
       note: typeof note === "string" && note ? note : undefined,
