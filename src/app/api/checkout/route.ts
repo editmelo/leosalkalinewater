@@ -5,6 +5,7 @@ import { getSquareClient, getSquareLocationId } from "@/lib/square/client";
 import { isCustomerComplete, billingAddressOf, normalizePhoneToE164, type CustomerDetails } from "@/lib/order/customer";
 import { isInServiceArea } from "@/lib/service-area";
 import { getDeliveryDay } from "@/lib/order/delivery-schedule";
+import { findOrCreateCustomer, saveCardOnFile } from "@/lib/square/customer-sync";
 
 // One-time card payment via the Square Payments API.
 // Recurring subscriptions are handled separately (Subscriptions API) in a later pass.
@@ -81,12 +82,24 @@ export async function POST(req: Request) {
   const itemNote = typeof note === "string" && note ? note : "";
   const fullNote = [...headerLines, itemNote].filter(Boolean).join("\n").slice(0, 500);
 
+  // Create/link the Square customer profile and save the card on file (the customer already
+  // authorized recurring billing at checkout). Best-effort: if either step fails we charge the
+  // original one-time token directly, so checkout still succeeds. If the card IS saved, we must
+  // charge the saved card id — the one-time token is spent by cards.create.
+  const customerId = await findOrCreateCustomer(client, customer);
+  let chargeSource = sourceId;
+  if (customerId) {
+    const savedCardId = await saveCardOnFile(client, sourceId, customerId, customer);
+    if (savedCardId) chargeSource = savedCardId;
+  }
+
   try {
     const resp = await client.payments.create({
-      sourceId,
+      sourceId: chargeSource,
       idempotencyKey: randomUUID(),
       amountMoney: { amount: BigInt(cents), currency: "USD" },
       locationId,
+      customerId: customerId ?? undefined,
       buyerEmailAddress: customer.email,
       // Square requires E.164 (e.g. +13175550123). Raw "317-555-0123" is rejected as
       // "buyer_phone_number is not valid" — normalize, and omit if it can't be parsed.
