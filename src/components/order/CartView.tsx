@@ -27,7 +27,7 @@ export function CartView() {
           <p className="mt-2 text-sm text-brand-text/70">We&apos;ll be in touch to confirm your delivery day.</p>
         )}
         <p className="mt-1 text-xs text-brand-text/60">
-          Confirmation: <span className="font-mono">{confirmation.id}</span>
+          Your order number: <span className="font-mono">{confirmation.id}</span>
         </p>
         {confirmation.id.startsWith("DEMO-") && (
           <p className="mt-2 text-xs text-brand-text/50">

@@ -74,8 +74,12 @@ export async function POST(req: Request) {
   // details into the payment NOTE — that's what Leo actually reads on each order.
   // One detail per line so it's easy to scan in the dashboard.
   const day = getDeliveryDay(customer.zip);
+  // A trackable order number on every website order — set as the payment's referenceId and
+  // shown at the top of the note + on the customer's confirmation screen.
+  const orderNumber = "LAW-" + randomUUID().replace(/-/g, "").slice(0, 8).toUpperCase();
   const addressLine = `${customer.address1}${customer.address2 ? ` ${customer.address2}` : ""}, ${customer.city}, ${customer.state} ${customer.zip}`;
   const headerLines = [
+    `Order #${orderNumber}`,
     `Deliver to: ${customer.firstName} ${customer.lastName}`,
     addressLine,
     `Phone: ${customer.phone}`,
@@ -96,6 +100,7 @@ export async function POST(req: Request) {
       idempotencyKey: randomUUID(),
       amountMoney: { amount: BigInt(cents), currency: "USD" },
       locationId,
+      referenceId: orderNumber,
       customerId: customerId ?? undefined,
       buyerEmailAddress: customer.email,
       // Square requires E.164 (e.g. +13175550123). Raw "317-555-0123" is rejected as
@@ -120,6 +125,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       ok: true,
       paymentId: resp.payment?.id ?? null,
+      orderNumber,
       status: resp.payment?.status ?? "COMPLETED",
     });
   } catch (err) {

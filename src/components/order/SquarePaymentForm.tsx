@@ -145,7 +145,7 @@ export function SquarePaymentForm({
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Payment failed. Please try again.");
-      onPaid(data.paymentId ?? null);
+      onPaid(data.orderNumber ?? data.paymentId ?? null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Payment failed. Please try again.");
     } finally {
