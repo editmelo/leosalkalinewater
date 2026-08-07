@@ -37,11 +37,10 @@ describe("computeTotals — build-your-own store (flat $15/jug)", () => {
     expect(computeTotals({ kind: "simple", jugCount: 2, zip: "46204", frequency: "One-Time", firstTime: false }).subtotalCents).toBe(3000);
   });
 
-  it("adds a $5 delivery fee per delivery (One-Time $5, Bi-Weekly $10, Weekly $20)", () => {
+  it("adds a flat $5 delivery fee per order, regardless of frequency or jug count", () => {
     expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "One-Time", firstTime: false }).deliveryCents).toBe(500);
-    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly", firstTime: false }).deliveryCents).toBe(1000);
-    // Delivery is per-delivery, not per-jug: 3 jugs weekly is still 4 deliveries × $5 = $20
-    expect(computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: false }).deliveryCents).toBe(2000);
+    expect(computeTotals({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly", firstTime: false }).deliveryCents).toBe(500);
+    expect(computeTotals({ kind: "simple", jugCount: 3, zip: "46204", frequency: "Weekly", firstTime: false }).deliveryCents).toBe(500);
   });
 
   it("first-time: $15-per-jug deposit + $15 per pump; returning customers add neither", () => {
@@ -64,18 +63,18 @@ describe("computeTotals — build-your-own store (flat $15/jug)", () => {
   });
 });
 
-describe("billingDisplay — $15/week headline; cycle charge includes the $5/delivery fee", () => {
-  it("Weekly 1 jug: $15/week headline, $80 per cycle ($60 water + $20 delivery), recurring", () => {
+describe("billingDisplay — $15/week headline; cycle charge includes the flat $5 delivery fee", () => {
+  it("Weekly 1 jug: $15/week headline, $65 per cycle ($60 water + $5 delivery), recurring", () => {
     const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Weekly", firstTime: false });
-    expect(d.amountCents).toBe(8000); // $60 water + $20 delivery (4 × $5)
+    expect(d.amountCents).toBe(6500); // $60 water + $5 flat delivery
     expect(d.perDeliveryCents).toBe(1500); // headline stays the $15 water price
     expect(d.perDeliveryUnit).toBe("/week");
     expect(d.recurring).toBe(true);
-    expect(d.cadenceNote).toBe("$80.00 every 4 weeks");
+    expect(d.cadenceNote).toBe("$65.00 every 4 weeks");
   });
-  it("Bi-Weekly 1 jug: $40 per cycle ($30 water + $10 delivery)", () => {
+  it("Bi-Weekly 1 jug: $35 per cycle ($30 water + $5 delivery)", () => {
     const d = billingDisplay({ kind: "simple", jugCount: 1, zip: "46204", frequency: "Biweekly", firstTime: false });
-    expect(d.amountCents).toBe(4000);
+    expect(d.amountCents).toBe(3500);
     expect(d.perDeliveryCents).toBe(1500);
     expect(d.perDeliveryUnit).toBe(" / 2 weeks");
   });

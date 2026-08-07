@@ -32,7 +32,7 @@ export interface OrderLine {
 export interface OrderTotals {
   lines: OrderLine[];
   subtotalCents: number; // price of the water per billing cycle (charged every 4 weeks) or one-time
-  deliveryCents: number; // recurring delivery fee ($5 per delivery), charged each cycle with the water
+  deliveryCents: number; // flat $5 delivery fee per order/cycle, charged each cycle with the water
   depositCents: number; // one-time refundable jug deposit (first-time customers only)
   pumpCents: number; // one-time rechargeable pump, yours to keep (first-time customers only)
 }

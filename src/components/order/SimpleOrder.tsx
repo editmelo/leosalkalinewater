@@ -177,8 +177,7 @@ export function SimpleOrder() {
 
         <div className="mt-2 flex items-center justify-between text-sm text-brand-text/70">
           <span>
-            {recurring ? `Delivery · ${deliveries} deliveries` : "Delivery"}{" "}
-            <span className="text-xs text-brand-text/50">({formatUsd(DELIVERY_FEE_CENTS)}/delivery)</span>
+            Delivery <span className="text-xs text-brand-text/50">(flat {formatUsd(DELIVERY_FEE_CENTS)} per order)</span>
           </span>
           <span className="font-semibold">{formatUsd(totals.deliveryCents)}</span>
         </div>

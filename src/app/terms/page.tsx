@@ -23,8 +23,9 @@ export default function TermsPage() {
       <p>
         Leo&apos;s Alkaline Water is a build-your-own delivery service: you choose the number of
         5-gallon jugs and a delivery frequency &mdash; One-Time, Weekly, or Bi-Weekly. Water is $15
-        per 5-gallon jug, per delivery. Current pricing and any options are always shown at checkout
-        before you pay.
+        per 5-gallon jug, per delivery, plus a flat $5 delivery fee per order (regardless of
+        frequency or quantity). Current pricing and any options are always shown at checkout before
+        you pay.
       </p>
 
       <h2>Billing &amp; Automatic Renewal</h2>

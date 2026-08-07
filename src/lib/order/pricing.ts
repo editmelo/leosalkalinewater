@@ -20,11 +20,11 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
     const deliveries = SIMPLE_DELIVERIES_PER_CYCLE[sel.frequency];
     const perDelivery = qty * JUG_PRICE_CENTS;
     const subtotalCents = perDelivery * deliveries;
-    // $5 delivery fee per delivery — recurs each cycle alongside the water.
-    const deliveryCents = DELIVERY_FEE_CENTS * deliveries;
+    // Flat $5 delivery fee per order/cycle (not per delivery) — recurs each cycle.
+    const deliveryCents = DELIVERY_FEE_CENTS;
     const lines: OrderLine[] = [
       { label: "5-Gallon Alkaline Water", qty, unitPriceCents: JUG_PRICE_CENTS },
-      { label: "Delivery", qty: deliveries, unitPriceCents: DELIVERY_FEE_CENTS },
+      { label: "Delivery", qty: 1, unitPriceCents: DELIVERY_FEE_CENTS },
     ];
     // First-time: refundable $15-per-jug deposit (always), plus optional $15 pumps (default 1).
     const depositCents = sel.firstTime ? qty * NEW_CUSTOMER_DEPOSIT_CENTS : 0;
