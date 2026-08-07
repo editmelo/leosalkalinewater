@@ -4,6 +4,7 @@ import { SquareError } from "square";
 import { getSquareClient, getSquareLocationId } from "@/lib/square/client";
 import { isCustomerComplete, billingAddressOf, normalizePhoneToE164, type CustomerDetails } from "@/lib/order/customer";
 import { isInServiceArea } from "@/lib/service-area";
+import { getDeliveryDay } from "@/lib/order/delivery-schedule";
 
 // One-time card payment via the Square Payments API.
 // Recurring subscriptions are handled separately (Subscriptions API) in a later pass.
@@ -66,6 +67,17 @@ export async function POST(req: Request) {
     lastName: customer.lastName,
   };
 
+  // Square buries the shipping address in the transaction view, so fold the delivery
+  // details into the payment NOTE — that's what Leo actually reads on each order.
+  const day = getDeliveryDay(customer.zip);
+  const deliverTo =
+    `Deliver to: ${customer.firstName} ${customer.lastName}, ` +
+    `${customer.address1}${customer.address2 ? ` ${customer.address2}` : ""}, ` +
+    `${customer.city}, ${customer.state} ${customer.zip} · ${customer.phone}` +
+    (day ? ` · ${day.day} route` : "");
+  const itemNote = typeof note === "string" && note ? note : "";
+  const fullNote = [deliverTo, itemNote].filter(Boolean).join(" | ").slice(0, 500);
+
   try {
     const resp = await client.payments.create({
       sourceId,
@@ -78,7 +90,7 @@ export async function POST(req: Request) {
       buyerPhoneNumber: normalizePhoneToE164(customer.phone) ?? undefined,
       shippingAddress: deliveryAddress,
       billingAddress,
-      note: typeof note === "string" && note ? note : undefined,
+      note: fullNote || undefined,
     });
     return NextResponse.json({
       ok: true,
