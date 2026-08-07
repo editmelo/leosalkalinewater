@@ -23,8 +23,9 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  const { sourceId, amountCents, customer, note } = (body ?? {}) as {
+  const { sourceId, cardSourceId, amountCents, customer, note } = (body ?? {}) as {
     sourceId?: unknown;
+    cardSourceId?: unknown;
     amountCents?: unknown;
     customer?: CustomerDetails;
     note?: unknown;
@@ -82,20 +83,15 @@ export async function POST(req: Request) {
   const itemNote = typeof note === "string" && note ? note : "";
   const fullNote = [...headerLines, itemNote].filter(Boolean).join("\n").slice(0, 500);
 
-  // Create/link the Square customer profile and save the card on file (the customer already
-  // authorized recurring billing at checkout). Best-effort: if either step fails we charge the
-  // original one-time token directly, so checkout still succeeds. If the card IS saved, we must
-  // charge the saved card id — the one-time token is spent by cards.create.
+  // Link (or create) the Square customer profile, then charge. The card is saved on file
+  // AFTER a successful charge using a SEPARATE token (cardSourceId) — a payment token is
+  // single-use, so reusing it for both charge + save throws "nonce already used". Saving is
+  // best-effort and never affects the charge.
   const customerId = await findOrCreateCustomer(client, customer);
-  let chargeSource = sourceId;
-  if (customerId) {
-    const savedCardId = await saveCardOnFile(client, sourceId, customerId, customer);
-    if (savedCardId) chargeSource = savedCardId;
-  }
 
   try {
     const resp = await client.payments.create({
-      sourceId: chargeSource,
+      sourceId,
       idempotencyKey: randomUUID(),
       amountMoney: { amount: BigInt(cents), currency: "USD" },
       locationId,
@@ -108,6 +104,12 @@ export async function POST(req: Request) {
       billingAddress,
       note: fullNote || undefined,
     });
+
+    // Save the card on file for recurring billing (separate token; charge already succeeded).
+    if (customerId && typeof cardSourceId === "string" && cardSourceId) {
+      await saveCardOnFile(client, cardSourceId, customerId, customer);
+    }
+
     return NextResponse.json({
       ok: true,
       paymentId: resp.payment?.id ?? null,

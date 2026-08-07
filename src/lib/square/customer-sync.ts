@@ -46,9 +46,9 @@ export async function findOrCreateCustomer(client: SquareClient, c: CustomerDeta
 }
 
 /**
- * Store the payment card on file for the customer, using the single-use token from the
- * web payment form. Returns the saved card id (charge THIS, since the token is now spent),
- * or null if it couldn't be saved (caller then charges the original token directly).
+ * Store the card on file for the customer, using a dedicated single-use token from the web
+ * payment form (separate from the one used to charge). Returns the saved card id, or null if
+ * it couldn't be saved — either way the charge is unaffected.
  */
 export async function saveCardOnFile(
   client: SquareClient,

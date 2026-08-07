@@ -84,10 +84,19 @@ export function SquarePaymentForm({
       if (result.status !== "OK" || !result.token) {
         throw new Error(result.errors?.[0]?.message ?? "Your card wasn't accepted. Please check the details.");
       }
+      // A payment token is single-use, so mint a SECOND token for saving the card on file.
+      // Best-effort — if it fails the charge still goes through, the card just isn't saved.
+      let cardSourceId: string | undefined;
+      try {
+        const saved = await cardRef.current.tokenize();
+        if (saved.status === "OK" && saved.token) cardSourceId = saved.token;
+      } catch {
+        /* card just won't be saved on file */
+      }
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sourceId: result.token, amountCents, customer, note }),
+        body: JSON.stringify({ sourceId: result.token, cardSourceId, amountCents, customer, note }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Payment failed. Please try again.");
