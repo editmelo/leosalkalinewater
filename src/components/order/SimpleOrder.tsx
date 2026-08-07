@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
 import { computeTotals, billingDisplay, formatUsd } from "@/lib/order/pricing";
-import { NEW_CUSTOMER_DEPOSIT_CENTS, PUMP_CENTS, JUG_PRICE_CENTS, SIMPLE_DELIVERIES_PER_CYCLE } from "@/lib/order/products";
+import { NEW_CUSTOMER_DEPOSIT_CENTS, PUMP_CENTS, JUG_PRICE_CENTS, DELIVERY_FEE_CENTS, SIMPLE_DELIVERIES_PER_CYCLE } from "@/lib/order/products";
 import type { SimpleFrequency } from "@/lib/order/types";
 
 const FREQUENCIES: SimpleFrequency[] = ["One-Time", "Weekly", "Biweekly"];
@@ -172,7 +172,15 @@ export function SimpleOrder() {
           <span className="font-[family-name:var(--font-heading)] font-bold text-brand-navy">
             {recurring ? `Water · ${deliveries} deliveries` : "Water"}
           </span>
-          <span className="text-xl font-extrabold text-brand-blue">{formatUsd(amountCents)}</span>
+          <span className="text-xl font-extrabold text-brand-blue">{formatUsd(totals.subtotalCents)}</span>
+        </div>
+
+        <div className="mt-2 flex items-center justify-between text-sm text-brand-text/70">
+          <span>
+            {recurring ? `Delivery · ${deliveries} deliveries` : "Delivery"}{" "}
+            <span className="text-xs text-brand-text/50">({formatUsd(DELIVERY_FEE_CENTS)}/delivery)</span>
+          </span>
+          <span className="font-semibold">{formatUsd(totals.deliveryCents)}</span>
         </div>
 
         {firstTime && (

@@ -23,7 +23,7 @@ export function CheckoutPlaceholder({ onComplete }: { onComplete: (confirmationI
     () =>
       items.reduce((sum, it) => {
         const t = computeTotals(it);
-        return sum + t.subtotalCents + t.depositCents + t.pumpCents;
+        return sum + t.subtotalCents + t.deliveryCents + t.depositCents + t.pumpCents;
       }, 0),
     [items],
   );

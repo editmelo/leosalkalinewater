@@ -2,6 +2,7 @@ import {
   getPlan,
   ADDON_JUG_CENTS,
   JUG_PRICE_CENTS,
+  DELIVERY_FEE_CENTS,
   SIMPLE_DELIVERIES_PER_CYCLE,
   NEW_CUSTOMER_DEPOSIT_CENTS,
   PUMP_CENTS,
@@ -16,15 +17,19 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
   // per billing event — a single delivery for One-Time, or a full 4-week cycle for
   // Weekly (×4 deliveries) / Bi-Weekly (×2 deliveries).
   if (sel.kind === "simple") {
+    const deliveries = SIMPLE_DELIVERIES_PER_CYCLE[sel.frequency];
     const perDelivery = qty * JUG_PRICE_CENTS;
-    const subtotalCents = perDelivery * SIMPLE_DELIVERIES_PER_CYCLE[sel.frequency];
+    const subtotalCents = perDelivery * deliveries;
+    // $5 delivery fee per delivery — recurs each cycle alongside the water.
+    const deliveryCents = DELIVERY_FEE_CENTS * deliveries;
     const lines: OrderLine[] = [
       { label: "5-Gallon Alkaline Water", qty, unitPriceCents: JUG_PRICE_CENTS },
+      { label: "Delivery", qty: deliveries, unitPriceCents: DELIVERY_FEE_CENTS },
     ];
     // First-time: refundable $15-per-jug deposit (always), plus optional $15 pumps (default 1).
     const depositCents = sel.firstTime ? qty * NEW_CUSTOMER_DEPOSIT_CENTS : 0;
     const pumpCents = sel.firstTime ? Math.max(0, sel.pumpQty ?? 1) * PUMP_CENTS : 0;
-    return { lines, subtotalCents, depositCents, pumpCents };
+    return { lines, subtotalCents, deliveryCents, depositCents, pumpCents };
   }
 
   // Store 1 (named plans): base price includes 1 jug; every additional jug adds $10.
@@ -35,7 +40,7 @@ export function computeTotals(sel: OrderSelection): OrderTotals {
   if (extraJugs > 0) {
     lines.push({ label: "Additional jugs", qty: extraJugs, unitPriceCents: ADDON_JUG_CENTS });
   }
-  return { lines, subtotalCents: plan.priceCents + extraJugs * ADDON_JUG_CENTS, depositCents: 0, pumpCents: 0 };
+  return { lines, subtotalCents: plan.priceCents + extraJugs * ADDON_JUG_CENTS, deliveryCents: 0, depositCents: 0, pumpCents: 0 };
 }
 
 // How to present the water price.
@@ -53,32 +58,35 @@ export function billingDisplay(sel: OrderSelection): {
   perDeliveryUnit: string; // "/week" | " / 2 weeks" | ""
   cadenceNote: string; // e.g. "$60.00 every 4 weeks" | ""
 } {
-  const { subtotalCents } = computeTotals(sel);
+  const { subtotalCents, deliveryCents } = computeTotals(sel);
+  // The real per-cycle charge is water + the recurring delivery fee. The headline
+  // per-delivery figure stays the water price ($15/jug) — delivery is shown as its own line.
+  const cycleCents = subtotalCents + deliveryCents;
   if (sel.kind === "simple" && sel.frequency === "Weekly") {
     return {
-      amountCents: subtotalCents,
+      amountCents: cycleCents,
       recurring: true,
       perDeliveryCents: Math.round(subtotalCents / 4),
       perDeliveryUnit: "/week",
-      cadenceNote: `${formatUsd(subtotalCents)} every 4 weeks`,
+      cadenceNote: `${formatUsd(cycleCents)} every 4 weeks`,
     };
   }
   if (sel.kind === "simple" && sel.frequency === "Biweekly") {
     return {
-      amountCents: subtotalCents,
+      amountCents: cycleCents,
       recurring: true,
       perDeliveryCents: Math.round(subtotalCents / 2),
       perDeliveryUnit: " / 2 weeks",
-      cadenceNote: `${formatUsd(subtotalCents)} every 4 weeks`,
+      cadenceNote: `${formatUsd(cycleCents)} every 4 weeks`,
     };
   }
   const recurring = sel.kind === "plan" && getPlan(sel.planId).billing === "monthly";
   return {
-    amountCents: subtotalCents,
+    amountCents: cycleCents,
     recurring,
     perDeliveryCents: subtotalCents,
     perDeliveryUnit: "",
-    cadenceNote: recurring ? `${formatUsd(subtotalCents)} every 4 weeks` : "",
+    cadenceNote: recurring ? `${formatUsd(cycleCents)} every 4 weeks` : "",
   };
 }
 

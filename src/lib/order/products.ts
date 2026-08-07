@@ -38,6 +38,9 @@ export const PUMP_CENTS = 1500;
 // The store: flat $15 per 5-gallon jug, per delivery. No tiers, no per-jug add-on math.
 export const JUG_PRICE_CENTS = 1500;
 
+// Delivery fee — $5 per delivery, recurring each cycle (like the water).
+export const DELIVERY_FEE_CENTS = 500;
+
 // How many deliveries fall in one 4-week billing cycle, by frequency. Used so a Weekly
 // customer sees "$15/week" but is billed the full 4-week amount once every 4 weeks.
 export const SIMPLE_DELIVERIES_PER_CYCLE: Record<SimpleFrequency, number> = {
