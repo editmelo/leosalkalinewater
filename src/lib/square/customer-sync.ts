@@ -55,12 +55,14 @@ export async function saveCardOnFile(
   sourceId: string,
   customerId: string,
   c: CustomerDetails,
+  verificationToken?: string,
 ): Promise<string | null> {
   try {
     const b = billingAddressOf(c);
     const res = await client.cards.create({
       idempotencyKey: randomUUID(),
       sourceId,
+      verificationToken,
       card: {
         customerId,
         cardholderName: `${c.firstName} ${c.lastName}`.trim(),

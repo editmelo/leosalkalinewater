@@ -23,9 +23,10 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: false, error: "Invalid request." }, { status: 400 });
   }
 
-  const { sourceId, cardSourceId, amountCents, customer, note } = (body ?? {}) as {
+  const { sourceId, cardSourceId, cardVerificationToken, amountCents, customer, note } = (body ?? {}) as {
     sourceId?: unknown;
     cardSourceId?: unknown;
+    cardVerificationToken?: unknown;
     amountCents?: unknown;
     customer?: CustomerDetails;
     note?: unknown;
@@ -107,7 +108,13 @@ export async function POST(req: Request) {
 
     // Save the card on file for recurring billing (separate token; charge already succeeded).
     if (customerId && typeof cardSourceId === "string" && cardSourceId) {
-      await saveCardOnFile(client, cardSourceId, customerId, customer);
+      await saveCardOnFile(
+        client,
+        cardSourceId,
+        customerId,
+        customer,
+        typeof cardVerificationToken === "string" ? cardVerificationToken : undefined,
+      );
     }
 
     return NextResponse.json({

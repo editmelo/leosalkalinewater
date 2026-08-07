@@ -18,7 +18,27 @@ type SqCard = {
   tokenize: () => Promise<SqTokenResult>;
   destroy?: () => void;
 };
-type SqPayments = { card: () => Promise<SqCard> };
+type SqBillingContact = {
+  givenName?: string;
+  familyName?: string;
+  email?: string;
+  phone?: string;
+  country?: string;
+  region?: string;
+  city?: string;
+  postalCode?: string;
+  addressLines?: string[];
+};
+type SqVerifyDetails = {
+  intent: "STORE" | "CHARGE";
+  billingContact: SqBillingContact;
+  amount?: string;
+  currencyCode?: string;
+};
+type SqPayments = {
+  card: () => Promise<SqCard>;
+  verifyBuyer?: (token: string, details: SqVerifyDetails) => Promise<{ token?: string }>;
+};
 type SqGlobal = { payments: (appId: string, locationId: string) => SqPayments };
 declare global {
   interface Window {
@@ -52,6 +72,7 @@ export function SquarePaymentForm({
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<SqCard | null>(null);
+  const paymentsRef = useRef<SqPayments | null>(null);
   const [ready, setReady] = useState(false);
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState("");
@@ -64,6 +85,7 @@ export function SquarePaymentForm({
       await loadSquareSdk();
       if (cancelled || !window.Square) return;
       const payments = window.Square.payments(SQUARE_APPLICATION_ID, SQUARE_LOCATION_ID);
+      paymentsRef.current = payments;
       card = await payments.card();
       await card.attach(containerRef.current);
       cardRef.current = card;
@@ -85,18 +107,41 @@ export function SquarePaymentForm({
         throw new Error(result.errors?.[0]?.message ?? "Your card wasn't accepted. Please check the details.");
       }
       // A payment token is single-use, so mint a SECOND token for saving the card on file.
-      // Best-effort — if it fails the charge still goes through, the card just isn't saved.
+      // Storing a card also needs SCA verification (verifyBuyer with intent STORE), or Square
+      // rejects the cards.create. All best-effort — if any of it fails the charge still goes
+      // through, the card just won't be saved.
       let cardSourceId: string | undefined;
+      let cardVerificationToken: string | undefined;
       try {
         const saved = await cardRef.current.tokenize();
-        if (saved.status === "OK" && saved.token) cardSourceId = saved.token;
+        if (saved.status === "OK" && saved.token) {
+          cardSourceId = saved.token;
+          const verify = paymentsRef.current?.verifyBuyer;
+          if (verify && customer) {
+            const v = await verify(saved.token, {
+              intent: "STORE",
+              billingContact: {
+                givenName: customer.firstName,
+                familyName: customer.lastName,
+                email: customer.email,
+                phone: customer.phone,
+                country: "US",
+                region: customer.state,
+                city: customer.city,
+                postalCode: customer.zip,
+                addressLines: [customer.address1, customer.address2].filter(Boolean),
+              },
+            });
+            cardVerificationToken = v?.token;
+          }
+        }
       } catch {
         /* card just won't be saved on file */
       }
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sourceId: result.token, cardSourceId, amountCents, customer, note }),
+        body: JSON.stringify({ sourceId: result.token, cardSourceId, cardVerificationToken, amountCents, customer, note }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) throw new Error(data.error ?? "Payment failed. Please try again.");
