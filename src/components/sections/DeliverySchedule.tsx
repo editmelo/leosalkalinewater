@@ -1,6 +1,6 @@
 import { DELIVERY_SCHEDULE } from "@/lib/order/delivery-schedule";
 
-// The four weekly delivery routes, shown on the store page so customers can see which
+// The weekly delivery routes, shown on the store page so customers can see which
 // day their neighborhood gets water before they even order.
 export function DeliverySchedule({ className = "" }: { className?: string }) {
   return (

@@ -1,7 +1,7 @@
 import { normalizeZip } from "@/lib/service-area";
 
 // Leo's weekly delivery routes — Indianapolis quadrants Tue–Fri, plus a Monday outer-south
-// route. Source of truth for "when do I get my water?" across the site.
+// route and a Saturday Bloomington route. Source of truth for "when do I get my water?" across the site.
 export type DeliveryDay = {
   day: string; // "Tuesday"
   region: string; // "Southwest"
@@ -45,6 +45,13 @@ export const DELIVERY_SCHEDULE: readonly DeliveryDay[] = [
     emoji: "🟠",
     accent: "#E08A2B",
     zips: ["46201", "46203", "46219", "46239", "46237", "46227", "46217", "46225", "46107", "46163", "46131"],
+  },
+  {
+    day: "Saturday",
+    region: "Bloomington",
+    emoji: "🔴",
+    accent: "#B23A3A",
+    zips: ["47401", "47408"],
   },
 ];
 
